@@ -39,7 +39,7 @@ export default function Cadastrar() {
   }
 
   function handleConfirmarSenhaChange(texto: string){
-    cpf = texto;
+    confirmarSenha = texto;
   }
  
   return (
