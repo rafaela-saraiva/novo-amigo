@@ -1,0 +1,30 @@
+:root {
+    --muted: #6b6b6b;
+}
+
+.container {
+    display: inline-flex;
+    align-items: center;
+}
+
+.hamburger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.22s ease, transform 0.18s ease;
+}
+
+.hamburger:hover { background: rgba(0,0,0,0.03); transform: translateY(-1px); }
+
+.hamburgerLine {
+    width: 20px;
+    height: 2px;
+    background: var(--muted);
+    border-radius: 2px;
+}
