@@ -1,37 +1,37 @@
+import styles from './styles.module.css';
+
 interface SideBarProps {
-    open: boolean;
-    onClose: () => void;
-  }
-  
-  export default function SideBar({ open, onClose }: SideBarProps) {
-    return (
-      <>
-        {open && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-40"
-            onClick={onClose}
-          />
-        )}
-  
-        <div
-          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform ${
-            open ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <button
-            className="p-2 m-2 bg-red-500 text-white rounded"
-            onClick={onClose}
-          >
-            Fechar
+  open: boolean;
+  onClose: () => void;
+}
+
+export default function SideBar({ open, onClose }: SideBarProps) {
+  return (
+    <>
+      {open && (
+        <div className={styles.backdrop} onClick={onClose} />
+      )}
+
+      <aside className={`${styles.sidebar} ${open ? styles.open : ''}`} aria-hidden={!open}>
+        <div className={styles.headerBar}>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M6 6l12 12" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
-  
-          <ul className="p-4 space-y-4">
-            <li><a href="#">🏠 Home</a></li>
-            <li><a href="#">📄 Sobre</a></li>
-            <li><a href="#">📞 Contato</a></li>
-          </ul>
         </div>
-      </>
-    );
-  }
+
+        <nav className={styles.nav}>
+          <ul>
+            <li><a href="#sobre">Sobre Nós</a></li>
+            <li><a href="#contato">Contato</a></li>
+            <li><a href="#doacao">Doação</a></li>
+            <li><a href="#entrar">Entrar</a></li>
+          </ul>
+        </nav>
+      </aside>
+    </>
+  );
+}
   

@@ -165,3 +165,14 @@ a.secondary {
     filter: invert();
   }
 }
+
+/* Espaço principal quando não há conteúdo suficiente - evita Footer colado ao Header */
+.content{
+  min-height: calc(100vh - 144px); /* estima: header 72px + footer 72px */
+  padding: 32px 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width:720px){
+  .content{ min-height: calc(100vh - 200px); padding: 20px; }
+}
