@@ -1,7 +1,7 @@
 import Carousel from "@/components/Carousel";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import FaleConosco from "@/components/FaleConosco";
+
 import styles from "./page.module.css";
 import "./page.css";
 import { ProductCardTeste } from "@/components/ProductCard";

@@ -1,6 +1,8 @@
 'use client'
  
 import TextField from "@/components/TextField";
+import styles from './styles.module.css';
+import Header from "@/components/Header";
  
  
  
@@ -44,8 +46,11 @@ export default function Cadastrar() {
  
   return (
     <>
-      <h1>Cadastro</h1>
-      <form className="formCadastrar">
+    <Header/>
+    <div className={styles.pageContainer}>
+      <h1 className={styles.titulo}>Cadastro</h1>
+      <form className={styles.formCadastrar} onSubmit={botaoCadastrarOnClick}>
+        
         <TextField label="Nome Completo" type="text" onChange={handleNomeChange} />
         <TextField label="E-mail" type="email" onChange={handleEmailChange}  />
         <TextField label= "CPF" type="text" onChange={handleCpfChange} />
@@ -54,6 +59,10 @@ export default function Cadastrar() {
  
         <button onClick={botaoCadastrarOnClick}>Salvar</button>
       </form>
-    </>
+    </div>
+  </>
   );
 }
+
+
+   
