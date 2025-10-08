@@ -1,4 +1,4 @@
-import Pet from "../Models/Pet";
+import Pet from "@/Models/Pet";
 
 const pets: Pet[] = [
   { id: 1, nome: "teste", img: "https://www.google.com/imgres?q=pedra&imgurl=https%3A%2F%2F16806.cdn.simplo7.net%2Fstatic%2F16806%2Fsku%2Fpedras-e-cristais-n-z-outras-pedras-e-cristais-a-z-pedra-turquesa-bruto-40a60g-10042--p-1649276748793.jpg&imgrefurl=https%3A%2F%2Fwww.helenacristais.com.br%2Fpedras-e-cristais-n-z%2Foutras-pedras-e-cristais-a-z%2Fpedra-turquesa-bruto-40a60g-10042--p%3Fsrsltid%3DAfmBOop-Ki9sFzBDdRiEIQAiCKLB97P6voie4wnvV6GJOV-IBhrr30QY&docid=_vH458hj2BoXbM&tbnid=U9acvEFrhwEIAM&vet=12ahUKEwih2YSX25KQAxUapZUCHe3LNXkQM3oECBUQAA..i&w=1080&h=1080&hcb=2&ved=2ahUKEwih2YSX25KQAxUapZUCHe3LNXkQM3oECBUQAA", desc: "Pedra", tipo: "cachorro" },

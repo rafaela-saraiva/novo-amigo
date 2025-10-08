@@ -7,7 +7,7 @@ export default function Footer(){
       <div className={styles.container}>
         <div className={styles.left}>
           <div className={styles.copy}>© {new Date().getFullYear()} Novo Amigo — Todos os direitos reservados</div>
-          <div className={styles.small}>Av. São Carlos, 1900 · São Carlos, São Paulo</div>
+          <div className={styles.small}>1763 Rua Dona Alexandrina · São Carlos, São Paulo</div>
         </div>
 
         

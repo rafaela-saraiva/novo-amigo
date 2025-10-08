@@ -1,12 +1,12 @@
-import  Pet from "../Models/Pet";
-import ProductCard from "../ProductCard/index";
+import  Pet from "@/Models/Pet";
+import ProductCard from "../ProductCard";
 
 
-type Props = {
+type PetProps = {
   pets: Pet[];
 };
 
-export default function ProductList({ pets }: Props) {
+export default function ProductList({ pets }: PetProps) {
   return (
     <section className="pet">
       

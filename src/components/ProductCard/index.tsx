@@ -1,10 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./styles.module.css";
 
-type Props = {
+type ProductCardProps = {
   nome: string;
-  img: string;
-  desc: string;
+  img: string; // 👈 aqui é o link da imagem (URL externa)
+  desc?: string;
   tipo:
     | "gato"
     | "cachorro"
@@ -15,8 +16,7 @@ type Props = {
     | "teste";
 };
 
-// Mapeamento direto do tipo -> classe CSS
-const tipoClassMap: Record<Props["tipo"], string> = {
+const tipoClassMap: Record<ProductCardProps["tipo"], string> = {
   gato: styles.gato,
   cachorro: styles.cachorro,
   passaro: styles.passaro,
@@ -26,24 +26,48 @@ const tipoClassMap: Record<Props["tipo"], string> = {
   teste: styles.teste,
 };
 
-export default function ProductCard({ nome, img, desc, tipo }: Props) {
+//
+// 🔹 CARD COMPLETO (usado na página de adoção)
+//
+export default function ProductCard({ nome, img, desc, tipo }: ProductCardProps) {
   const className = `${styles.root} ${tipoClassMap[tipo]}`;
-  
+
   return (
     <section className={className}>
       <h3>{nome}</h3>
-      <Image src={img} alt={nome} width={128} height={128} />
-      <h4>Descrição: {desc}</h4>
+
+      {/* Imagem de link externo */}
+      <Image
+        src={img}
+        alt={nome}
+        width={200}
+        height={200}
+        className={styles.image}
+      />
+
+      {desc && <p>{desc}</p>}
     </section>
   );
 }
 
-export function ProductCardTeste({ nome, img, tipo }: Props) {
+//
+// 🔹 VERSÃO TESTE (usada na página inicial, só a imagem)
+//
+export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
   const className = `${styles.root} ${tipoClassMap[tipo]}`;
-  
+
   return (
-    <section className={className}>
-      <Image src={img} alt={nome} width={128} height={128} />
-    </section>
+    <section className={styles.root}>
+  <div className={styles.imageWrapper}>
+    <img
+      src={img}
+      alt={nome}
+      width={200}       // pode ser ajustado
+      height={150}      // deve bater com o imageWrapper
+      className={styles.image}
+    />
+  </div>
+</section>
+
   );
 }
