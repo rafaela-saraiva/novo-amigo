@@ -1,0 +1,72 @@
+.formCadastrar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #eafffa;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.titulo {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 30px;
+  color: #000;
+}
+
+.formCadastrar label {
+  width: 100%;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.formCadastrar input,
+.formCadastrar textarea,
+.formCadastrar button {
+  width: 100%;               /* 👈 tudo do mesmo tamanho */
+  max-width: 340px;          /* 👈 tamanho padronizado */
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: 0.3s;
+  box-sizing: border-box;    /* garante largura igual */
+}
+
+.formCadastrar input,
+.formCadastrar textarea {
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.formCadastrar input:focus,
+.formCadastrar textarea:focus {
+  border-color: #00bfa6;
+  outline: none;
+  box-shadow: 0 0 5px #00bfa6;
+}
+
+.formCadastrar textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.formCadastrar button {
+  background-color: #00bfa6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.formCadastrar button:hover {
+  background-color: #009e8a;
+  transform: scale(1.03);
+}

@@ -25,8 +25,8 @@ export default function SideBar({ open, onClose }: SideBarProps) {
         <nav className={styles.nav}>
           <ul>
             <li><a href="#sobre">Sobre Nós</a></li>
-            <li><a href="#contato">Contato</a></li>
             <li><a href="#doacao">Doação</a></li>
+            <li><a href="#FaleConosco">Fale Conosco</a></li>
             <li><a href="#entrar">Entrar</a></li>
           </ul>
         </nav>
@@ -34,4 +34,3 @@ export default function SideBar({ open, onClose }: SideBarProps) {
     </>
   );
 }
-  
