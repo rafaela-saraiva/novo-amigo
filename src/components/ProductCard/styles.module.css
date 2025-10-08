@@ -1,0 +1,17 @@
+.root {
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 10px;
+  
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    justify-content: space-between; /* distribui melhor os elementos */
+  
+    padding: 10px;
+    margin: 0;               /* retira o auto que desalinha */
+    width: 100%;             /* ocupa 100% da célula do grid */
+    height: 100%;            /* faz todos os cards terem mesma altura */
+    box-sizing: border-box;  /* evita estouro de padding */
+}
