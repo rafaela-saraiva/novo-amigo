@@ -37,7 +37,7 @@ export default function ProductCard({ nome, img, desc, tipo }: ProductCardProps)
       <h3>{nome}</h3>
 
       {/* Imagem de link externo */}
-      <Image
+      <img
         src={img}
         alt={nome}
         width={200}
@@ -50,14 +50,12 @@ export default function ProductCard({ nome, img, desc, tipo }: ProductCardProps)
   );
 }
 
-//
-// 🔹 VERSÃO TESTE (usada na página inicial, só a imagem)
-//
+
 export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
   const className = `${styles.root} ${tipoClassMap[tipo]}`;
 
   return (
-    <section className={styles.root}>
+    <section className={`${styles.root} ${styles.testContainer}`}>
   <div className={styles.imageWrapper}>
     <img
       src={img}

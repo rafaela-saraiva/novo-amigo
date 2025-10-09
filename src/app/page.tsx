@@ -57,25 +57,26 @@ export default function Home() {
         </div>
 
         <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-            gap: "24px",
-            justifyItems: "center",
-            padding: "48px 16px",
-            maxWidth: "1000px",
-            margin: "0 auto",
-          }}
-        >
-          {pets.map((pet) => (
-            <ProductCardTeste
-              key={pet.id}
-              nome={pet.nome}
-              img={pet.img}
-              tipo={pet.tipo as any}
-            />
-          ))}
-        </section>
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)", // 3 cards por linha fixo
+    gap: "24px",
+    justifyItems: "center",
+    padding: "48px 16px",
+    maxWidth: "1000px",
+    margin: "0 auto",
+  }}
+>
+  {pets.map((pet) => (
+    <ProductCardTeste
+      key={pet.id}
+      nome={pet.nome}
+      img={pet.img}
+      tipo={pet.tipo as any}
+    />
+  ))}
+</section>
+
         <section
           style={{
             maxWidth: 800,
