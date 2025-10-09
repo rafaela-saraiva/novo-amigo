@@ -1,13 +1,15 @@
 'use client'
 
+import styles from './styles.module.css'
+
 export default function SobreNos () {
   return (
     <section className="">
       
-      <h2 className="text-text-light dark:text-text-dark text-3xl font-bold tracking-tight pb-3">
+      <h2 className={styles.sobre}>
         Sobre Nós
       </h2>
-      <p className="text-subtle-light dark:text-subtle-dark text-base leading-relaxed max-w-2xl mx-auto">
+      <p>
         No Adote um Amigo, nossa paixão é criar pontes de amor entre animais de estimação que precisam de um lar e pessoas de bom coração.
         Acreditamos que cada adoção transforma duas vidas: a do animal, que ganha uma família, e a do adotante, que descobre um amor incondicional.
         Nossa missão é garantir que cada pet encontre um lar seguro e feliz, promovendo a posse responsável e o bem-estar animal acima de tudo.
@@ -38,8 +40,8 @@ export default function SobreNos () {
       </div>
 
       
-      <div className="text-center mt-8">
-        <h3 className="text-text-light dark:text-text-dark text-2xl font-bold tracking-tight mb-3">
+      <div className="Valores">
+        <h3>
           Nossos Valores
         </h3>
         <p className="text-subtle-light dark:text-subtle-dark text-base leading-relaxed max-w-2xl mx-auto">
