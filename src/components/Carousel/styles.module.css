@@ -13,7 +13,7 @@
   box-shadow: var(--shadow);
   overflow: hidden;
   position: relative;
-  z-index: 0; /* garante que o backdrop do sidebar possa ficar acima */
+  z-index: 0; 
 }
 
 .viewport{
@@ -75,7 +75,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10; /* menor que o backdrop (1000) para ficar sob o blur */
+  z-index: 10; 
   background: rgba(255,255,255,0.8);
   border: none;
   width: 44px;
@@ -102,7 +102,7 @@
   bottom: 12px;
   display: flex;
   gap: 8px;
-  z-index: 10; /* garantir que indicadores também fiquem sob o backdrop */
+  z-index: 10; 
 }
 
 .dot{
