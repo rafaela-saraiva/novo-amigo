@@ -13,19 +13,19 @@ type Slide = {
 
 const slides: Slide[] = [
   {
-    image: "https://exemplo.com/imagem1.jpg",
-    title: "Bem-vindo ao Novo Amigo 🐾",
+    image: "https://i.postimg.cc/5tLd35ff/a.png",
+    title: "",
     subtitle: "Encontre seu novo melhor amigo.",
     alt: "Logo e apresentação",
   },
   {
-    image: "https://exemplo.com/imagem2.jpg",
+    image: "https://i.postimg.cc/sXfBCg6y/a-3.png",
     title: "Nossa História",
     subtitle: "Transformando vidas com adoção e amor.",
     alt: "Nossa história",
   },
   {
-    image: "https://exemplo.com/imagem3.jpg",
+    image: "https://i.postimg.cc/yYcb21wN/a-2.png",
     title: "Doe e Ajude",
     subtitle: "Cada contribuição faz a diferença.",
     alt: "Doação",

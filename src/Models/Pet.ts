@@ -2,7 +2,7 @@ type Pet = {
     id: number;
     nome: string;
     img: string;
-    desc: string;
+    desc?: string;
     tipo:
     | "gato"
     | "cachorro"

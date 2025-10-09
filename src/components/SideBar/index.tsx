@@ -1,5 +1,6 @@
 import styles from './styles.module.css';
 
+
 interface SideBarProps {
   open: boolean;
   onClose: () => void;
@@ -24,13 +25,13 @@ export default function SideBar({ open, onClose }: SideBarProps) {
 
         <nav className={styles.nav}>
           <ul>
-            <li><a href="#contato">Contato</a></li>
             <li><a href="#doacao">Doação</a></li>
-            <li><a href="#entrar">Entrar</a></li>
+            <li><a href="/faleConosco">Fale Conosco</a></li>
+            <li><a href="/login">Entrar</a></li>
           </ul>
         </nav>
       </aside>
     </>
   );
 }
-  
+            
