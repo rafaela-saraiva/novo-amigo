@@ -6,10 +6,10 @@ export default function Logo() {
         <div style={{ display: 'flex', alignItems: 'center' }}>
             <Link href="/" aria-label="Ir para página inicial">
                 <Image
-                    src="https://i.postimg.cc/43gQFF0v/560157153-858862503968347-5622696388776036153-n.png"
+                    src="https://i.postimg.cc/XNtcXKM2/logo.png"
                     alt="Logo Novo Amigo"
-                    width={250}
-                    height={290}
+                    width={120}
+                    height={80}
                     priority={true}
                     style={{ objectFit: 'contain' }}
                 />

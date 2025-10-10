@@ -35,7 +35,6 @@ export default function Header() {
                 </div>
             </div>
 
-            {/* SideBar is now controlled inside Menu component */}
         </header>
     );
 }
