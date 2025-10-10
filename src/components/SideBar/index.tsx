@@ -26,6 +26,7 @@ export default function SideBar({ open, onClose }: SideBarProps) {
         <nav className={styles.nav}>
           <ul>
             <li><a href="#doacao">Doação</a></li>
+            <li><a href="/adotar">Animais</a></li>
             <li><a href="/faleConosco">Fale Conosco</a></li>
             <li><a href="/login">Entrar</a></li>
           </ul>
