@@ -27,7 +27,7 @@ export default function SideBar({ open, onClose }: SideBarProps) {
           <ul>
             <li><a href="#doacao">Doação</a></li>
             <li><a href="/nossos-animais">Animais</a></li>
-            <li><a href="/faleConosco">Fale Conosco</a></li>
+            <li><a href="/faleConosco">Falhe Conosco</a></li>
             <li><a href="/login">Entrar</a></li>
           </ul>
         </nav>

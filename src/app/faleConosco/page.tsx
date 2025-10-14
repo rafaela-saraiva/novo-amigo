@@ -1,8 +1,8 @@
 "use client"
 
+import Header from "@/components/Header";
 import TextField from "@/components/TextField";
 import styles from './styles.module.css';
-import Header from "@/components/Header";
  
 export default function FaleConosco() {
   let nomeInteiro = "";
@@ -46,7 +46,7 @@ export default function FaleConosco() {
     />
     </div>
     <div className={styles.formContainer}>  
-      <h1 className={styles.titulo}>Fale Conosco</h1>
+      <h1 className={styles.titulo}>Falhe Conosco</h1>
       <form className={styles.formCadastrar} onSubmit={botaoCadastrarOnClick}>
         <TextField label="Nome Completo" type="text" onChange={handleNomeChange} />
         <TextField label="E-mail" type="email" onChange={handleEmailChange}  />
