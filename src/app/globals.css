@@ -40,3 +40,27 @@ a {
     color-scheme: dark;
   }
 }
+
+/* ===== Bordas pretas globais para melhorar contraste visual =====
+   Estas regras aplicam uma borda discreta preta em elementos de
+   container e cartões mais comuns. Se quiser algo mais ou menos
+   intenso, posso ajustar os seletores ou a espessura. */
+
+/* Aplica borda aos containers principais com classe container */
+.container, .main, .card, .modal, .backdrop, .footer, header, .pet {
+  border: 1px solid rgba(0,0,0,0.9);
+}
+
+/* Inputs e selects recebem uma borda preta mais sutil */
+input, select, textarea, .select, .inputBusca {
+  border: 1px solid rgba(0,0,0,0.9) !important;
+}
+
+/* Ajuste em elementos com borda-radius para manter visual arredondado */
+.container, .card, .modal, .filtrosContainer, .emptyState {
+  border-radius: 10px;
+}
+
+/* Pequena exceção para o Header (mantém o estilo existente) */
+header { box-shadow: none; }
+

@@ -1,22 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-:root {
+.body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Variáveis locais: limitadas ao escopo da página para não sobrescrever o Header global */
+.main {
+  /* variáveis de tema aplicadas apenas dentro de .main */
   --primary: #43959b;
   --primary-light: #6ae6d3;
   --secondary: #2d5a60;
   --text: #374151;
   --text-muted: #6b7280;
   --border: #e5e7eb;
-  --bg: #f9fafb;
-}
+  --page-bg: #f9fafb; /* renomeado para evitar conflito com --bg global */
 
-body {
-  font-family: 'Poppins', sans-serif;
-}
-
-.main {
   min-height: 100vh;
-  background: var(--bg);
+  background: var(--page-bg);
   padding: 32px 0;
 }
 
@@ -79,7 +79,8 @@ body {
   padding: 24px;
   margin-bottom: 32px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 2px solid var(--border);
+  /* Borda preta solicitada pelo usuário */
+  border: 2px solid #000;
 }
 
 .filtrosLinha1,
@@ -216,4 +217,29 @@ body {
   .emptyState p {
     font-size: 14px;
   }
+}
+
+/* Forçar texto preto para melhor legibilidade dentro do container de filtros */
+.filtrosContainer,
+.filtrosContainer * {
+  color: #000 !important;
+}
+
+.filtrosContainer input,
+.filtrosContainer select,
+.filtrosContainer textarea,
+.filtrosContainer .select,
+.filtrosContainer .inputBusca {
+  color: #000 !important;
+  background: #fff !important;
+}
+
+.filtrosContainer select option {
+  color: #000 !important;
+  background: #fff !important;
+}
+
+/* Garantir que o estado vazio também tenha texto escuro */
+.emptyState, .emptyState * {
+  color: #000 !important;
 }
