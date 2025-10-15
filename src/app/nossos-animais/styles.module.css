@@ -1,302 +1,219 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-  --roxo-principal: #000000;
-  --roxo-claro: #a1a1a1;
-  --cinza-fundo: #f5f5f5;
-  --branco: #ffffff;
-  --texto-escuro: #333333;
-  --texto-medio: #666666;
-  --borda-cinza: #e0e0e0;
+  --primary: #43959b;
+  --primary-light: #6ae6d3;
+  --secondary: #2d5a60;
+  --text: #374151;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f9fafb;
 }
 
 body {
-  background-color: var(--cinza-fundo);
   font-family: 'Poppins', sans-serif;
 }
 
 .main {
-  min-height: calc(100vh - 144px);
-  padding: 2rem 0;
-  background-color: var(--cinza-fundo);
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 32px 0;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 20px;
 }
 
 /* Breadcrumb */
 .breadcrumb {
   font-size: 14px;
-  color: var(--texto-medio);
-  margin-bottom: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
 }
 
 .breadcrumb span:last-child {
-  color: var(--roxo-principal);
+  color: var(--primary);
+  font-weight: 600;
 }
 
-/* Título Principal */
+/* Título e Botão de Cadastro */
+.titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
 .title {
-  font-size: 2.5rem;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--secondary);
+  margin: 0;
+}
+
+.cadastrarBtn {
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  color: var(--roxo-principal);
-  margin-bottom: 2rem;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(67, 149, 155, 0.2);
+}
+
+.cadastrarBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(67, 149, 155, 0.3);
 }
 
 /* Container de Filtros */
 .filtrosContainer {
-  background: var(--branco);
-  border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--border);
 }
 
 .filtrosLinha1,
 .filtrosLinha2 {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .filtrosLinha2 {
   margin-bottom: 0;
 }
 
-/* Selects */
-.select {
-  flex: 1;
+/* Selects e Inputs */
+.select,
+.inputBusca {
   padding: 12px 16px;
-  border: 2px solid var(--borda-cinza);
+  border: 2px solid var(--border);
   border-radius: 8px;
-  font-size: 14px;
-  background-color: var(--branco);
-  color: var(--texto-escuro);
   font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  background: white;
+  transition: all 0.2s ease;
 }
 
-.select:focus {
+.select:focus,
+.inputBusca:focus {
   outline: none;
-  border-color: var(--roxo-principal);
-}
-
-/* Container de Busca */
-.buscaContainer {
-  display: flex;
-  gap: 1rem;
-  flex: 1;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(106, 230, 211, 0.1);
 }
 
 .inputBusca {
-  flex: 1;
-  padding: 12px 16px;
-  border: 2px solid var(--borda-cinza);
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: 'Poppins', sans-serif;
+  width: 100%;
 }
 
-.inputBusca:focus {
-  outline: none;
-  border-color: var(--roxo-principal);
-}
-
-.btnBuscar {
-  padding: 12px 24px;
-  background-color: var(--roxo-principal);
-  color: var(--branco);
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
+/* Contador */
+.contador {
+  background: white;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin-bottom: 24px;
   font-weight: 600;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  transition: background-color 0.3s ease;
+  color: var(--text);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid var(--primary);
 }
 
-.btnBuscar:hover {
-  background-color: var(--roxo-claro);
-}
-
-/* Abas de Ordenação */
-.tabs {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid var(--borda-cinza);
-}
-
-.tab {
-  background: none;
-  border: none;
-  padding: 1rem 0;
-  color: var(--texto-medio);
-  font-size: 14px;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-.tab:hover {
-  color: var(--roxo-principal);
-}
-
-.tabActive {
-  color: var(--roxo-principal);
-  font-weight: 600;
-}
-
-.tabActive::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: var(--roxo-principal);
-}
-
-/* Grid de Pets */
-.petsGrid {
+/* Grid de Animais */
+.animaisGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 2rem;
-  padding: 1rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
 }
 
-/* Cards dos Pets */
-.petCard {
-  background: var(--branco);
+/* Estado Vazio */
+.emptyState {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
   border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.petCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+.emptyIcon {
+  font-size: 64px;
+  margin-bottom: 24px;
 }
 
-.petHeader {
-  padding: 1rem;
-  position: relative;
-}
-
-.petNome {
-  font-size: 1.1rem;
+.emptyState h3 {
+  font-size: 24px;
+  color: var(--secondary);
+  margin: 0 0 16px 0;
   font-weight: 600;
-  color: var(--branco);
-  margin: 0;
-  text-align: center;
 }
 
-.petImagem {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-}
-
-.petImagem img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.petInfo {
-  padding: 1rem;
-  text-align: center;
-}
-
-.petLocal {
-  font-size: 0.9rem;
-  color: var(--texto-medio);
-  margin: 0;
-}
-
-/* Mensagem quando não há animais */
-.semAnimais {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
-  padding: 3rem;
-}
-
-.semAnimaisConteudo {
-  text-align: center;
-  background: var(--branco);
-  padding: 3rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  max-width: 500px;
-}
-
-.semAnimaisConteudo h3 {
-  font-size: 1.5rem;
-  color: var(--roxo-principal);
-  margin-bottom: 1rem;
-}
-
-.semAnimaisConteudo p {
-  color: var(--texto-medio);
-  margin-bottom: 0.5rem;
+.emptyState p {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin: 0 0 32px 0;
   line-height: 1.6;
-}
-
-.semAnimaisConteudo p:last-child {
-  margin-bottom: 0;
-  font-style: italic;
-  color: var(--texto-medio);
-  opacity: 0.8;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-  .filtrosLinha1,
-  .filtrosLinha2 {
+  .titleSection {
     flex-direction: column;
-  }
-  
-  .buscaContainer {
-    flex-direction: column;
-  }
-  
-  .tabs {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  .petsGrid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+    gap: 16px;
+    align-items: stretch;
   }
   
   .title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 520px) {
-  .container {
-    padding: 0 1rem;
+    font-size: 24px;
+    text-align: center;
   }
   
-  .filtrosContainer {
-    padding: 1rem;
-  }
-  
-  .petsGrid {
+  .filtrosLinha1,
+  .filtrosLinha2 {
     grid-template-columns: 1fr;
   }
   
-  .title {
-    font-size: 1.8rem;
+  .animaisGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding: 20px 0;
+  }
+  
+  .filtrosContainer {
+    padding: 16px;
+  }
+  
+  .emptyState {
+    padding: 60px 20px;
+  }
+  
+  .emptyIcon {
+    font-size: 48px;
+  }
+  
+  .emptyState h3 {
+    font-size: 20px;
+  }
+  
+  .emptyState p {
+    font-size: 14px;
   }
 }

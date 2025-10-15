@@ -13,4 +13,19 @@ type Pet = {
     | "teste";
 };
 
+export type Animal = {
+    id: number;
+    nome: string;
+    idade: string;
+    cidade: string;
+    especie: string;
+    sexo: string;
+    porte: string;
+    descricao?: string;
+    vacinado: boolean;
+    castrado: boolean;
+    foto: string;
+    disponivel: boolean;
+};
+
 export default Pet;

@@ -1,8 +1,11 @@
 'use client'
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import { useState } from "react";
-import styles from "./styles.module.css";
+import AnimalCard from '@/components/AnimalCard';
+import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import { Animal } from '@/Models/Pet';
+import { useState } from 'react';
+import styles from './styles.module.css';
 
 export default function NossosAnimais() {
   const [filtros, setFiltros] = useState({
@@ -15,21 +18,39 @@ export default function NossosAnimais() {
     busca: ""
   });
 
-  const [ordenacao, setOrdenacao] = useState("Mais recentes");
-
-  // Lista de animais disponíveis para adoção
-  // TODO: Substituir por dados reais dos animais
-  const pets: {
-    id: number;
-    nome: string;
-    img: string;
-    tipo: string;
-    local: string;
-  }[] = [];
+  const [modalAberto, setModalAberto] = useState(false);
+  const [animais, setAnimais] = useState<Animal[]>([]);
 
   const handleFiltroChange = (campo: string, valor: string) => {
     setFiltros(prev => ({ ...prev, [campo]: valor }));
   };
+
+  const handleSalvarAnimal = (novoAnimal: Animal) => {
+    setAnimais(prev => [...prev, novoAnimal]);
+  };
+
+  const animaisFiltrados = animais.filter(animal => {
+    const matchBusca = !filtros.busca || 
+      animal.nome.toLowerCase().includes(filtros.busca.toLowerCase()) ||
+      animal.cidade.toLowerCase().includes(filtros.busca.toLowerCase());
+    
+    const matchEspecie = filtros.especie === "Todas as espécies" || 
+      animal.especie === filtros.especie.toLowerCase();
+    
+    const matchSexo = filtros.sexo === "Todos os sexos" || 
+      animal.sexo === filtros.sexo.toLowerCase();
+    
+    const matchPorte = filtros.porte === "Todos os portes" || 
+      animal.porte === filtros.porte.toLowerCase();
+    
+    const matchCidade = filtros.cidade === "Todas as Cidades" || 
+      animal.cidade.toLowerCase().includes(filtros.cidade.toLowerCase());
+    
+    const matchDisponibilidade = filtros.disponibilidade === "Todos" || 
+      (filtros.disponibilidade === "Somente disponíveis" && animal.disponivel);
+
+    return matchBusca && matchEspecie && matchSexo && matchPorte && matchCidade && matchDisponibilidade;
+  });
 
   return (
     <>
@@ -37,15 +58,26 @@ export default function NossosAnimais() {
       
       <main className={styles.main}>
         <div className={styles.container}>
-        
+          {/* Breadcrumb */}
+          <div className={styles.breadcrumb}>
+            <span>Início</span> &gt; <span>Nossos Animais</span>
+          </div>
 
-          {/* Título Principal */}
-          <h1 className={styles.title}>Encontre seu novo amigo</h1>
+          {/* Título e Botão de Cadastro */}
+          <div className={styles.titleSection}>
+            <h1 className={styles.title}>Nossos Animais para Adoção</h1>
+            <button 
+              className={styles.cadastrarBtn} 
+              onClick={() => setModalAberto(true)}
+            >
+              + Cadastrar Animal
+            </button>
+          </div>
 
-          {/* Área de Filtros */}
+          {/* Filtros */}
           <div className={styles.filtrosContainer}>
             <div className={styles.filtrosLinha1}>
-              <select 
+              <select
                 className={styles.select}
                 value={filtros.especie}
                 onChange={(e) => handleFiltroChange('especie', e.target.value)}
@@ -59,7 +91,7 @@ export default function NossosAnimais() {
                 <option>Fazenda</option>
               </select>
 
-              <select 
+              <select
                 className={styles.select}
                 value={filtros.sexo}
                 onChange={(e) => handleFiltroChange('sexo', e.target.value)}
@@ -69,7 +101,7 @@ export default function NossosAnimais() {
                 <option>Fêmea</option>
               </select>
 
-              <select 
+              <select
                 className={styles.select}
                 value={filtros.porte}
                 onChange={(e) => handleFiltroChange('porte', e.target.value)}
@@ -79,97 +111,73 @@ export default function NossosAnimais() {
                 <option>Médio</option>
                 <option>Grande</option>
               </select>
-            </div>
 
-            <div className={styles.filtrosLinha2}>
-              <select 
-                className={styles.select}
-                value={filtros.estado}
-                onChange={(e) => handleFiltroChange('estado', e.target.value)}
-              >
-                <option>Todos os Estados</option>
-                <option>São Paulo</option>
-                <option>Rio de Janeiro</option>
-                <option>Minas Gerais</option>
-              </select>
-
-              <select 
-                className={styles.select}
-                value={filtros.cidade}
-                onChange={(e) => handleFiltroChange('cidade', e.target.value)}
-              >
-                <option>Todas as Cidades</option>
-                <option>São Paulo</option>
-                <option>Santos</option>
-                <option>Campinas</option>
-              </select>
-
-              <select 
+              <select
                 className={styles.select}
                 value={filtros.disponibilidade}
                 onChange={(e) => handleFiltroChange('disponibilidade', e.target.value)}
               >
                 <option>Somente disponíveis</option>
                 <option>Todos</option>
-                <option>Adotados</option>
               </select>
+            </div>
 
-              <div className={styles.buscaContainer}>
-                <input 
-                  type="text"
-                  placeholder="Nome do bicho"
-                  className={styles.inputBusca}
-                  value={filtros.busca}
-                  onChange={(e) => handleFiltroChange('busca', e.target.value)}
-                />
-                <button className={styles.btnBuscar}>Buscar</button>
-              </div>
+            <div className={styles.filtrosLinha2}>
+              <input
+                type="text"
+                className={styles.inputBusca}
+                placeholder="Buscar por nome ou cidade..."
+                value={filtros.busca}
+                onChange={(e) => handleFiltroChange('busca', e.target.value)}
+              />
             </div>
           </div>
 
-          {/* Abas de Ordenação */}
-          <div className={styles.tabs}>
-            {["Mais recentes", "Mais antigos", "Mais vistos", "Menos vistos"].map((tab) => (
-              <button
-                key={tab}
-                className={`${styles.tab} ${ordenacao === tab ? styles.tabActive : ''}`}
-                onClick={() => setOrdenacao(tab)}
-              >
-                {tab}
-              </button>
-            ))}
+          {/* Contador de animais */}
+          <div className={styles.contador}>
+            {animaisFiltrados.length === 0 
+              ? 'Nenhum animal encontrado' 
+              : `${animaisFiltrados.length} ${animaisFiltrados.length === 1 ? 'animal encontrado' : 'animais encontrados'}`
+            }
           </div>
 
-          {/* Grid de Pets */}
-          <div className={styles.petsGrid}>
-            {pets.length > 0 ? (
-              pets.map((pet) => (
-                <div key={pet.id} className={styles.petCard}>
-                  <div className={styles.petHeader}>
-                    <h3 className={styles.petNome}>{pet.nome}</h3>
-                  </div>
-                  <div className={styles.petImagem}>
-                    <img src={pet.img} alt={pet.nome} />
-                  </div>
-                  <div className={styles.petInfo}>
-                    <p className={styles.petLocal}>{pet.local}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className={styles.semAnimais}>
-                <div className={styles.semAnimaisConteudo}>
-                  <h3>🐾 Nenhum animal encontrado</h3>
-                  <p>Em breve teremos nossos amiguinhos disponíveis aqui!</p>
-                  <p>Os cards dos animais serão adicionados em breve com um design ainda melhor.</p>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* Grid de Animais */}
+          {animaisFiltrados.length > 0 ? (
+            <div className={styles.animaisGrid}>
+              {animaisFiltrados.map((animal) => (
+                <AnimalCard
+                  key={animal.id}
+                  animal={animal}
+                  onAdotar={() => {
+                    alert(`Interesse em adotar ${animal.nome}! Em breve implementaremos o sistema de adoção.`);
+                  }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <div className={styles.emptyIcon}>🐾</div>
+              <h3>Nenhum animal cadastrado ainda</h3>
+              <p>Seja o primeiro a cadastrar um animal para adoção!</p>
+              <button 
+                className={styles.cadastrarBtn} 
+                onClick={() => setModalAberto(true)}
+              >
+                Cadastrar Primeiro Animal
+              </button>
+            </div>
+          )}
         </div>
       </main>
 
       <Footer />
+
+      {/* Modal de Cadastro */}
+      <CadastrarAnimalModal
+        isOpen={modalAberto}
+        onClose={() => setModalAberto(false)}
+        onSave={handleSalvarAnimal}
+      />
     </>
   );
 }
