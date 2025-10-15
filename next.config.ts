@@ -45,7 +45,37 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'www.uninassau.edu.br',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'uninassau.edu.br',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'www.dokhospitalveterinario.com.br',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.google.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.petz.com.br',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'petz.com.br',
         pathname: '/**',
       },
     ],
