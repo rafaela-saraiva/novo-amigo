@@ -4,7 +4,7 @@ import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { Animal } from '@/Models/Pet';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
 export default function NossosAnimais() {
@@ -26,8 +26,36 @@ export default function NossosAnimais() {
   };
 
   const handleSalvarAnimal = (novoAnimal: Animal) => {
-    setAnimais(prev => [...prev, novoAnimal]);
+    setAnimais(prev => {
+      const next = [...prev, novoAnimal];
+      // salvar no cookie para persistência simples (teste)
+      try {
+        const serialized = encodeURIComponent(JSON.stringify(next));
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7); // 7 dias
+        document.cookie = `novo_amigo_animais=${serialized}; path=/; expires=${expires.toUTCString()}; SameSite=Lax`;
+      } catch (err) {
+        console.error('Erro ao salvar cookie de animais', err);
+      }
+      return next;
+    });
   };
+
+  // carregar animais do cookie no carregamento da página
+  useEffect(() => {
+    try {
+      const match = document.cookie.split('; ').find((c) => c.startsWith('novo_amigo_animais='));
+      if (match) {
+        const raw = match.split('=')[1];
+        const parsed = JSON.parse(decodeURIComponent(raw)) as Animal[];
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setAnimais(parsed);
+        }
+      }
+    } catch (err) {
+      console.error('Erro ao carregar cookie de animais', err);
+    }
+  }, []);
 
   const animaisFiltrados = animais.filter(animal => {
     const matchBusca = !filtros.busca || 
