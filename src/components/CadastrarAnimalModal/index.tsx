@@ -1,6 +1,7 @@
 'use client'
 import { Animal } from '@/Models/Pet';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useRef, useState } from 'react';
 import styles from './styles.module.css';
 
 interface CadastrarAnimalModalProps {
@@ -22,6 +23,8 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
     castrado: false,
     foto: ''
   });
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -180,14 +183,54 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
           <div className={styles.section}>
             <h3>Foto do Animal</h3>
             <div className={styles.formGroup}>
-              <label htmlFor="foto">URL da Foto (opcional)</label>
-              <input
-                id="foto"
-                type="url"
-                value={formData.foto}
-                onChange={(e) => handleInputChange('foto', e.target.value)}
-                placeholder="https://i.postimg.cc/exemplo-da-foto.jpg"
-              />
+              <label htmlFor="fotoFile">Enviar Foto (opcional)</label>
+              <div className={styles.fileUploadRow}>
+                <input
+                  id="fotoFile"
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      const result = reader.result as string | null;
+                      if (result) {
+                        handleInputChange('foto', result);
+                      }
+                    };
+                    reader.readAsDataURL(file);
+                  }}
+                  style={{ display: 'none' }}
+                />
+                <button
+                  type="button"
+                  className={styles.uploadBtn}
+                  onClick={() => {
+                    fileInputRef?.current?.click();
+                  }}
+                >
+                  Escolher arquivo
+                </button>
+
+                <span className={styles.orText}>ou</span>
+
+                <input
+                  id="foto"
+                  type="url"
+                  value={formData.foto}
+                  onChange={(e) => handleInputChange('foto', e.target.value)}
+                  placeholder="https://i.postimg.cc/exemplo-da-foto.jpg"
+                />
+              </div>
+              {formData.foto && (
+                <div className={styles.previewRow}>
+                  <div className={styles.previewWrapper}>
+                    <Image src={formData.foto} alt="pré-visualização" fill style={{ objectFit: 'cover' }} />
+                  </div>
+                </div>
+              )}
               <small>
                 📸 Cole aqui o link de uma foto do animal hospedada na internet.<br/>
                 💡 Recomendamos usar sites como <a href="https://postimages.org/" target="_blank" rel="noopener">PostImg</a> para hospedar suas fotos gratuitamente.

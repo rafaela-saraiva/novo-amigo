@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+/* === FUNDO DO MODAL === */
 .backdrop {
   position: fixed;
   top: 0;
@@ -14,6 +15,7 @@
   animation: fadeIn 0.2s ease-out;
 }
 
+/* === CONTAINER PRINCIPAL DO MODAL === */
 .modal {
   background: white;
   border-radius: 16px;
@@ -25,6 +27,7 @@
   animation: slideIn 0.3s ease-out;
 }
 
+/* === CABEÇALHO DO MODAL === */
 .header {
   display: flex;
   justify-content: space-between;
@@ -57,10 +60,12 @@
   color: #374151;
 }
 
+/* === CORPO DO FORMULÁRIO === */
 .form {
   padding: 24px 32px 32px;
 }
 
+/* === SEÇÕES DO FORM === */
 .section {
   margin-bottom: 32px;
 }
@@ -79,6 +84,7 @@
   border-bottom: 2px solid #e5e7eb;
 }
 
+/* === CAMPOS DO FORM === */
 .formGroup {
   margin-bottom: 20px;
 }
@@ -119,6 +125,7 @@
   box-shadow: 0 0 0 3px rgba(106, 230, 211, 0.1);
 }
 
+/* === TEXTO DE AJUDA === */
 .formGroup small {
   display: block;
   color: #6b7280;
@@ -138,6 +145,81 @@
   text-decoration: underline;
 }
 
+/* === UPLOAD DE IMAGEM === */
+.fileUploadRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.uploadBtn {
+  padding: 10px 14px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.orText {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* === PRÉ-VISUALIZAÇÃO DA IMAGEM === */
+.previewRow {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.previewWrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background-color: #f9fafb;
+  transition: all 0.25s ease;
+}
+
+.previewWrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+.removePreviewBtn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  color: #ef4444;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.removePreviewBtn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* === CHECKBOXES === */
 .checkboxGroup {
   display: flex;
   gap: 24px;
@@ -160,6 +242,7 @@
   cursor: pointer;
 }
 
+/* === BOTÕES DE AÇÃO === */
 .actions {
   display: flex;
   gap: 16px;
@@ -201,6 +284,7 @@
   box-shadow: 0 8px 20px rgba(67, 149, 155, 0.3);
 }
 
+/* === ANIMAÇÕES === */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -217,6 +301,7 @@
   }
 }
 
+/* === RESPONSIVIDADE === */
 @media (max-width: 640px) {
   .modal {
     width: 95%;
@@ -241,5 +326,10 @@
   
   .actions button {
     width: 100%;
+  }
+
+  .previewWrapper {
+    width: 150px;
+    height: 150px;
   }
 }
