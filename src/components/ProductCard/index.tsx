@@ -56,16 +56,19 @@ export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
 
   return (
     <section className={`${styles.root} ${styles.testContainer}`}>
-  <div className={styles.imageWrapper}>
-    <img
-      src={img}
-      alt={nome}
-      width={200}       // pode ser ajustado
-      height={150}      // deve bater com o imageWrapper
-      className={styles.image}
-    />
-  </div>
-</section>
-
+      <div className={styles.imageWrapper}>
+        <img
+          src={img}
+          alt={nome}
+          width={200}
+          height={150}
+          className={styles.image}
+        />
+      </div>
+      <Link href={`/nossos-animais#${nome.toLowerCase()}`} className={styles.cardButton}>
+        {nome}
+      </Link>
+    </section>
   );
 }
+
