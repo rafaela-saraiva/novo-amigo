@@ -38,7 +38,7 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
     }
     
     // Validar URL da foto se fornecida
-    let fotoUrl = 'https://via.placeholder.com/300x200?text=Sem+Foto';
+  let fotoUrl = '/placeholder.svg';
     if (formData.foto.trim()) {
       try {
         new URL(formData.foto);

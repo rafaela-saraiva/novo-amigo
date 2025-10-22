@@ -14,7 +14,6 @@ export default function NossosAnimais() {
     loading, 
     adicionarAnimal, 
     limparAnimais, 
-    marcarComoAdotado, 
     filtrarAnimais 
   } = useAnimals();
 
@@ -43,16 +42,7 @@ export default function NossosAnimais() {
     }
   };
 
-  const handleAdotarAnimal = (animal: Animal) => {
-    if (window.confirm(`Confirma interesse em adotar ${animal.nome}?`)) {
-      const sucesso = marcarComoAdotado(animal.id);
-      if (sucesso) {
-        alert(`Parabéns! Seu interesse em adotar ${animal.nome} foi registrado. Em breve implementaremos o sistema completo de adoção.`);
-      } else {
-        alert('Erro ao processar adoção. Tente novamente.');
-      }
-    }
-  };
+
 
   const handleLimparDados = () => {
     if (window.confirm('Tem certeza que deseja remover TODOS os animais cadastrados? Esta ação não pode ser desfeita.')) {
@@ -199,7 +189,6 @@ export default function NossosAnimais() {
                 <AnimalCard
                   key={animal.id}
                   animal={animal}
-                  onAdotar={() => handleAdotarAnimal(animal)}
                 />
               ))}
             </div>

@@ -11,8 +11,62 @@ export function useAnimals() {
   useEffect(() => {
     try {
       const animaisSalvos = storageUtils.loadAnimals();
-      setAnimais(animaisSalvos);
-      console.log('Animais carregados:', animaisSalvos.length);
+      
+      // Se não há animais salvos, adicionar alguns exemplos
+      if (animaisSalvos.length === 0) {
+        const animaisExemplo: Animal[] = [
+          {
+            id: 1,
+            nome: "Buddy",
+            idade: "3 anos",
+            cidade: "São Paulo",
+            especie: "cachorro",
+            sexo: "macho",
+            porte: "medio",
+            descricao: "Cachorro muito carinhoso e brincalhão. Adora crianças e é super obediente. Ideal para famílias ativas.",
+            vacinado: true,
+            castrado: true,
+            foto: "https://i.postimg.cc/vxx9SyHf/conheca-as-racas-de-cachorros-mais-inteligentes-do-mundo-04-0.jpg",
+            disponivel: true
+          },
+          {
+            id: 2,
+            nome: "Luna",
+            idade: "2 anos",
+            cidade: "Rio de Janeiro",
+            especie: "gato",
+            sexo: "femea",
+            porte: "pequeno",
+            descricao: "Gatinha dócil e carinhosa. Gosta de colo e é muito tranquila. Perfeita para apartamentos.",
+            vacinado: true,
+            castrado: false,
+            foto: "https://i.postimg.cc/GhJ0XyWw/images-1.jpg",
+            disponivel: true
+          },
+          {
+            id: 3,
+            nome: "Thor",
+            idade: "4 anos",
+            cidade: "Belo Horizonte",
+            especie: "cachorro",
+            sexo: "macho",
+            porte: "grande",
+            descricao: "Cachorro protetor e leal. Excelente guarda da casa. Precisa de espaço para correr e brincar.",
+            vacinado: true,
+            castrado: true,
+            foto: "https://i.postimg.cc/Q9y1bCsc/images.jpg",
+            disponivel: true
+          }
+        ];
+        
+        // Salvar os animais de exemplo
+        storageUtils.saveAnimals(animaisExemplo);
+        setAnimais(animaisExemplo);
+        console.log('Animais de exemplo adicionados:', animaisExemplo.length);
+      } else {
+        setAnimais(animaisSalvos);
+        console.log('Animais carregados:', animaisSalvos.length);
+      }
     } catch (error) {
       console.error('Erro ao carregar animais:', error);
     } finally {

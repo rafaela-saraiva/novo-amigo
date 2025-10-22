@@ -1,5 +1,6 @@
 import { Animal } from '@/Models/Pet';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import styles from './styles.module.css';
 
@@ -9,13 +10,13 @@ interface AnimalCardProps {
 }
 
 export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
-  const [imageSrc, setImageSrc] = useState(animal.foto || 'https://via.placeholder.com/300x200?text=Sem+Foto');
+  const [imageSrc, setImageSrc] = useState(animal.foto || '/placeholder.svg');
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
     if (!imageError) {
       setImageError(true);
-      setImageSrc('https://via.placeholder.com/300x200?text=Sem+Foto');
+  setImageSrc('/placeholder.svg');
     }
   };
 
@@ -78,11 +79,16 @@ export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
           )}
         </div>
         
-        {animal.disponivel && onAdotar && (
-          <button className={styles.adotarBtn} onClick={onAdotar}>
-            Quero Adotar
-          </button>
-        )}
+        <div className={styles.actions}>
+          <Link href={`/animal/${animal.id}`} className={styles.verPerfilBtn}>
+            Ver Perfil
+          </Link>
+          {animal.disponivel && onAdotar && (
+            <button className={styles.adotarBtn} onClick={onAdotar}>
+              Quero Adotar
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
