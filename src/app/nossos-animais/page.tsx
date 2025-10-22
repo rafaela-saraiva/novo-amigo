@@ -3,11 +3,21 @@ import AnimalCard from '@/components/AnimalCard';
 import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import { useAnimals } from '@/hooks/useAnimals';
 import { Animal } from '@/Models/Pet';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './styles.module.css';
 
 export default function NossosAnimais() {
+  const { 
+    animais, 
+    loading, 
+    adicionarAnimal, 
+    limparAnimais, 
+    marcarComoAdotado, 
+    filtrarAnimais 
+  } = useAnimals();
+
   const [filtros, setFiltros] = useState({
     especie: "todas",
     sexo: "todos",
@@ -19,66 +29,61 @@ export default function NossosAnimais() {
   });
 
   const [modalAberto, setModalAberto] = useState(false);
-  const [animais, setAnimais] = useState<Animal[]>([]);
 
   const handleFiltroChange = (campo: string, valor: string) => {
     setFiltros(prev => ({ ...prev, [campo]: valor }));
   };
 
   const handleSalvarAnimal = (novoAnimal: Animal) => {
-    setAnimais(prev => {
-      const next = [...prev, novoAnimal];
-      // salvar no cookie para persistência simples (teste)
-      try {
-        const serialized = encodeURIComponent(JSON.stringify(next));
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 7); // 7 dias
-        document.cookie = `novo_amigo_animais=${serialized}; path=/; expires=${expires.toUTCString()}; SameSite=Lax`;
-      } catch (err) {
-        console.error('Erro ao salvar cookie de animais', err);
-      }
-      return next;
-    });
+    const sucesso = adicionarAnimal(novoAnimal);
+    if (sucesso) {
+      console.log('Animal cadastrado com sucesso!');
+    } else {
+      alert('Erro ao cadastrar animal. Tente novamente.');
+    }
   };
 
-  // carregar animais do cookie no carregamento da página
-  useEffect(() => {
-    try {
-      const match = document.cookie.split('; ').find((c) => c.startsWith('novo_amigo_animais='));
-      if (match) {
-        const raw = match.split('=')[1];
-        const parsed = JSON.parse(decodeURIComponent(raw)) as Animal[];
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setAnimais(parsed);
-        }
+  const handleAdotarAnimal = (animal: Animal) => {
+    if (window.confirm(`Confirma interesse em adotar ${animal.nome}?`)) {
+      const sucesso = marcarComoAdotado(animal.id);
+      if (sucesso) {
+        alert(`Parabéns! Seu interesse em adotar ${animal.nome} foi registrado. Em breve implementaremos o sistema completo de adoção.`);
+      } else {
+        alert('Erro ao processar adoção. Tente novamente.');
       }
-    } catch (err) {
-      console.error('Erro ao carregar cookie de animais', err);
     }
-  }, []);
+  };
 
-  const animaisFiltrados = animais.filter(animal => {
-    const matchBusca = !filtros.busca || 
-      animal.nome.toLowerCase().includes(filtros.busca.toLowerCase()) ||
-      animal.cidade.toLowerCase().includes(filtros.busca.toLowerCase());
-    
-    const matchEspecie = filtros.especie === "todas" ||
-      animal.especie === filtros.especie;
+  const handleLimparDados = () => {
+    if (window.confirm('Tem certeza que deseja remover TODOS os animais cadastrados? Esta ação não pode ser desfeita.')) {
+      const sucesso = limparAnimais();
+      if (sucesso) {
+        alert('Todos os dados foram removidos.');
+      } else {
+        alert('Erro ao limpar dados. Tente novamente.');
+      }
+    }
+  };
 
-    const matchSexo = filtros.sexo === "todos" ||
-      animal.sexo === filtros.sexo;
+  const animaisFiltrados = filtrarAnimais(filtros);
 
-    const matchPorte = filtros.porte === "todos" ||
-      animal.porte === filtros.porte;
-
-    const matchCidade = filtros.cidade === "todas" ||
-      animal.cidade.toLowerCase().includes(filtros.cidade.toLowerCase());
-
-    const matchDisponibilidade = filtros.disponibilidade === "todos" ||
-      (filtros.disponibilidade === "somente_disponiveis" && animal.disponivel);
-
-    return matchBusca && matchEspecie && matchSexo && matchPorte && matchCidade && matchDisponibilidade;
-  });
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+              <div style={{ fontSize: '18px', color: '#6b7280' }}>
+                Carregando animais...
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -94,12 +99,23 @@ export default function NossosAnimais() {
           {/* Título e Botão de Cadastro */}
           <div className={styles.titleSection}>
             <h1 className={styles.title}>Nossos Animais para Adoção</h1>
-            <button 
-              className={styles.cadastrarBtn} 
-              onClick={() => setModalAberto(true)}
-            >
-              + Cadastrar Animal
-            </button>
+            <div className={styles.buttonGroup}>
+              <button 
+                className={styles.cadastrarBtn} 
+                onClick={() => setModalAberto(true)}
+              >
+                + Cadastrar Animal
+              </button>
+              {animais.length > 0 && (
+                <button 
+                  className={styles.limparBtn} 
+                  onClick={handleLimparDados}
+                  title="Remover todos os animais cadastrados"
+                >
+                  🗑️ Limpar Dados
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Filtros */}
@@ -163,10 +179,17 @@ export default function NossosAnimais() {
 
           {/* Contador de animais */}
           <div className={styles.contador}>
-            {animaisFiltrados.length === 0 
-              ? 'Nenhum animal encontrado' 
-              : `${animaisFiltrados.length} ${animaisFiltrados.length === 1 ? 'animal encontrado' : 'animais encontrados'}`
-            }
+            <div className={styles.contadorTexto}>
+              {animaisFiltrados.length === 0 
+                ? 'Nenhum animal encontrado' 
+                : `${animaisFiltrados.length} ${animaisFiltrados.length === 1 ? 'animal encontrado' : 'animais encontrados'}`
+              }
+            </div>
+            {animais.length > 0 && (
+              <div className={styles.statusStorage}>
+                💾 {animais.length} animais salvos localmente
+              </div>
+            )}
           </div>
 
           {/* Grid de Animais */}
@@ -176,9 +199,7 @@ export default function NossosAnimais() {
                 <AnimalCard
                   key={animal.id}
                   animal={animal}
-                  onAdotar={() => {
-                    alert(`Interesse em adotar ${animal.nome}! Em breve implementaremos o sistema de adoção.`);
-                  }}
+                  onAdotar={() => handleAdotarAnimal(animal)}
                 />
               ))}
             </div>
