@@ -88,7 +88,7 @@ export default function NossosAnimais() {
         <div className={styles.container}>
           {/* Breadcrumb */}
           <div className={styles.breadcrumb}>
-            <span>Início</span> &gt; <span>Nossos Animais</span>
+          
           </div>
 
           {/* Título e Botão de Cadastro */}

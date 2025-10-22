@@ -72,7 +72,7 @@ export default function Cadastrar() {
 
         <button type="submit" className={styles.botaoCadastrar}>Cadastrar</button>
 
-        <p className={styles.voltarLogin}>← Voltar ao login</p>
+        <p className={styles.voltarLogin}><a href="/login">← Voltar ao login</a></p>
         <p className={styles.termos}>
           Ao se cadastrar, você concorda com nossos <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a>.
         </p>

@@ -1,30 +1,63 @@
 .root {
-
-    border: 1px solid black;
-    border-radius: 10px;
-  
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 16px;
     display: flex;
-    align-items: center; 
-    text-align: center; 
-    justify-content: space-between; /* distribui melhor os elementos */
-  
-    padding: 1px;           
-    width: 101%;             /* ocupa 100% da célula do grid */
-    height: 101%;            /* faz todos os cards terem mesma altura */
-    box-sizing: border-box;  /* evita estouro de padding */
-}
-.imageWrapper {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: flex-start;
+    padding: 12px;
     width: 100%;
-    height: 150px;       /* define altura fixa da imagem dentro do card */
-    overflow: hidden;    /* evita que a imagem extrapole o card */
+    height: auto;
+    box-sizing: border-box;
+    background-color: transparent; 
+    transition: all 0.3s ease;
+  }
+
+ 
+
+  .imageWrapper {
+    width: 240px;
+    height: 240px;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-}
+    border-radius: 50%;
+    margin-bottom: 10px;
+    transition: transform 0.4s ease;
+  }
+  
 
-.image {
+  .root:hover .imageWrapper {
+    transform: scale(1.10);
+  }
+  
+  .image {
     width: 100%;
     height: 100%;
-    object-fit: cover;   /* faz a imagem preencher a área e manter proporção */
-    border-radius: 10px; /* opcional, para combinar com o card */
-}
+    object-fit: cover;
+    border-radius: 50%;
+    transition: transform 0.4s ease;
+  }
+  
+
+  .cardButton {
+    background-color: rgba(255, 179, 0, 0.95);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 30px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 40px;
+    transition: background 0.25s ease, transform 0.2s ease;
+  }
+  
+
+  .cardButton:hover {
+    background-color: #ffa000;
+    transform: scale(1.05);
+  }  
