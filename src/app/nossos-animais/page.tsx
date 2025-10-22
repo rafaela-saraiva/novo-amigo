@@ -9,12 +9,12 @@ import styles from './styles.module.css';
 
 export default function NossosAnimais() {
   const [filtros, setFiltros] = useState({
-    especie: "Todas as espécies",
-    sexo: "Todos os sexos",
-    porte: "Todos os portes",
-    estado: "Todos os Estados",
-    cidade: "Todas as Cidades",
-    disponibilidade: "Somente disponíveis",
+    especie: "todas",
+    sexo: "todos",
+    porte: "todos",
+    estado: "todos",
+    cidade: "todas",
+    disponibilidade: "somente_disponiveis",
     busca: ""
   });
 
@@ -62,20 +62,20 @@ export default function NossosAnimais() {
       animal.nome.toLowerCase().includes(filtros.busca.toLowerCase()) ||
       animal.cidade.toLowerCase().includes(filtros.busca.toLowerCase());
     
-    const matchEspecie = filtros.especie === "Todas as espécies" || 
-      animal.especie === filtros.especie.toLowerCase();
-    
-    const matchSexo = filtros.sexo === "Todos os sexos" || 
-      animal.sexo === filtros.sexo.toLowerCase();
-    
-    const matchPorte = filtros.porte === "Todos os portes" || 
-      animal.porte === filtros.porte.toLowerCase();
-    
-    const matchCidade = filtros.cidade === "Todas as Cidades" || 
+    const matchEspecie = filtros.especie === "todas" ||
+      animal.especie === filtros.especie;
+
+    const matchSexo = filtros.sexo === "todos" ||
+      animal.sexo === filtros.sexo;
+
+    const matchPorte = filtros.porte === "todos" ||
+      animal.porte === filtros.porte;
+
+    const matchCidade = filtros.cidade === "todas" ||
       animal.cidade.toLowerCase().includes(filtros.cidade.toLowerCase());
-    
-    const matchDisponibilidade = filtros.disponibilidade === "Todos" || 
-      (filtros.disponibilidade === "Somente disponíveis" && animal.disponivel);
+
+    const matchDisponibilidade = filtros.disponibilidade === "todos" ||
+      (filtros.disponibilidade === "somente_disponiveis" && animal.disponivel);
 
     return matchBusca && matchEspecie && matchSexo && matchPorte && matchCidade && matchDisponibilidade;
   });
@@ -110,13 +110,13 @@ export default function NossosAnimais() {
                 value={filtros.especie}
                 onChange={(e) => handleFiltroChange('especie', e.target.value)}
               >
-                <option>Todas as espécies</option>
-                <option>Cachorro</option>
-                <option>Gato</option>
-                <option>Pássaro</option>
-                <option>Coelho</option>
-                <option>Hamster</option>
-                <option>Fazenda</option>
+                <option value="todas">Todas as espécies</option>
+                <option value="cachorro">Cachorro</option>
+                <option value="gato">Gato</option>
+                <option value="passaro">Pássaro</option>
+                <option value="coelho">Coelho</option>
+                <option value="hamster">Hamster</option>
+                <option value="fazenda">Fazenda</option>
               </select>
 
               <select
@@ -124,9 +124,9 @@ export default function NossosAnimais() {
                 value={filtros.sexo}
                 onChange={(e) => handleFiltroChange('sexo', e.target.value)}
               >
-                <option>Todos os sexos</option>
-                <option>Macho</option>
-                <option>Fêmea</option>
+                <option value="todos">Todos os sexos</option>
+                <option value="macho">Macho</option>
+                <option value="femea">Fêmea</option>
               </select>
 
               <select
@@ -134,10 +134,10 @@ export default function NossosAnimais() {
                 value={filtros.porte}
                 onChange={(e) => handleFiltroChange('porte', e.target.value)}
               >
-                <option>Todos os portes</option>
-                <option>Pequeno</option>
-                <option>Médio</option>
-                <option>Grande</option>
+                <option value="todos">Todos os portes</option>
+                <option value="pequeno">Pequeno</option>
+                <option value="medio">Médio</option>
+                <option value="grande">Grande</option>
               </select>
 
               <select
@@ -145,8 +145,8 @@ export default function NossosAnimais() {
                 value={filtros.disponibilidade}
                 onChange={(e) => handleFiltroChange('disponibilidade', e.target.value)}
               >
-                <option>Somente disponíveis</option>
-                <option>Todos</option>
+                <option value="somente_disponiveis">Somente disponíveis</option>
+                <option value="todos">Todos</option>
               </select>
             </div>
 
