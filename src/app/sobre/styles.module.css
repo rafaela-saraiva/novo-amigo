@@ -1,69 +1,71 @@
-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #fef9f8, #fff);
-    font-family: 'Segoe UI', sans-serif;
-    color: #333;
-    text-align: center;
-  }
-  
-  h2.sobre {
-    font-size: 2.5rem;
-    color: #ff6b6b;
-    margin-bottom: 1.5rem;
-    position: relative;
-  }
-  
-  h2.sobre::after {
-    content: '';
-    width: 80px;
-    height: 4px;
-    background-color: #ff6b6b;
-    display: block;
-    margin: 0.5rem auto 0;
-    border-radius: 2px;
-  }
-  
-  p {
-    max-width: 800px;
-    margin: 0 auto 2rem;
-    line-height: 1.8;
-    font-size: 1.1rem;
-  }
-  
-  .animais {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-    margin: 2rem 0;
-  }
-  
-  .animais img {
-    height: 150px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-  }
-  
-  .animais img:hover {
-    transform: scale(1.05);
-  }
-  
-  .Valores {
-    margin-top: 3rem;
-  }
-  
-  .Valores h3 {
-    font-size: 1.8rem;
-    color: #ff8c42;
-    margin-bottom: 1rem;
-  }
-  
-  .Valores p {
-    font-size: 1.05rem;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.6;
-    text-align: left;
-  }
-  
+
+.section {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #fef9f8, #fff);
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  text-align: center;
+}
+
+.sobre {
+  font-size: 2.5rem;
+  color: #ff6b6b;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.sobre::after {
+  content: '';
+  width: 80px;
+  height: 4px;
+  background-color: #ff6b6b;
+  display: block;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+.texto {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.animais {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.imgAnimal {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imgAnimal:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.valores {
+  margin-top: 3rem;
+}
+
+.valores h3 {
+  font-size: 1.8rem;
+  color: #ff8c42;
+  margin-bottom: 1rem;
+}
+
+.valores p {
+  font-size: 1.05rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  text-align: left;
+}
