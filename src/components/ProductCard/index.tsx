@@ -65,7 +65,7 @@ export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
           className={styles.image}
         />
       </div>
-      <Link href={`/nossos-animais#${nome.toLowerCase()}`} className={styles.cardButton}>
+      <Link href={`/${nome.toLowerCase()}`} className={styles.cardButton}>
         {nome}
       </Link>
     </section>
