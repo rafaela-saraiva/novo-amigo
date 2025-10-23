@@ -212,6 +212,12 @@ export default function PerfilAnimal() {
                     <span className={styles.label}>Cidade:</span>
                     <span className={styles.value}>📍 {animal.cidade}</span>
                   </div>
+                  {animal.raca && (
+                    <div className={styles.infoItem}>
+                      <span className={styles.label}>Raça:</span>
+                      <span className={styles.value}>{animal.raca}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 

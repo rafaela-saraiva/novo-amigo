@@ -19,6 +19,7 @@ export type Animal = {
     idade: string;
     cidade: string;
     especie: string;
+    raca?: string;
     sexo: string;
     porte: string;
     descricao?: string;

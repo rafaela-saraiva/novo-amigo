@@ -45,6 +45,11 @@ export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
             <span className={`${styles.tag} ${styles[animal.especie]}`}>
               {animal.especie}
             </span>
+            {animal.raca && (
+              <span className={`${styles.tag} ${styles.raca}`}>
+                {animal.raca}
+              </span>
+            )}
             <span className={styles.tag}>
               {animal.porte}
             </span>

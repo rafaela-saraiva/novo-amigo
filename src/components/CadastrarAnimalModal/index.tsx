@@ -16,6 +16,7 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
     idade: '',
     cidade: '',
     especie: 'cachorro',
+    raca: '',
     sexo: 'macho',
     porte: 'pequeno',
     descricao: '',
@@ -54,6 +55,7 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       idade: formData.idade,
       cidade: formData.cidade,
       especie: formData.especie,
+      raca: formData.raca || '',
       sexo: formData.sexo,
       porte: formData.porte,
       descricao: formData.descricao,
@@ -71,6 +73,7 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       idade: '',
       cidade: '',
       especie: 'cachorro',
+      raca: '',
       sexo: 'macho',
       porte: 'pequeno',
       descricao: '',
@@ -129,6 +132,17 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
                   onChange={(e) => handleInputChange('cidade', e.target.value)}
                   placeholder="Ex: São Paulo, Rio de Janeiro..."
                   required
+                />
+              </div>
+              
+              <div className={styles.formGroup}>
+                <label htmlFor="raca">Raça</label>
+                <input
+                  id="raca"
+                  type="text"
+                  value={formData.raca}
+                  onChange={(e) => handleInputChange('raca', e.target.value)}
+                  placeholder="Ex: Labrador, SRD, Siamês..."
                 />
               </div>
             </div>
