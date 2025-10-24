@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import TextField from '@/components/TextField';
 import Header from '@/components/Header';
 import styles from './styles.module.css';
+import api from '@/services/api';  //se foda, faça essa merda de api ligar certo aq
 
 export default function Login() {
   const auth = useAuth();

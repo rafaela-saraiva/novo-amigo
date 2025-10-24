@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 import Header from "@/components/Header";
 import { useState } from "react";
 import axios from "axios";
+import api from '@/services/api';  //se foda, faça essa merda de api ligar certo aq
 
 export default function Cadastrar() {
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
