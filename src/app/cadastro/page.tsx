@@ -4,8 +4,7 @@ import TextField from "@/components/TextField";
 import styles from './styles.module.css';
 import Header from "@/components/Header";
 import { useState } from "react";
-import axios from "axios";
-import api from '@/services/api';  //se foda, faça essa merda de api ligar certo aq
+import api from "@/services/api";
 
 export default function Cadastrar() {
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
@@ -18,7 +17,7 @@ export default function Cadastrar() {
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
-  function botaoCadastrarOnClick(e: React.FormEvent) {
+  async function botaoCadastrarOnClick(e: React.FormEvent) {
     e.preventDefault();
 
     if (senha !== confirmarSenha) {
@@ -30,34 +29,29 @@ export default function Cadastrar() {
       name: nomeInteiro,
       email,
       pass: senha,
+      phone: telefone,
+      endereco,
     };
 
     if (tipo === "usuario") {
       dados.cpf = cpf;
-      dados.endereco = endereco;
-      dados.phone = telefone;
-    } else if (tipo === "ong") {
+    } else {
       dados.cnpj = cnpj;
-      dados.endereco = endereco;
-      dados.phone = telefone;
     }
 
-    axios.post("postgresql://neondb_owner:npg_NI2wQ1TvCDzi@ep-bold-flower-adt7zbe3-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require", dados, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((resposta) => {
+    try {
+      // ✅ Chamada correta pro backend usando seu service api
+      const response = await api.post(`/cadastrar/${tipo}`, dados);
+
       alert("Cadastro realizado com sucesso!");
-      console.log(resposta.data);
-    })
-    .catch((erro) => {
-      console.error(erro);
-      alert("Ocorreu um erro ao cadastrar. Tente novamente.");
-    })
-    .finally(() => {
-      console.log("Requisição finalizada");
-    });
+      console.log("Resposta:", response.data);
+    } catch (error: any) {
+      console.error("Erro ao cadastrar:", error);
+      alert(
+        error.response?.data?.message ||
+        "Ocorreu um erro ao cadastrar. Tente novamente."
+      );
+    }
   }
 
   return (
@@ -97,53 +91,78 @@ export default function Cadastrar() {
 
           <form className={styles.formCadastrar} onSubmit={botaoCadastrarOnClick}>
             <TextField
-              label={tipo === 'usuario' ? "Nome completo" : "Nome da ONG"}
+              label={tipo === 'usuario' ? 'Nome completo' : 'Nome da ONG'}
               type="text"
-              onChange={(texto) => setNomeInteiro(texto)}
+              text={nomeInteiro}
+              onChange={setNomeInteiro}
+              required
+              autoComplete={tipo === 'usuario' ? 'name' : 'organization'}
             />
 
             <TextField
               label="E-mail"
               type="email"
-              onChange={(texto) => setEmail(texto)}
+              text={email}
+              onChange={setEmail}
+              required
+              autoComplete="email"
             />
 
             <TextField
               label="Telefone"
               type="text"
-              onChange={(texto) => setTelefone(texto)}
+              text={telefone}
+              onChange={setTelefone}
+              required
+              autoComplete="tel"
             />
 
             {tipo === 'usuario' ? (
               <TextField
                 label="CPF"
                 type="text"
-                onChange={(texto) => setCpf(texto)}
+                text={cpf}
+                onChange={setCpf}
+                required
+                autoComplete="cpf"
               />
             ) : (
-              <TextField
-                label="CNPJ"
-                type="text"
-                onChange={(texto) => setCnpj(texto)}
-              />
+              <>
+                <TextField
+                  label="CNPJ"
+                  type="text"
+                  text={cnpj}
+                  onChange={setCnpj}
+                  required
+                  autoComplete="cnpj"
+                />
+                <TextField
+                  label="Endereço"
+                  type="text"
+                  text={endereco}
+                  onChange={setEndereco}
+                  required
+                  autoComplete="address-line1"
+                />
+              </>
             )}
-
-            <TextField
-              label="Endereço"
-              type="text"
-              onChange={(texto) => setEndereco(texto)}
-            />
 
             <TextField
               label="Senha"
               type="password"
-              onChange={(texto) => setSenha(texto)}
+              text={senha}
+              onChange={setSenha}
+              required
+              autoComplete="new-password"
             />
 
             <TextField
               label="Confirmar senha"
               type="password"
-              onChange={(texto) => setConfirmarSenha(texto)}
+              text={confirmarSenha}
+              onChange={setConfirmarSenha}
+              required
+              autoComplete="new-password"
             />
 
             <button type="submit" className={styles.botaoCadastrar}>
