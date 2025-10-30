@@ -3,9 +3,9 @@ import AnimalCard from '@/components/AnimalCard';
 import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import { useAnimals } from '@/hooks/useAnimals';
 import { Animal } from '@/Models/Pet';
 import { useState } from 'react';
+import { useAnimals } from '@/hooks/useAnimals';
 import styles from './styles.module.css';
 
 export default function NossosAnimais() {
@@ -185,7 +185,7 @@ export default function NossosAnimais() {
           {/* Grid de Animais */}
           {animaisFiltrados.length > 0 ? (
             <div className={styles.animaisGrid}>
-              {animaisFiltrados.map((animal) => (
+              {animaisFiltrados.map((animal: Animal) => (
                 <AnimalCard
                   key={animal.id}
                   animal={animal}
