@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 import Header from "@/components/Header";
 import { useState } from "react";
 import api from "@/services/api";
+import Footer from "@/components/Footer";
 
 export default function Cadastrar() {
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
@@ -112,17 +113,25 @@ export default function Cadastrar() {
               label="Telefone"
               type="text"
               text={telefone}
-              onChange={setTelefone}
+              onChange={(valor) => {
+              const somenteNumeros = valor.replace(/[^0-9]/g, '');
+               if (somenteNumeros.length <= 11) { // limita a 11 dígitos
+                setTelefone(somenteNumeros);
+                  }
+               }}
               required
               autoComplete="tel"
             />
+              
+          
+            
 
             {tipo === 'usuario' ? (
               <TextField
                 label="CPF"
                 type="text"
                 text={cpf}
-                onChange={setCpf}
+                onChange={(valor) => setCpf(valor.replace(/[^0-9]/g, ''))}
                 required
                 autoComplete="cpf"
               />
@@ -132,7 +141,12 @@ export default function Cadastrar() {
                   label="CNPJ"
                   type="text"
                   text={cnpj}
-                  onChange={setCnpj}
+                  onChange={(valor) => {
+                    const somenteNumeros = valor.replace(/[^0-9]/g, '');
+                     if (somenteNumeros.length <= 14) { // limita a 14 dígitos
+                      setCnpj(somenteNumeros);
+                        }
+                     }}
                   required
                   autoComplete="cnpj"
                 />
@@ -180,6 +194,7 @@ export default function Cadastrar() {
           </form>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

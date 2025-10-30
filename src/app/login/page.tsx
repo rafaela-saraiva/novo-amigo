@@ -7,6 +7,7 @@ import TextField from '@/components/TextField';
 import Header from '@/components/Header';
 import styles from './styles.module.css';
 import api from '@/services/api';  //se foda, faça essa merda de api ligar certo aq
+import Footer from '@/components/Footer';
 
 export default function Login() {
   const auth = useAuth();
@@ -71,6 +72,7 @@ export default function Login() {
           </form>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
