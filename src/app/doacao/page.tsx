@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/Card";
 import Header from "@/components/Header";
 import TextField from "@/components/TextField";
 import styles from './styles.module.css';
+import Footer from "@/components/Footer";
 
 export default function Doacao() {
   const router = useRouter();
@@ -16,6 +17,9 @@ export default function Doacao() {
   const [mensagem, setMensagem] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
+  const [copiado, setCopiado] = useState(false);
+
+  const pixChave = 'rafaela.saraiva100@hotmail.com';
 
   async function handleDoar(e: React.FormEvent) {
     e.preventDefault();
@@ -24,6 +28,14 @@ export default function Doacao() {
     setCarregando(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 1200));
+
+      console.log({
+        valor,
+        nome,
+        mensagem,
+        pagamento: 'pix',
+      });
+
       setSucesso(true);
       setValor('');
       setNome('');
@@ -34,6 +46,17 @@ export default function Doacao() {
       setCarregando(false);
     }
   }
+
+  // Função para copiar a chave Pix
+  const copiarPix = async () => {
+    try {
+      await navigator.clipboard.writeText(pixChave);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2000); // reseta após 2s
+    } catch (err) {
+      alert('Não foi possível copiar a chave Pix.');
+    }
+  };
 
   return (
     <div className={styles.doacaoContainer}>
@@ -50,10 +73,9 @@ export default function Doacao() {
             <TextField
               label="Valor da doação (R$)"
               type="number"
-              text={valor}
-              onChange={setValor}
+              text={String(valor)}
+              onChange={(v) => setValor(v)}
               required
-              autoComplete="off"
             />
 
             <TextField
@@ -69,8 +91,24 @@ export default function Doacao() {
               multiline
             />
 
+            {/* parte de pix */}
+            <div className={styles.pixBox}>
+              <p className={styles.pixInfo}>Escaneie o QR Code abaixo para doar via Pix:</p>
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${pixChave}`}
+                alt="QR Code Pix"
+                className={styles.qrCode}
+              />
+              <p className={styles.pixChave}>
+                💡 Chave Pix: <strong>{pixChave}</strong>
+              </p>
+              <Button type="button" onClick={copiarPix}>
+                {copiado ? 'Chave copiada ✅' : 'Copiar chave Pix 📋'}
+              </Button>
+            </div>
+
             <Button type="submit" loading={carregando}>
-              {carregando ? 'Processando...' : 'Doar agora 💝'}
+              {carregando ? 'Processando...' : 'Confirmar doação 💝'}
             </Button>
 
             {sucesso && (
@@ -81,6 +119,7 @@ export default function Doacao() {
           </form>
         </CardContent>
       </Card>
+      <Footer/>
     </div>
   );
 }
