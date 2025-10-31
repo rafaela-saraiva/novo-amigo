@@ -3,26 +3,28 @@ import AnimalCard from '@/components/AnimalCard';
 import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import { Animal } from '@/Models/Pet';
+import { Pet } from '@/Models/Pet';
 import { useState } from 'react';
 import { useAnimals } from '@/hooks/useAnimals';
+import ConnectionStatus from '@/components/ConnectionStatus';
 import styles from './styles.module.css';
 
 export default function NossosAnimais() {
   const { 
     animais, 
     loading, 
+    error,
+    connectionStatus,
     adicionarAnimal, 
     limparAnimais, 
-    filtrarAnimais 
+    filtrarAnimais,
+    recarregarAnimais 
   } = useAnimals();
 
   const [filtros, setFiltros] = useState({
     especie: "todas",
     sexo: "todos",
     porte: "todos",
-    estado: "todos",
-    cidade: "todas",
     disponibilidade: "somente_disponiveis",
     busca: ""
   });
@@ -33,8 +35,8 @@ export default function NossosAnimais() {
     setFiltros(prev => ({ ...prev, [campo]: valor }));
   };
 
-  const handleSalvarAnimal = (novoAnimal: Animal) => {
-    const sucesso = adicionarAnimal(novoAnimal);
+  const handleSalvarAnimal = async (novoAnimal: Pet) => {
+    const sucesso = await adicionarAnimal(novoAnimal);
     if (sucesso) {
       console.log('Animal cadastrado com sucesso!');
     } else {
@@ -42,11 +44,9 @@ export default function NossosAnimais() {
     }
   };
 
-
-
-  const handleLimparDados = () => {
+  const handleLimparDados = async () => {
     if (window.confirm('Tem certeza que deseja remover TODOS os animais cadastrados? Esta ação não pode ser desfeita.')) {
-      const sucesso = limparAnimais();
+      const sucesso = await limparAnimais();
       if (sucesso) {
         alert('Todos os dados foram removidos.');
       } else {
@@ -81,14 +81,27 @@ export default function NossosAnimais() {
       
       <main className={styles.main}>
         <div className={styles.container}>
-          {/* Breadcrumb */}
-          <div className={styles.breadcrumb}>
-          
-          </div>
-
           {/* Título e Botão de Cadastro */}
           <div className={styles.titleSection}>
-            <h1 className={styles.title}>Nossos Animais para Adoção</h1>
+            <div>
+              <h1 className={styles.title}>Nossos Animais para Adoção</h1>
+              {connectionStatus === 'offline' && (
+                <div className={styles.offlineWarning}>
+                  ⚠️ Modo offline - Trabalhando com dados locais
+                </div>
+              )}
+              {error && (
+                <div className={styles.errorMessage}>
+                  ❌ {error}
+                  <button 
+                    onClick={recarregarAnimais}
+                    className={styles.retryButton}
+                  >
+                    Tentar Novamente
+                  </button>
+                </div>
+              )}
+            </div>
             <div className={styles.buttonGroup}>
               <button 
                 className={styles.cadastrarBtn} 
@@ -160,7 +173,7 @@ export default function NossosAnimais() {
               <input
                 type="text"
                 className={styles.inputBusca}
-                placeholder="Buscar por nome ou cidade..."
+                placeholder="Buscar por nome, raça ou endereço..."
                 value={filtros.busca}
                 onChange={(e) => handleFiltroChange('busca', e.target.value)}
               />
@@ -177,7 +190,8 @@ export default function NossosAnimais() {
             </div>
             {animais.length > 0 && (
               <div className={styles.statusStorage}>
-                💾 {animais.length} animais salvos localmente
+                {connectionStatus === 'online' ? '🌐' : '💾'} 
+                {animais.length} animais {connectionStatus === 'online' ? 'sincronizados' : 'salvos localmente'}
               </div>
             )}
           </div>
@@ -185,7 +199,7 @@ export default function NossosAnimais() {
           {/* Grid de Animais */}
           {animaisFiltrados.length > 0 ? (
             <div className={styles.animaisGrid}>
-              {animaisFiltrados.map((animal: Animal) => (
+              {animaisFiltrados.map((animal: Pet) => (
                 <AnimalCard
                   key={animal.id}
                   animal={animal}
@@ -195,13 +209,18 @@ export default function NossosAnimais() {
           ) : (
             <div className={styles.emptyState}>
               <div className={styles.emptyIcon}>🐾</div>
-              <h3>Nenhum animal cadastrado ainda</h3>
-              <p>Seja o primeiro a cadastrar um animal para adoção!</p>
+              <h3>Nenhum animal encontrado</h3>
+              <p>
+                {animais.length === 0 
+                  ? 'Seja o primeiro a cadastrar um animal para adoção!' 
+                  : 'Tente ajustar os filtros para encontrar mais animais.'
+                }
+              </p>
               <button 
                 className={styles.cadastrarBtn} 
                 onClick={() => setModalAberto(true)}
               >
-                Cadastrar Primeiro Animal
+                {animais.length === 0 ? 'Cadastrar Primeiro Animal' : 'Cadastrar Novo Animal'}
               </button>
             </div>
           )}
@@ -216,6 +235,9 @@ export default function NossosAnimais() {
         onClose={() => setModalAberto(false)}
         onSave={handleSalvarAnimal}
       />
+
+      {/* Status da Conexão */}
+      <ConnectionStatus />
     </>
   );
 }

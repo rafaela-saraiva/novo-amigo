@@ -1,147 +1,133 @@
-import { Animal } from '@/Models/Pet';
+// src/hooks/useAnimals.ts
 import { useEffect, useState } from 'react';
-
-const STORAGE_KEY = 'animais-adocao';
-
-interface Filtros {
-  especie: string;
-  sexo: string;
-  porte: string;
-  estado: string;
-  cidade: string;
-  disponibilidade: string;
-  busca: string;
-}
+import { Pet } from '@/Models/Pet';
+import { animalService } from '@/services/animalService';
 
 export function useAnimals() {
-  const [animais, setAnimais] = useState<Animal[]>([]);
+  const [animais, setAnimais] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
+  const [connectionStatus, setConnectionStatus] = useState<'online' | 'offline' | 'checking'>('checking');
+  const [error, setError] = useState<string | null>(null);
 
-  // Carregar animais do localStorage ao iniciar
   useEffect(() => {
+    carregarAnimais();
+  }, []);
+
+  const carregarAnimais = async () => {
     try {
-      const animaisSalvos = localStorage.getItem(STORAGE_KEY);
-      if (animaisSalvos) {
-        setAnimais(JSON.parse(animaisSalvos));
+      setLoading(true);
+      setError(null);
+      const dadosAPI = await animalService.getAll();
+      setAnimais(dadosAPI);
+      setConnectionStatus('online');
+    } catch (error: any) {
+      // Verifica se é erro de conexão
+      if (animalService.isConnectionError(error)) {
+        setConnectionStatus('offline');
+        console.warn('🔌 Modo offline - usando localStorage como fallback');
+      } else {
+        setConnectionStatus('online');
       }
-    } catch (error) {
-      console.error('Erro ao carregar animais:', error);
+      
+      // Fallback para localStorage
+      const dadosSalvos = localStorage.getItem('animais');
+      if (dadosSalvos) {
+        try {
+          setAnimais(JSON.parse(dadosSalvos));
+        } catch (parseError) {
+          console.error('Erro ao parsear dados do localStorage:', parseError);
+          setError('Erro ao carregar animais');
+        }
+      } else {
+        setAnimais([]);
+      }
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  // Salvar animais no localStorage sempre que mudarem
-  const salvarNoStorage = (novosAnimais: Animal[]) => {
+  const adicionarAnimal = async (novo: Pet): Promise<boolean> => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(novosAnimais));
+      setError(null);
+      // Tenta salvar na API primeiro
+      await animalService.create(novo);
+      setConnectionStatus('online');
+    } catch (error: any) {
+      if (animalService.isConnectionError(error)) {
+        setConnectionStatus('offline');
+        console.warn('🔌 Backend offline - salvando apenas no localStorage');
+      } else {
+        setError('Erro ao conectar com o servidor');
+        return false;
+      }
+    }
+    
+    // Salva no localStorage de qualquer forma
+    try {
+      const lista = [...animais, novo];
+      localStorage.setItem('animais', JSON.stringify(lista));
+      setAnimais(lista);
       return true;
-    } catch (error) {
-      console.error('Erro ao salvar animais:', error);
+    } catch {
+      setError('Erro ao salvar animal localmente');
       return false;
     }
   };
 
-  // Adicionar novo animal
-  const adicionarAnimal = (novoAnimal: Animal): boolean => {
+  const limparAnimais = async (): Promise<boolean> => {
     try {
-      const animalComId = {
-        ...novoAnimal,
-        id: Date.now(), // Gera um ID único baseado no timestamp
-      };
-      const novosAnimais = [...animais, animalComId];
-      setAnimais(novosAnimais);
-      return salvarNoStorage(novosAnimais);
-    } catch (error) {
-      console.error('Erro ao adicionar animal:', error);
-      return false;
+      setError(null);
+      // Tenta limpar na API
+      await animalService.deleteAll();
+      setConnectionStatus('online');
+    } catch (error: any) {
+      if (animalService.isConnectionError(error)) {
+        setConnectionStatus('offline');
+        console.warn('🔌 Backend offline - limpando apenas localmente');
+      } else {
+        setError('Erro ao conectar com o servidor');
+        return false;
+      }
     }
-  };
-
-  // Remover animal
-  const removerAnimal = (id: number): boolean => {
+    
     try {
-      const novosAnimais = animais.filter(animal => animal.id !== id);
-      setAnimais(novosAnimais);
-      return salvarNoStorage(novosAnimais);
-    } catch (error) {
-      console.error('Erro ao remover animal:', error);
-      return false;
-    }
-  };
-
-  // Atualizar animal
-  const atualizarAnimal = (id: number, dadosAtualizados: Partial<Animal>): boolean => {
-    try {
-      const novosAnimais = animais.map(animal =>
-        animal.id === id ? { ...animal, ...dadosAtualizados } : animal
-      );
-      setAnimais(novosAnimais);
-      return salvarNoStorage(novosAnimais);
-    } catch (error) {
-      console.error('Erro ao atualizar animal:', error);
-      return false;
-    }
-  };
-
-  // Limpar todos os animais
-  const limparAnimais = (): boolean => {
-    try {
+      localStorage.removeItem('animais');
       setAnimais([]);
-      localStorage.removeItem(STORAGE_KEY);
       return true;
-    } catch (error) {
-      console.error('Erro ao limpar animais:', error);
+    } catch {
+      setError('Erro ao limpar dados localmente');
       return false;
     }
   };
 
-  // Filtrar animais
-  const filtrarAnimais = (filtros: Filtros): Animal[] => {
-    return animais.filter(animal => {
-      // Filtro de espécie
-      if (filtros.especie !== 'todas' && animal.especie !== filtros.especie) {
+  const filtrarAnimais = (filtros: any) => {
+    return animais.filter((a) => {
+      if (filtros.disponibilidade === 'somente_disponiveis' && !a.disponivel) return false;
+      if (filtros.especie !== 'todas' && a.especie !== filtros.especie) return false;
+      if (filtros.sexo !== 'todos' && a.sexo !== filtros.sexo) return false;
+      if (filtros.porte !== 'todos' && a.porte !== filtros.porte) return false;
+      if (filtros.busca && 
+          !a.nome.toLowerCase().includes(filtros.busca.toLowerCase()) && 
+          !a.raca?.toLowerCase().includes(filtros.busca.toLowerCase()) &&
+          !a.donoEndereco?.toLowerCase().includes(filtros.busca.toLowerCase())) {
         return false;
       }
-
-      // Filtro de sexo
-      if (filtros.sexo !== 'todos' && animal.sexo !== filtros.sexo) {
-        return false;
-      }
-
-      // Filtro de porte
-      if (filtros.porte !== 'todos' && animal.porte !== filtros.porte) {
-        return false;
-      }
-
-      // Filtro de disponibilidade
-      if (filtros.disponibilidade === 'somente_disponiveis' && !animal.disponivel) {
-        return false;
-      }
-
-      // Filtro de busca por nome ou cidade
-      if (filtros.busca) {
-        const termoBusca = filtros.busca.toLowerCase();
-        const nomeMatch = animal.nome.toLowerCase().includes(termoBusca);
-        const cidadeMatch = animal.cidade.toLowerCase().includes(termoBusca);
-        const racaMatch = animal.raca?.toLowerCase().includes(termoBusca);
-        
-        if (!nomeMatch && !cidadeMatch && !racaMatch) {
-          return false;
-        }
-      }
-
       return true;
     });
   };
 
-  return {
-    animais,
-    loading,
-    adicionarAnimal,
-    removerAnimal,
-    atualizarAnimal,
-    limparAnimais,
+  const recarregarAnimais = () => {
+    carregarAnimais();
+  };
+
+  return { 
+    animais, 
+    loading, 
+    error,
+    connectionStatus,
+    adicionarAnimal, 
+    limparAnimais, 
     filtrarAnimais,
+    recarregarAnimais 
   };
 }
