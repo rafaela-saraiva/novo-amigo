@@ -13,8 +13,8 @@
   background: linear-gradient(180deg, #b3e3e5, #a8d8da);
   color: #2d5a60;
   padding: 0;
-  width: 420px;
-  height: 740px;
+  width: 500px;
+  height: 890px;
   border-radius: 12px 0 0 12px;
   display: flex;
   justify-content: center;
@@ -42,16 +42,20 @@
   margin: 0 auto;           /* Centraliza */
   display: block;           /* Garante centralização */
 }
-
-/* FORMULÁRIO À DIREITA */
 .formContainer {
   background: #ffffff;
   padding: 40px 50px;
   border-radius: 0 12px 12px 0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   width: 500px;
+  height: 890px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centraliza o conteúdo verticalmente */
+  box-sizing: border-box;
 }
 
+/* TÍTULOS */
 .titulo {
   text-align: center;
   font-size: 26px;
@@ -67,19 +71,30 @@
   margin-bottom: 20px;
 }
 
+/* FORMULÁRIO DE CADASTRO */
 .formCadastrar {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
+  flex: 1;
+  justify-content: center;
 }
 
+/* CAMPOS DE TEXTO */
 .formCadastrar input {
   width: 100%;
-  padding: 12px;
+  padding: 12px 14px;
   border: 1px solid #d8d8d8;
   border-radius: 6px;
   font-size: 15px;
-  transition: 0.3s ease;
+  color: #333;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.formCadastrar input::placeholder {
+  color: #aaa;
 }
 
 .formCadastrar input:focus {
@@ -88,23 +103,59 @@
   box-shadow: 0 0 5px rgba(74, 112, 122, 0.3);
 }
 
+/* BOTÃO CADASTRAR */
 .botaoCadastrar {
   margin-top: 10px;
   padding: 12px;
   border: none;
   border-radius: 6px;
   background-color: #f9b84b;
-  color: white;
+  color: #fff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .botaoCadastrar:hover {
   background-color: #f7a930;
+  transform: scale(1.02);
 }
 
+.botaoCadastrar:active {
+  transform: scale(0.98);
+}
+
+/* BOTÃO DE TROCA (LOGIN/CADASTRAR) */
+.toggleContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.toggleButton {
+  flex: 1;
+  padding: 10px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  background-color: #ddd;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggleButton:hover {
+  background-color: #ccc;
+}
+
+.active {
+  background-color: #f7a930;
+  color: white;
+}
+
+/* LINKS E TEXTOS SECUNDÁRIOS */
 .voltarLogin {
   text-align: center;
   font-size: 14px;
@@ -131,34 +182,6 @@
 
 .termos a:hover {
   text-decoration: underline;
-}
-
-.toggleContainer {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.toggleButton {
-  flex: 1;
-  padding: 10px;
-  font-weight: 600;
-  border: none;
-  border-radius: 6px;
-  background-color: #ddd;
-  color: #333;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.toggleButton:hover {
-  background-color: #ccc;
-}
-
-.active {
-  background-color: #28527a;
-  color: white;
 }
 
 
