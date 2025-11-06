@@ -42,7 +42,7 @@ export default function Cadastrar() {
 
     try {
       // ✅ Chamada correta pro backend usando seu service api
-      const response = await api.post(`/cadastrar/${tipo}`, dados);
+      const response = await api.post(`/users`, dados);
 
       alert("Cadastro realizado com sucesso!");
       console.log("Resposta:", response.data);
