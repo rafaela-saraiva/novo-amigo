@@ -27,7 +27,7 @@ const mockPets: Pet[] = [
 export const animalService = {
   async getAll(): Promise<Pet[]> {
     try {
-      const res = await api.get('/animais');
+      const res = await api.get('/animals');
       console.log('✅ Dados carregados do backend');
       return res.data;
     } catch (error: any) {
@@ -50,7 +50,7 @@ export const animalService = {
 
   async create(animal: Pet): Promise<Pet> {
     try {
-      const res = await api.post('/animais', animal);
+      const res = await api.post('/animals', animal);
       console.log('✅ Animal criado no backend');
       return res.data;
     } catch (error: any) {
@@ -71,7 +71,7 @@ export const animalService = {
 
   async deleteAll(): Promise<void> {
     try {
-      await api.delete('/animais');
+      await api.delete('/animals');
       console.log('✅ Todos os animais removidos do backend');
     } catch (error: any) {
       if (IS_DEV && this.isConnectionError(error)) {
@@ -89,7 +89,7 @@ export const animalService = {
       const startTime = Date.now();
       
       // Testa um endpoint seguro que não modifica dados
-      await api.get('/animais?test=connection');
+      await api.get('/animals?test=connection');
       
       const responseTime = Date.now() - startTime;
       
