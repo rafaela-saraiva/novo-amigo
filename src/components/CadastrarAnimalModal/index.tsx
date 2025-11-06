@@ -1,5 +1,5 @@
 'use client'
-import { Animal } from '@/Models/Pet';
+import { Pet } from '@/Models/Pet';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import styles from './styles.module.css';
@@ -7,14 +7,13 @@ import styles from './styles.module.css';
 interface CadastrarAnimalModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (animal: Animal) => void;
+  onSave: (animal: Pet) => void;
 }
 
 export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: CadastrarAnimalModalProps) {
   const [formData, setFormData] = useState({
     nome: '',
     idade: '',
-    cidade: '',
     especie: 'cachorro',
     raca: '',
     sexo: 'macho',
@@ -33,36 +32,37 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.nome || !formData.idade || !formData.cidade) {
-      alert('Por favor, preencha todos os campos obrigatórios (Nome, Idade, Cidade)');
+    if (!formData.nome || !formData.idade) {
+      alert('Por favor, preencha todos os campos obrigatórios (Nome, Idade)');
       return;
     }
     
     // Validar URL da foto se fornecida
-  let fotoUrl = '/placeholder.svg';
+    let imagemUrl = '/placeholder.svg';
     if (formData.foto.trim()) {
       try {
         new URL(formData.foto);
-        fotoUrl = formData.foto;
+        imagemUrl = formData.foto;
       } catch {
         alert('URL da foto inválida. Usando imagem padrão.');
       }
     }
     
-    const novoAnimal = {
-      id: Date.now(),
+    const novoAnimal: Pet = {
+      id: crypto.randomUUID(),
       nome: formData.nome,
-      idade: formData.idade,
-      cidade: formData.cidade,
       especie: formData.especie,
-      raca: formData.raca || '',
+      raca: formData.raca,
+      idade: formData.idade,
       sexo: formData.sexo,
       porte: formData.porte,
       descricao: formData.descricao,
-      vacinado: formData.vacinado,
-      castrado: formData.castrado,
-      foto: fotoUrl,
-      disponivel: true
+      imagem: imagemUrl,
+      disponivel: true,
+      donoId: '1',
+      donoNome: 'Nome da ONG Exemplo',
+      donoTipo: 'ong',
+      donoEndereco: 'Endereço da ONG', // Endereço fixo ou vindo de outro lugar
     };
     
     onSave(novoAnimal);
@@ -71,7 +71,6 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
     setFormData({
       nome: '',
       idade: '',
-      cidade: '',
       especie: 'cachorro',
       raca: '',
       sexo: 'macho',
@@ -119,18 +118,6 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
                   value={formData.idade}
                   onChange={(e) => handleInputChange('idade', e.target.value)}
                   placeholder="Ex: 2 anos, 6 meses..."
-                  required
-                />
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label htmlFor="cidade">Cidade *</label>
-                <input
-                  id="cidade"
-                  type="text"
-                  value={formData.cidade}
-                  onChange={(e) => handleInputChange('cidade', e.target.value)}
-                  placeholder="Ex: São Paulo, Rio de Janeiro..."
                   required
                 />
               </div>

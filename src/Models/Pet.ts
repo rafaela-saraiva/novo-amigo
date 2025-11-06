@@ -1,32 +1,17 @@
-type Pet = {
-    id: number;
-    nome: string;
-    img: string;
-    desc?: string;
-    tipo:
-    | "gato"
-    | "cachorro"
-    | "passaro"
-    | "coelho"
-    | "hamster"
-    | "fazenda"
-    | "teste";
-};
-
-export type Animal = {
-    id: number;
-    nome: string;
-    idade: string;
-    cidade: string;
-    especie: string;
-    raca?: string;
-    sexo: string;
-    porte: string;
-    descricao?: string;
-    vacinado: boolean;
-    castrado: boolean;
-    foto: string;
-    disponivel: boolean;
-};
-
-export default Pet;
+// src/Models/Pet.ts - NÃO MUDE NADA AQUI
+export interface Pet {
+  id: string;
+  nome: string;
+  especie: string;
+  raca: string;
+  idade: string;
+  sexo: string;
+  porte: string;
+  descricao: string;
+  imagem?: string;
+  disponivel: boolean;
+  donoId: string;
+  donoNome: string;
+  donoTipo: 'usuario' | 'ong';
+  donoEndereco?: string;
+}
