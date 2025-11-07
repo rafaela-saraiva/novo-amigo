@@ -8,8 +8,12 @@ export interface Pet {
   sexo: string;
   porte: string;
   descricao: string;
+  foto?: string;
   imagem?: string;
   disponivel: boolean;
+  vacinado?: boolean;
+  castrado?: boolean;
+  cidade?: string;
   donoId: string;
   donoNome: string;
   donoTipo: 'usuario' | 'ong';
