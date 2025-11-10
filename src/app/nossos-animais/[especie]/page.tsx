@@ -13,8 +13,8 @@ export default function NossosAnimaisPage() {
     useEffect(function () {
         api
         .get('/animals')
-        .then(function (resposne) {
-            setAnimals(resposne.data);
+        .then(function (response) {
+            setAnimals(response.data);
         })
         .catch(function (error) {
             alert(error);
