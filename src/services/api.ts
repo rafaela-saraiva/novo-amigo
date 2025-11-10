@@ -3,7 +3,7 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
 });
-
+ 
 // Adiciona o token em todas as requisições (apenas no client)
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') { // evita erro no lado do servidor
