@@ -158,7 +158,7 @@ export default function Cadastrar() {
 
             <TextField
               label="Senha"
-              type="password"
+              type="senha"
               text={senha}
               onChange={setSenha}
               required
@@ -166,7 +166,7 @@ export default function Cadastrar() {
 
             <TextField
               label="Confirmar senha"
-              type="password"
+              type="senha"
               text={confirmarSenha}
               onChange={setConfirmarSenha}
               required
