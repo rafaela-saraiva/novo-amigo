@@ -78,6 +78,16 @@ const nextConfig: NextConfig = {
         hostname: 'petz.com.br',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'm.media-amazon.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images-na.ssl-images-amazon.com',
+        pathname: '/**',
+      },
     ],
   },
 };

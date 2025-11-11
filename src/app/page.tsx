@@ -1,10 +1,11 @@
+// import AdBanner from "@/components/AdBanner";
 import Carousel from "@/components/Carousel";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
-import styles from "./page.module.css";
-import "./page.css";
 import { ProductCardTeste } from "@/components/ProductCard";
+import "./page.css";
+import styles from "./page.module.css";
 
 export default function Home() {
   // 👇 As imagens são links externos diretos (URLs)
@@ -50,6 +51,11 @@ export default function Home() {
   return (
     <>
       <Header />
+      
+      {/* Banners de anúncio fixos nas laterais */}
+      {/* TEMPORARIAMENTE DESATIVADO - AdSense precisa aprovar o site primeiro */}
+      {/* <AdBanner position="left" />
+      <AdBanner position="right" /> */}
 
       <main className={styles.content}>
         <div style={{ maxWidth: 1200, margin: "32px auto", padding: "0 16px" }}>
@@ -72,7 +78,7 @@ export default function Home() {
       key={pet.id}
       nome={pet.nome}
       img={pet.img}
-      tipo={pet.tipo as any}
+      tipo={pet.tipo as "gato" | "cachorro" | "passaro" | "coelho" | "hamster" | "fazenda" | "teste"}
     />
   ))}
 </section>
