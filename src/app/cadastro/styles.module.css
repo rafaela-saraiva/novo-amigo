@@ -185,3 +185,125 @@
 }
 
 
+/* 🌸 MODAIS GERAIS */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 🌼 Container do modal */
+.modalContainer {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 2.8rem 2.2rem;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.4s ease-out;
+  position: relative;
+}
+
+/* ✅ Ícone superior decorativo */
+.modalContainer::before {
+  content: "🐾";
+  font-size: 2rem;
+  position: absolute;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+
+/* ✅ Modal de sucesso */
+.modalSuccess h3 {
+  color: #3ba1a8; /* tom que combina com o header */
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modalSuccess p {
+  color: #4b5563;
+  font-size: 1rem;
+  margin-bottom: 1.8rem;
+  line-height: 1.5;
+}
+
+/* ❌ Modal de erro */
+.modalError h3 {
+  color: #dc2626;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modalError p {
+  color: #4b5563;
+  font-size: 1rem;
+  margin-bottom: 1.8rem;
+  line-height: 1.5;
+}
+
+/* 💛 Botões dos modais */
+.modalButton {
+  background: #fbbf24;
+  color: #1f2937;
+  border: none;
+  border-radius: 14px;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.35);
+}
+
+.modalButton:hover {
+  background: #f59e0b;
+  transform: scale(1.05);
+}
+
+/* ✨ Efeito de sucesso animado */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 💫 Microanimação de pulsar no ícone */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.modalContainer::before {
+  animation: pulse 2s infinite ease-in-out;
+}

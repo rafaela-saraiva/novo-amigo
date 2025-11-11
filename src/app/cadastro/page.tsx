@@ -1,13 +1,16 @@
-'use client'
+'use client';
 
 import TextField from "@/components/TextField";
 import styles from './styles.module.css';
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { useState } from "react";
 import api from "@/services/api";
-import Footer from "@/components/Footer";
+import { useRouter } from "next/navigation";
 
 export default function Cadastrar() {
+  const router = useRouter();
+
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
   const [nomeInteiro, setNomeInteiro] = useState("");
   const [email, setEmail] = useState("");
@@ -18,11 +21,17 @@ export default function Cadastrar() {
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
+  // 🌸 Controle dos modais
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   async function botaoCadastrarOnClick(e: React.FormEvent) {
     e.preventDefault();
 
     if (senha !== confirmarSenha) {
-      alert("As senhas não coincidem! Por favor, verifique.");
+      setErrorMessage("As senhas não coincidem! Por favor, verifique.");
+      setShowErrorModal(true);
       return;
     }
 
@@ -41,17 +50,18 @@ export default function Cadastrar() {
     }
 
     try {
-      // ✅ Chamada correta pro backend usando seu service api
       const response = await api.post(`/users`, dados);
-
-      alert("Cadastro realizado com sucesso!");
       console.log("Resposta:", response.data);
+
+      // ✅ Exibe o modal de sucesso
+      setShowSuccessModal(true);
     } catch (error: any) {
       console.error("Erro ao cadastrar:", error);
-      alert(
+      setErrorMessage(
         error.response?.data?.message ||
         "Ocorreu um erro ao cadastrar. Tente novamente."
       );
+      setShowErrorModal(true);
     }
   }
 
@@ -69,9 +79,7 @@ export default function Cadastrar() {
 
         <div className={styles.formContainer}>
           <h1 className={styles.titulo}>Crie sua conta</h1>
-          <p className={styles.subtitulo}>
-            Preencha os campos abaixo para se cadastrar
-          </p>
+          <p className={styles.subtitulo}>Preencha os campos abaixo para se cadastrar</p>
 
           <div className={styles.toggleContainer}>
             <button
@@ -97,7 +105,6 @@ export default function Cadastrar() {
               text={nomeInteiro}
               onChange={setNomeInteiro}
               required
-              autoComplete={tipo === 'usuario' ? 'name' : 'organization'}
             />
 
             <TextField
@@ -106,7 +113,6 @@ export default function Cadastrar() {
               text={email}
               onChange={setEmail}
               required
-              autoComplete="email"
             />
 
             <TextField
@@ -114,17 +120,11 @@ export default function Cadastrar() {
               type="text"
               text={telefone}
               onChange={(valor) => {
-              const somenteNumeros = valor.replace(/[^0-9]/g, '');
-               if (somenteNumeros.length <= 11) { // limita a 11 dígitos
-                setTelefone(somenteNumeros);
-                  }
-               }}
+                const numeros = valor.replace(/[^0-9]/g, '');
+                if (numeros.length <= 11) setTelefone(numeros);
+              }}
               required
-              autoComplete="tel"
             />
-              
-          
-            
 
             {tipo === 'usuario' ? (
               <TextField
@@ -133,7 +133,6 @@ export default function Cadastrar() {
                 text={cpf}
                 onChange={(valor) => setCpf(valor.replace(/[^0-9]/g, ''))}
                 required
-                autoComplete="cpf"
               />
             ) : (
               <>
@@ -142,13 +141,10 @@ export default function Cadastrar() {
                   type="text"
                   text={cnpj}
                   onChange={(valor) => {
-                    const somenteNumeros = valor.replace(/[^0-9]/g, '');
-                     if (somenteNumeros.length <= 14) { // limita a 14 dígitos
-                      setCnpj(somenteNumeros);
-                        }
-                     }}
+                    const numeros = valor.replace(/[^0-9]/g, '');
+                    if (numeros.length <= 14) setCnpj(numeros);
+                  }}
                   required
-                  autoComplete="cnpj"
                 />
                 <TextField
                   label="Endereço"
@@ -156,27 +152,24 @@ export default function Cadastrar() {
                   text={endereco}
                   onChange={setEndereco}
                   required
-                  autoComplete="address-line1"
                 />
               </>
             )}
 
             <TextField
               label="Senha"
-              type="password"
+              type="senha"
               text={senha}
               onChange={setSenha}
               required
-              autoComplete="new-password"
             />
 
             <TextField
               label="Confirmar senha"
-              type="password"
+              type="senha"
               text={confirmarSenha}
               onChange={setConfirmarSenha}
               required
-              autoComplete="new-password"
             />
 
             <button type="submit" className={styles.botaoCadastrar}>
@@ -186,6 +179,7 @@ export default function Cadastrar() {
             <p className={styles.voltarLogin}>
               <a href="/login">← Voltar ao login</a>
             </p>
+
             <p className={styles.termos}>
               Ao se cadastrar, você concorda com nossos{" "}
               <a href="#">Termos de Uso</a> e{" "}
@@ -194,6 +188,39 @@ export default function Cadastrar() {
           </form>
         </div>
       </div>
+
+      {/* ✅ Modal de sucesso */}
+      {showSuccessModal && (
+        <div className={styles.modalOverlay}>
+          <div className={`${styles.modalContainer} ${styles.modalSuccess}`}>
+            <h3>Cadastro realizado com sucesso!</h3>
+            <p>Sua conta foi criada com sucesso. Faça login para continuar.</p>
+            <button
+              onClick={() => router.push('/login')}
+              className={styles.modalButton}
+            >
+              Ir para o Login
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ❌ Modal de erro */}
+      {showErrorModal && (
+        <div className={styles.modalOverlay}>
+          <div className={`${styles.modalContainer} ${styles.modalError}`}>
+            <h3>Erro ao cadastrar!</h3>
+            <p>{errorMessage}</p>
+            <button
+              onClick={() => setShowErrorModal(false)}
+              className={styles.modalButton}
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );

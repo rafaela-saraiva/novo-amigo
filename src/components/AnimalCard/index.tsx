@@ -1,43 +1,46 @@
-import { Animal } from '@/Models/Pet';
+import { Pet } from '@/Models/Pet';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import styles from './styles.module.css';
 
 interface AnimalCardProps {
-  animal: Animal;
+  animal: Pet;
   onAdotar?: () => void;
 }
 
 export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
-  const [imageSrc, setImageSrc] = useState(animal.foto || '/placeholder.svg');
+  // 🔹 funciona com 'foto' (do backend) e 'imagem' (fallback)
+  const [imageSrc, setImageSrc] = useState(
+    animal.foto || animal.imagem || '/placeholder.svg'
+  );
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
     if (!imageError) {
       setImageError(true);
-  setImageSrc('/placeholder.svg');
+      setImageSrc('/placeholder.svg');
     }
   };
 
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        <Image 
-          src={imageSrc} 
+        <Image
+          src={imageSrc}
           alt={animal.nome}
           fill
           className={styles.image}
           style={{ objectFit: 'cover' }}
           onError={handleImageError}
           placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..."
         />
         <div className={styles.statusBadge}>
           {animal.disponivel ? 'Disponível' : 'Adotado'}
         </div>
       </div>
-      
+
       <div className={styles.content}>
         <div className={styles.header}>
           <h3 className={styles.nome}>{animal.nome}</h3>
@@ -50,12 +53,10 @@ export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
                 {animal.raca}
               </span>
             )}
-            <span className={styles.tag}>
-              {animal.porte}
-            </span>
+            <span className={styles.tag}>{animal.porte}</span>
           </div>
         </div>
-        
+
         <div className={styles.info}>
           <div className={styles.infoItem}>
             <span className={styles.label}>Idade:</span>
@@ -67,14 +68,14 @@ export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>Cidade:</span>
-            <span>{animal.cidade}</span>
+            <span>{animal.cidade || animal.donoEndereco || '—'}</span>
           </div>
         </div>
-        
+
         {animal.descricao && (
           <p className={styles.descricao}>{animal.descricao}</p>
         )}
-        
+
         <div className={styles.características}>
           {animal.vacinado && (
             <span className={styles.caracteristica}>✅ Vacinado</span>
@@ -83,7 +84,7 @@ export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
             <span className={styles.caracteristica}>✅ Castrado</span>
           )}
         </div>
-        
+
         <div className={styles.actions}>
           <Link href={`/animal/${animal.id}`} className={styles.verPerfilBtn}>
             Ver Perfil

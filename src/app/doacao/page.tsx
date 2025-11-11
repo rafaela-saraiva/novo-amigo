@@ -64,7 +64,7 @@ export default function Doacao() {
 
       <Card className={styles.doacaoCard}>
         <CardContent>
-          <h1 className={styles.titulo}>💖 Faça uma Doação</h1>
+          <h1 className={styles.titulo}>Faça uma Doação</h1>
           <p className={styles.descricao}>
             Sua contribuição ajuda a manter nossos projetos e apoiar quem mais precisa.
           </p>

@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 type Props = {
   label: string;
-  type?: 'text' | 'email' | 'password';
+  type?: 'text' | 'email' | 'senha';
   text?: string;
   required?: boolean;
   autoComplete?: string;
