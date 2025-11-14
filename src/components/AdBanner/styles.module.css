@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.adContainer {
+  position: fixed;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 100;
+  font-family: 'Poppins', sans-serif;
+}
+
+.left {
+  left: 20px;
+}
+
+.right {
+  right: 20px;
+}
+
+.adContent {
+  background: linear-gradient(135deg, #fff8f8, #ffffff);
+  border: 2px solid #ffb6c1;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 300px;
+}
+
+.adContent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  border-color: #ff9eb5;
+}
+
+.adLabel {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(255, 107, 157, 0.3);
+}
+
+.adText {
+  color: #666;
+  font-size: 13px;
+  margin: 8px 0 12px 0;
+  font-weight: 500;
+}
+
+.adBanner {
+  width: 280px;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.adBanner:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.adBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.adBanner:hover::before {
+  opacity: 1;
+}
+
+.emojiLarge {
+  font-size: 80px;
+  margin-bottom: 16px;
+  animation: bounce 2s infinite;
+}
+
+.emojiSmall {
+  font-size: 60px;
+  margin-bottom: 12px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.bannerTitle {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.bannerSubtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 14px;
+  margin: 8px 0 16px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.bannerButton {
+  background: white;
+  color: #333;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.bannerButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.adLink {
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.adLink:hover {
+  text-decoration: none;
+}
+
+/* Responsivo - esconde os anúncios em telas menores */
+@media (max-width: 1400px) {
+  .adContainer {
+    display: none;
+  }
+}
