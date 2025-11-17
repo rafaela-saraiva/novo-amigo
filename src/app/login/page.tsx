@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import TextField from '@/components/TextField';
 import Header from '@/components/Header';
 import styles from './styles.module.css';
-import api from '@/services/api';  //se foda, faça essa merda de api ligar certo aq
+import api from '@/services/api';
 import Footer from '@/components/Footer';
 
 export default function Login() {
@@ -14,13 +14,20 @@ export default function Login() {
   const router = useRouter();
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pass, setPass] = useState('');
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    auth.login(email, password);
-    router.push('/dashboard');
+  
+    const success = await auth.login(email, pass); // <- agora funciona
+  
+    if (success) {
+      router.push('/dashboard');
+    } else {
+      alert("Email ou senha inválidos.");
+    }
   }
+  
 
   return (
     <>
@@ -53,8 +60,8 @@ export default function Login() {
             <TextField
               label="Senha"
               type="password"
-              text={password}
-              onChange={setPassword}
+              text={pass}
+              onChange={setPass}
               required
               autoComplete="current-password"
             />

@@ -50,12 +50,16 @@ export function AuthProvider({ children }: Props) {
   }, []);
 
   // ✅ login com persistência
-  async function login(email: string, senha: string): Promise<void> {
+  async function login(email: string, password: string): Promise<void> {
     try {
-      const res = await api.post('/user/login', { email, senha });
+      const res = await api.post('/user/login', {
+        email,
+        pass: password
+      });
       const token = res.data.token;
+  
       localStorage.setItem('token', token);
-
+  
       const decoded = jwtDecode<JwtPayload>(token);
       setUser({
         id: decoded.sub,
@@ -67,6 +71,7 @@ export function AuthProvider({ children }: Props) {
       throw err;
     }
   }
+  
 
   function logout(): void {
     localStorage.removeItem('token');
