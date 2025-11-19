@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers"; // 👈 aqui
+import { Providers } from "./providers"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,15 +18,10 @@ export const metadata: Metadata = {
   description: "Encontre seu novo melhor amigo. Adote com amor!",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
       <head>
-        {/* Google AdSense Script */}
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3232590255400417"

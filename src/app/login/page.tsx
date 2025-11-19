@@ -2,24 +2,28 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext'; // AGORA É AQUI
 import TextField from '@/components/TextField';
 import Header from '@/components/Header';
 import styles from './styles.module.css';
-import api from '@/services/api';  //se foda, faça essa merda de api ligar certo aq
 import Footer from '@/components/Footer';
 
 export default function Login() {
-  const auth = useAuth();
+  const { login } = useAuth(); // PEGA A FUNÇÃO CERTA DO CONTEXT
   const router = useRouter();
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pass, setPass] = useState('');
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    auth.login(email, password);
-    router.push('/dashboard');
+
+    try {
+      await login(email, pass); // USA O LOGIN DO AUTHCONTEXT
+      router.push('/dashboard'); 
+    } catch (err) {
+      alert("Email ou senha inválidos.");
+    }
   }
 
   return (
@@ -27,7 +31,7 @@ export default function Login() {
       <Header />
 
       <div className={styles.pageContainer}>
-        {/* Lado esquerdo com imagem */}
+
         <div className={styles.sideLeft}>
           <img
             src="https://i.postimg.cc/TPkhWCZW/AQM7-Zwx-Do-Exc-R1qqbs42-Oefj-Yt-Ql0-Rph38y-OD15-X4-qgwp2sx-TO00gu-Rok-Ip59-Q-rmf-Wfag-X0n-Pic-FUQLqnkr-PLidma5y-Fu-WOxi.jpg"
@@ -36,7 +40,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Lado direito com o formulário */}
         <div className={styles.formContainer}>
           <h1 className={styles.titulo}>Login</h1>
 
@@ -52,9 +55,9 @@ export default function Login() {
 
             <TextField
               label="Senha"
-              type="password"
-              text={password}
-              onChange={setPassword}
+              type="senha"
+              text={pass}
+              onChange={setPass}
               required
               autoComplete="current-password"
             />
@@ -72,6 +75,7 @@ export default function Login() {
           </form>
         </div>
       </div>
+
       <Footer />
     </>
   );

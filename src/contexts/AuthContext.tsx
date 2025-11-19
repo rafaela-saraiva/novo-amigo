@@ -1,82 +1,72 @@
-'use client';
-import { createContext, useState, useEffect, ReactNode } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import api from '@/services/api';
+"use client";
 
-type JwtPayload = {
-  sub: string;
-  name: string;
-  email: string;
-};
+import { createContext, useContext, useState, useEffect } from "react";
+import api from "@/services/api";
 
-type User = {
+interface User {
   id: string;
-  name: string;
   email: string;
-};
+  nome: string;
+}
 
-type AuthContextType = {
+interface AuthContextType {
   user: User | null;
-  login(email: string, senha: string): Promise<void>;
-  logout(): void;
-  isAuthenticated: boolean;
-};
+  token: string | null;
+  loading: boolean;
+  login: (email: string, senha: string) => Promise<void>;
+  logout: () => void;
+}
 
-export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+// 🔥 AQUI É O ERRO — AGORA EXPORTADO
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-type Props = {
-  children: ReactNode;
-};
-
-export function AuthProvider({ children }: Props) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ restaura login ao recarregar
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded = jwtDecode<JwtPayload>(token);
-        setUser({
-          id: decoded.sub,
-          name: decoded.name,
-          email: decoded.email,
-        });
-      } catch (err) {
-        console.error('Token inválido ou expirado:', err);
-        localStorage.removeItem('token');
-      }
+    const savedToken = localStorage.getItem("token");
+
+    if (savedToken) {
+      setToken(savedToken);
+      api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+
+      api.get("/me")
+        .then((res) => setUser(res.data))
+        .catch(() => logout());
     }
+
+    setLoading(false);
   }, []);
 
-  // ✅ login com persistência
-  async function login(email: string, senha: string): Promise<void> {
-    try {
-      const res = await api.post('/user/login', { email, senha });
-      const token = res.data.token;
-      localStorage.setItem('token', token);
+  async function login(email: string, senha: string) {
+    const res = await api.post("/login", { email, senha });
+    const tk = res.data.token;
 
-      const decoded = jwtDecode<JwtPayload>(token);
-      setUser({
-        id: decoded.sub,
-        name: decoded.name,
-        email: decoded.email,
-      });
-    } catch (err) {
-      alert('Credenciais inválidas.');
-      throw err;
-    }
+    localStorage.setItem("token", tk);
+    api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
+
+    setToken(tk);
+    setUser(res.data.usuario);
   }
 
-  function logout(): void {
-    localStorage.removeItem('token');
+  function logout() {
+    localStorage.removeItem("token");
+    setToken(null);
     setUser(null);
-    window.location.href = '/'; // ✅ volta pra home
+    delete api.defaults.headers.common["Authorization"];
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth deve ser usado dentro de AuthProvider");
+  return ctx;
 }
