@@ -1,7 +1,7 @@
 
 .section {
   padding: 4rem 2rem;
-  background: linear-gradient(135deg, #fef9f8, #fff);
+  
   font-family: 'Segoe UI', sans-serif;
   color: #333;
   text-align: center;
@@ -9,7 +9,7 @@
 
 .sobre {
   font-size: 2.5rem;
-  color: #ff6b6b;
+  color: #ffbd59;
   margin-bottom: 1.5rem;
   position: relative;
 }
@@ -18,7 +18,7 @@
   content: '';
   width: 80px;
   height: 4px;
-  background-color: #ff6b6b;
+  background-color: #ffbd59;
   display: block;
   margin: 0.5rem auto 0;
   border-radius: 2px;
@@ -58,7 +58,7 @@
 
 .valores h3 {
   font-size: 1.8rem;
-  color: #ff8c42;
+  color: #ffbd59;
   margin-bottom: 1rem;
 }
 

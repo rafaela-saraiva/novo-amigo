@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import { ProductCardTeste } from "@/components/ProductCard";
 import "./page.css";
 import styles from "./page.module.css";
+import SobreNos from "./sobre/page";
 
 export default function Home() {
   // 👇 As imagens são links externos diretos (URLs)
@@ -61,7 +62,8 @@ export default function Home() {
         <div style={{ maxWidth: 1200, margin: "32px auto", padding: "0 16px" }}>
           <Carousel />
         </div>
-
+        <h2> Escolha uma categoria</h2>
+        <h3>Veja quais tipos de animais você quer conhecer hoje</h3>
         <section
   style={{
     display: "grid",
@@ -92,7 +94,8 @@ export default function Home() {
         >
         </section>
       </main>
-
+      <SobreNos/>
+      <h2>Adote amor. Econtre seu proximo melhor amigo!</h2>
       <Footer />
     </>
   );
