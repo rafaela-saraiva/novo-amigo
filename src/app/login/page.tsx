@@ -2,15 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext'; // AGORA É AQUI
 import TextField from '@/components/TextField';
 import Header from '@/components/Header';
 import styles from './styles.module.css';
-import api from '@/services/api';
 import Footer from '@/components/Footer';
 
 export default function Login() {
-  const auth = useAuth();
+  const { login } = useAuth(); // PEGA A FUNÇÃO CERTA DO CONTEXT
   const router = useRouter();
 
   const [email, setEmail] = useState('');
@@ -18,23 +17,21 @@ export default function Login() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-  
-    const success = await auth.login(email, pass); // <- agora funciona
-  
-    if (success) {
-      router.push('/dashboard');
-    } else {
+
+    try {
+      await login(email, pass); // USA O LOGIN DO AUTHCONTEXT
+      router.push('/dashboard'); 
+    } catch (err) {
       alert("Email ou senha inválidos.");
     }
   }
-  
 
   return (
     <>
       <Header />
 
       <div className={styles.pageContainer}>
-        {/* Lado esquerdo com imagem */}
+
         <div className={styles.sideLeft}>
           <img
             src="https://i.postimg.cc/TPkhWCZW/AQM7-Zwx-Do-Exc-R1qqbs42-Oefj-Yt-Ql0-Rph38y-OD15-X4-qgwp2sx-TO00gu-Rok-Ip59-Q-rmf-Wfag-X0n-Pic-FUQLqnkr-PLidma5y-Fu-WOxi.jpg"
@@ -43,7 +40,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Lado direito com o formulário */}
         <div className={styles.formContainer}>
           <h1 className={styles.titulo}>Login</h1>
 
@@ -59,7 +55,7 @@ export default function Login() {
 
             <TextField
               label="Senha"
-              type="password"
+              type="senha"
               text={pass}
               onChange={setPass}
               required
@@ -79,6 +75,7 @@ export default function Login() {
           </form>
         </div>
       </div>
+
       <Footer />
     </>
   );
