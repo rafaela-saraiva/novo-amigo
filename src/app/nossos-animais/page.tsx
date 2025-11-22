@@ -6,13 +6,13 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
-import { useParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
 export default function NossosAnimais() {
-  const params = useParams();
-  const especieParam = params?.especie as string | undefined;
+  const searchParams = useSearchParams();
+  const especieParam = searchParams?.get('especie') as string | undefined;
 
   const [animais, setAnimais] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +26,14 @@ export default function NossosAnimais() {
     disponibilidade: 'somente_disponiveis',
     busca: '',
   });
+
+  // Atualiza filtros se a query `especie` mudar (navegação cliente)
+  useEffect(() => {
+    const esp = searchParams?.get('especie');
+    if (esp) {
+      setFiltros((prev) => ({ ...prev, especie: esp.toLowerCase() }));
+    }
+  }, [searchParams]);
 
   // 🔹 Normaliza campos de texto para minúsculo
   const normalizarAnimal = (animal: Pet): Pet => {

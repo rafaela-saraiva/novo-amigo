@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import styles from "./styles.module.css";
 
@@ -55,7 +54,7 @@ export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
   const className = `${styles.root} ${tipoClassMap[tipo]}`;
 
   return (
-    <section className={`${styles.root} ${styles.testContainer}`}>
+    <Link href={`/nossos-animais?especie=${tipo}`} className={className}>
       <div className={styles.imageWrapper}>
         <img
           src={img}
@@ -65,10 +64,8 @@ export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
           className={styles.image}
         />
       </div>
-      <Link href={`/${nome.toLowerCase()}`} className={styles.cardButton}>
-        {nome}
-      </Link>
-    </section>
+      <div className={styles.cardButton}>{nome}</div>
+    </Link>
   );
 }
 
