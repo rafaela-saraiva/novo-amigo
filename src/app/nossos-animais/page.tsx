@@ -63,6 +63,8 @@ export default function NossosAnimais() {
         setLoading(true);
         const res = await api.get('/animals');
         const normalizados = res.data.map((a: Pet) => normalizarAnimal(a));
+        console.log('🐾 Animais carregados:', normalizados);
+        console.log('🔍 Espécies encontradas:', [...new Set(normalizados.map((a: Pet) => a.especie))]);
         setAnimais(normalizados);
       } catch (err: any) {
         console.error(err);
@@ -81,8 +83,17 @@ export default function NossosAnimais() {
 
   // 🔹 Aplica filtros locais
   const animaisFiltrados = animais.filter((a) => {
-    const matchEspecie =
-      filtros.especie === 'todas' || a.especie === filtros.especie;
+    // Filtro de espécie com suporte para variações
+    let matchEspecie = false;
+    if (filtros.especie === 'todas') {
+      matchEspecie = true;
+    } else if (filtros.especie === 'fazenda') {
+      // Aceita "fazenda", "animal de fazenda", ou qualquer string contendo "fazenda"
+      matchEspecie = a.especie?.includes('fazenda') || false;
+    } else {
+      matchEspecie = a.especie === filtros.especie;
+    }
+
     const matchSexo = filtros.sexo === 'todos' || a.sexo === filtros.sexo;
     const matchPorte = filtros.porte === 'todos' || a.porte === filtros.porte;
     const matchDisponibilidade =
@@ -197,7 +208,7 @@ export default function NossosAnimais() {
                 <option value="passaro">pássaro</option>
                 <option value="coelho">coelho</option>
                 <option value="hamster">hamster</option>
-                <option value="fazenda">fazenda</option>
+                <option value="fazenda">animais de fazenda</option>
               </select>
 
               <select

@@ -52,31 +52,67 @@ export default function AnimalProfilePage() {
 
           {!loading && !error && animal && (
             <article className={styles.profile}>
-              <header className={styles.header}>
-                <h1>{animal.nome}</h1>
-                <div className={styles.meta}>
-                  <span className={styles.tag}>{animal.especie}</span>
-                  {animal.raca && <span className={styles.tag}>{animal.raca}</span>}
-                  <span className={styles.tag}>{animal.porte}</span>
+              <div className={styles.profileHeader}>
+                <div className={styles.titleSection}>
+                  <h1 className={styles.animalName}>{animal.nome}</h1>
+                  <div className={styles.tags}>
+                    <span className={`${styles.tag} ${styles.tagEspecie}`}>{animal.especie}</span>
+                    {animal.raca && <span className={styles.tag}>{animal.raca}</span>}
+                    <span className={styles.tag}>{animal.porte}</span>
+                  </div>
                 </div>
-              </header>
+                {animal.disponivel && (
+                  <div className={styles.statusBadge}>
+                    <span className={styles.statusIcon}>✓</span>
+                    Disponível
+                  </div>
+                )}
+              </div>
 
-              <div className={styles.top}> 
-                <div className={styles.imageWrap}>
-                  <img
-                    src={animal.foto || animal.imagem || '/placeholder.svg'}
-                    alt={animal.nome}
-                    className={styles.image}
-                  />
+              <div className={styles.content}>
+                <div className={styles.imageSection}>
+                  <div className={styles.imageWrap}>
+                    <img
+                      src={animal.foto || animal.imagem || '/placeholder.svg'}
+                      alt={animal.nome}
+                      className={styles.image}
+                    />
+                  </div>
                 </div>
 
-                <div className={styles.info}>
-                  <p><strong>Idade:</strong> {animal.idade}</p>
-                  <p><strong>Sexo:</strong> {animal.sexo}</p>
-                  <p><strong>Cidade:</strong> {animal.cidade || animal.donoEndereco || '—'}</p>
-                  <p><strong>Disponível:</strong> {animal.disponivel ? 'Sim' : 'Não'}</p>
-                  {animal.vacinado && <p>✅ Vacinado</p>}
-                  {animal.castrado && <p>✅ Castrado</p>}
+                <div className={styles.infoSection}>
+                  <h2 className={styles.sectionTitle}>Informações</h2>
+                  <div className={styles.infoGrid}>
+                    <div className={styles.infoItem}>
+                      <span className={styles.infoLabel}>Idade</span>
+                      <span className={styles.infoValue}>{animal.idade}</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                      <span className={styles.infoLabel}>Sexo</span>
+                      <span className={styles.infoValue}>{animal.sexo}</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                      <span className={styles.infoLabel}>Cidade</span>
+                      <span className={styles.infoValue}>{animal.cidade || animal.donoEndereco || '—'}</span>
+                    </div>
+                  </div>
+                  
+                  {(animal.vacinado || animal.castrado) && (
+                    <div className={styles.features}>
+                      {animal.vacinado && (
+                        <div className={styles.feature}>
+                          <span className={styles.featureIcon}>💉</span>
+                          <span>Vacinado</span>
+                        </div>
+                      )}
+                      {animal.castrado && (
+                        <div className={styles.feature}>
+                          <span className={styles.featureIcon}>✂️</span>
+                          <span>Castrado</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
