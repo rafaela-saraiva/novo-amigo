@@ -98,6 +98,7 @@
   border-radius: 12px;
   transition: all 0.3s ease;
   position: relative;
+  
 }
 
 .nav a::after {
@@ -194,3 +195,82 @@
 .logoutBtn:hover {
   opacity: 0.8;
 }
+
+.link {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  display: block;
+  padding: 12px;
+}
+
+.link:hover {
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+}
+
+.loginBtn {
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  text-align: left;
+
+  color: var(--text-color);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* underline amarelo animado */
+.loginBtn::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  right: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--accent-strong);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.loginBtn:hover::after {
+  width: 40%;
+  right: 0;
+}
+
+/* animação igual aos links */
+.loginBtn:hover {
+  color: var(--accent-light);
+  transform: translateX(-6px);
+}
+
+.loginBtn {
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  text-align: center;  /* 🔥 Alinha o texto à direita, igual aos links */
+  
+  color: var(--text-color);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
