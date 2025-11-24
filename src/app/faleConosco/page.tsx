@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import TextField from "@/components/TextField";
 import styles from './styles.module.css';
+import Footer from "@/components/Footer";
  
 export default function FaleConosco() {
   let nomeInteiro = "";
@@ -57,6 +58,7 @@ export default function FaleConosco() {
       </form>
     </div>
   </div>
+  <Footer/>
     </>
   );
 }

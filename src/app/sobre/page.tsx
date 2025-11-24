@@ -11,7 +11,7 @@ export default function SobreNos() {
       <h2 className={styles.sobre}>Sobre Nós</h2>
 
       <p className={styles.texto}>
-        No <strong>Adote um Amigo</strong>, nosso objetivo é criar pontes de amor entre animais de estimação que
+        No <strong>Novo Amigo</strong>, nosso objetivo é criar pontes de amor entre animais de estimação que
         precisam de um lar e pessoas de bom coração. Acreditamos que cada adoção transforma duas vidas: a do
         animal, que ganha uma família, e a do adotante, que descobre um amor incondicional. Nossa missão é
         garantir que cada pet encontre um lar seguro e feliz, promovendo a posse responsável e o bem-estar
