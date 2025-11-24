@@ -59,10 +59,10 @@ export default function Home() {
       <AdBanner position="right" /> */}
 
       <main className={styles.content}>
-        <div style={{ maxWidth: 1200, margin: "32px auto", padding: "0 16px" }}>
+        <div style={{ maxWidth: 1200, margin: "32px auto", padding: "0 16px", }}>
           <Carousel />
+          
           <h2> Escolha uma categoria</h2>
-        
         </div>
         
         <section
@@ -94,8 +94,9 @@ export default function Home() {
           }}
         >
         </section>
+        <SobreNos/>
       </main>
-      <SobreNos/>
+      
       
       <Footer />
     </>
