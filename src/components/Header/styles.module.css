@@ -153,3 +153,18 @@
 @media (max-width: 520px) {
 	.search { display: none; }
 }
+
+.loginButton {
+  background: #5d8a6b;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.loginButton:hover {
+  background: #4a6f57;
+}
