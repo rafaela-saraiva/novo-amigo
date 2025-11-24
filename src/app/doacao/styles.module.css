@@ -70,6 +70,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  --font: 'Poppins', 'Inter', sans-serif;
+  
 }
 
 /* 🧾 Inputs e Textareas */
@@ -84,6 +86,7 @@
   color: var(--text-primary);
   transition: var(--transition);
   box-sizing: border-box;
+  font-family: var(--font) !important;
 }
 
 .form input:focus,
