@@ -61,9 +61,10 @@ export default function Home() {
       <main className={styles.content}>
         <div style={{ maxWidth: 1200, margin: "32px auto", padding: "0 16px" }}>
           <Carousel />
+          <h2> Escolha uma categoria</h2>
+        
         </div>
-        <h2> Escolha uma categoria</h2>
-        <h3>Veja quais tipos de animais você quer conhecer hoje</h3>
+        
         <section
   style={{
     display: "grid",
@@ -95,7 +96,7 @@ export default function Home() {
         </section>
       </main>
       <SobreNos/>
-      <h2>Adote amor. Econtre seu proximo melhor amigo!</h2>
+      
       <Footer />
     </>
   );
