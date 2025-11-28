@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import styles from './styles.module.css';
 import { useAuth } from '@/hooks/useAuth';
+import LoginModal from '@/components/LoginModal';
 
 interface SideBarProps {
   open: boolean;
@@ -11,11 +13,22 @@ interface SideBarProps {
 export default function SideBar({ open, onClose }: SideBarProps) {
   const { user, logout } = useAuth();
 
+  // estado do modal de login
+  const [openLogin, setOpenLogin] = useState(false);
+
+  function handleOpenLogin() {
+    setOpenLogin(true);
+    onClose(); // fecha o sidebar
+  }
+
   return (
     <>
       {open && <div className={styles.backdrop} onClick={onClose} />}
 
-      <aside className={`${styles.sidebar} ${open ? styles.open : ''}`} aria-hidden={!open}>
+      <aside
+        className={`${styles.sidebar} ${open ? styles.open : ''}`}
+        aria-hidden={!open}
+      >
         <div className={styles.headerBar}>
           <button
             className={styles.closeBtn}
@@ -54,7 +67,16 @@ export default function SideBar({ open, onClose }: SideBarProps) {
                 <li><a href="/doacao" onClick={onClose}>Doação</a></li>
                 <li><a href="/nossos-animais" onClick={onClose}>Animais</a></li>
                 <li><a href="/faleConosco" onClick={onClose}>Fale Conosco</a></li>
-                <li><a href="/login" onClick={onClose}>Entrar</a></li>
+
+                {/* ---- ALTERADO AQUI ---- */}
+                <li>
+                  <button
+                    onClick={handleOpenLogin}
+                    className={styles.loginBtn}
+                  >
+                    Entrar
+                  </button>
+                </li>
               </>
             ) : (
               <>
@@ -77,6 +99,9 @@ export default function SideBar({ open, onClose }: SideBarProps) {
           </ul>
         </nav>
       </aside>
+
+      {/* Modal de Login */}
+      <LoginModal open={openLogin} onClose={() => setOpenLogin(false)} />
     </>
   );
 }

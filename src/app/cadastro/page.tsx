@@ -6,11 +6,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import api from "@/services/api";
-import { useRouter } from "next/navigation";
+import LoginModal from "@/components/LoginModal";
 
 export default function Cadastrar() {
-  const router = useRouter();
-
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
   const [nomeInteiro, setNomeInteiro] = useState("");
   const [email, setEmail] = useState("");
@@ -25,6 +23,7 @@ export default function Cadastrar() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [openLoginModal, setOpenLoginModal] = useState(false); // novo estado para login
 
   async function botaoCadastrarOnClick(e: React.FormEvent) {
     e.preventDefault();
@@ -50,13 +49,9 @@ export default function Cadastrar() {
     }
 
     try {
-      const response = await api.post(`/users`, dados);
-      console.log("Resposta:", response.data);
-
-      // ✅ Exibe o modal de sucesso
+      await api.post(`/users`, dados);
       setShowSuccessModal(true);
     } catch (error: any) {
-      console.error("Erro ao cadastrar:", error);
       setErrorMessage(
         error.response?.data?.message ||
         "Ocorreu um erro ao cadastrar. Tente novamente."
@@ -158,7 +153,7 @@ export default function Cadastrar() {
 
             <TextField
               label="Senha"
-              type="senha"
+              type="password"
               text={senha}
               onChange={setSenha}
               required
@@ -166,7 +161,7 @@ export default function Cadastrar() {
 
             <TextField
               label="Confirmar senha"
-              type="senha"
+              type="password"
               text={confirmarSenha}
               onChange={setConfirmarSenha}
               required
@@ -176,8 +171,15 @@ export default function Cadastrar() {
               Cadastrar
             </button>
 
+            {/* 🔹 Voltar ao login abre modal */}
             <p className={styles.voltarLogin}>
-              <a href="/login">← Voltar ao login</a>
+              <button 
+                type="button" 
+                onClick={() => setOpenLoginModal(true)}
+                className={styles.voltarLoginButton}
+              >
+                ← Voltar ao login
+              </button>
             </p>
 
             <p className={styles.termos}>
@@ -196,7 +198,7 @@ export default function Cadastrar() {
             <h3>Cadastro realizado com sucesso!</h3>
             <p>Sua conta foi criada com sucesso. Faça login para continuar.</p>
             <button
-              onClick={() => router.push('/login')}
+              onClick={() => setOpenLoginModal(true)}
               className={styles.modalButton}
             >
               Ir para o Login
@@ -220,6 +222,9 @@ export default function Cadastrar() {
           </div>
         </div>
       )}
+
+      {/* 🔹 Modal de login */}
+      <LoginModal open={openLoginModal} onClose={() => setOpenLoginModal(false)} />
 
       <Footer />
     </>

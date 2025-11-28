@@ -1,0 +1,122 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  /* === MODAL COM AS NOVAS CORES === */
+  .modal {
+    background: #eef7f7; /* azul bem claro puxado do #43959b */
+    padding: 30px;
+    border-radius: 16px;
+    width: 350px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.35);
+    position: relative;
+    border: 1px solid #c8e6e5; /* tom suave azul claro */
+  }
+  
+  /* === BOTÃO DE FECHAR === */
+  .closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f7a930; /* amarelo solicitado */
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+  }
+  
+  .closeBtn:hover {
+    background: #d98a23; /* amarelo mais escuro */
+  }
+  
+  /* === TÍTULO === */
+  .titulo {
+    text-align: center;
+    color: #43959b; /* azul principal */
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  /* === FORM === */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* === BOTÃO CONFIRMAR === */
+  .botao {
+    background: #43959b; /* azul principal */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+  }
+  
+  .botao:hover {
+    background: #347a7e;
+  }
+  
+  /* === TEXTO DO LINK === */
+  .cadastroLink {
+    text-align: center;
+    font-size: 14px;
+    color: #43959b;
+  }
+  
+  /* ========================= */
+  /*  CAMPOS DO FORM           */
+  /* ========================= */
+  
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #347a7e; /* azul escurecido */
+  }
+  
+  .input {
+    width: 100%;
+    padding: 18px 20px;     /* 🔥 aumentei só o tamanho das caixas */
+    border-radius: 12px;
+    border: 2px solid #b6e3e6;
+    background: #ffffff;
+    font-size: 16px;
+    outline: none;
+    transition: 0.2s ease;
+  }
+  
+  .input:focus {
+    border-color: #43959b;
+    box-shadow: 0 0 0 3px rgba(67, 149, 155, 0.25);
+    background: #ffffff;
+  }
+  
+  /* Aumentar o tamanho das caixas do e-mail e senha */
+.modal input {
+    width: 100% !important;
+    padding: 16px 18px !important;    /* AUMENTADO */
+    font-size: 16px !important;        /* AUMENTADO */
+    border-radius: 12px !important;    /* Mais arredondado */
+  }
+  
