@@ -8,8 +8,8 @@ export default function Logo() {
                 <Image
                     src="https://i.postimg.cc/XNtcXKM2/logo.png"
                     alt="Logo Novo Amigo"
-                    width={120}
-                    height={80}
+                    width={140}   // AUMENTADO
+                    height={100}  // AUMENTADO
                     priority={true}
                     style={{ objectFit: 'contain' }}
                 />

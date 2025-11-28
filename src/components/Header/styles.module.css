@@ -11,7 +11,7 @@
 /* 🔷 Layout geral */
 .header {
 	width: 100%;
-	height: 72px;
+	height: 90px; /* AUMENTADO COMO PEDIDO */
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -21,8 +21,6 @@
 	position: relative;
 	z-index: 40;
 }
-
-
 
 /* 🔹 Divisões */
 .left, .center, .right {
@@ -36,135 +34,27 @@
 }
 
 .center {
-	flex: 1;
-	justify-content: center;
+	flex: 100;
+	justify-content: center; /* GARANTE LOGO CENTRALIZADA */
 }
 
 .right {
 	flex: 1;
 	justify-content: flex-end;
 }
-/* 🔍 Container geral do campo de busca */
-.search {
-	position: relative;
-	display: flex;
-	align-items: center;
-	width: 260px;
-  }
-  
-  /* ✏️ Input estilizado */
-  .searchInput {
-	width: 100%;
-	height: 42px;
-	padding: 0 42px 0 16px; /* espaço extra à direita pro ícone */
-	border-radius: 999px;
-	border: 1.5px solid rgba(59, 161, 168, 0.25);
-	background: #ffffff;
-	font-size: 15px;
-	color: #1f2937;
-	font-family: 'Inter', sans-serif;
-	outline: none;
-	transition: all 0.25s ease;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  }
-  
-  .searchInput::placeholder {
-	color: #9ca3af;
-	transition: color 0.2s ease;
-  }
-  
-  .searchInput:focus {
-	border-color: #3ba1a8;
-	box-shadow: 0 0 0 3px rgba(59, 161, 168, 0.15);
-	transform: scale(1.02);
-  }
-  
-  /* 🔍 Área de busca */
-.left {
-	display: flex;
-	align-items: center;
-  }
-  
-  /* Caixa de busca */
-  .search {
-	position: relative;
-	width: 260px;
-	display: flex;
-	align-items: center;
-  }
-  
-  /* Input */
-  .searchInput {
-	width: 100%;
-	height: 42px;
-	padding: 0 16px 0 40px; /* espaço à esquerda pro ícone */
-	border-radius: 999px;
-	border: 1.5px solid rgba(93, 138, 107, 0.25);
-	background: #ffffff;
-	font-size: 15px;
-	color: #1f2937;
-	outline: none;
-	font-family: 'Inter', sans-serif;
-	transition: all 0.25s ease;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  }
-  
-  .searchInput::placeholder {
-	color: #9ca3af;
-  }
-  
-  .searchInput:focus {
-	border-color: #5d8a6b;
-	box-shadow: 0 0 0 3px rgba(93, 138, 107, 0.15);
-	transform: scale(1.02);
-  }
-  
-  /* Ícone da lupa dentro do input */
-  .searchIcon {
-	position: absolute;
-	left: 12px;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 18px;
-	height: 18px;
-	pointer-events: none; /* não clicável */
-  }
-  
-  .searchIcon svg {
-	width: 18px;
-	height: 18px;
-	stroke: #5d8a6b;
-	opacity: 0.8;
-	transition: opacity 0.2s ease;
-  }
-  
-  /* Efeito quando o input está em foco */
-  .searchInput:focus + .searchIcon svg {
-	opacity: 1;
-  }
-  
-  /* Responsivo */
-  @media (max-width: 600px) {
-	.search {
-	  width: 200px;
-	}
-  }
 
-@media (max-width: 520px) {
-	.search { display: none; }
-}
-
+/* 🔹 Login button (mantido, sem alteração) */
 .loginButton {
-  background: #5d8a6b;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
+	background: #5d8a6b;
+	color: white;
+	padding: 8px 14px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	font-weight: 600;
+	transition: 0.2s;
 }
 
 .loginButton:hover {
-  background: #4a6f57;
+	background: #4a6f57;
 }

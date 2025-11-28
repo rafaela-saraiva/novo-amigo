@@ -1,48 +1,72 @@
 :root {
-    --muted: #6b6b6b;
-  }
-  
-  .container {
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  /* Botão do menu (imagem ou X) */
-  .hamburger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;       /* sem fundo */
-    border: none;           /* sem borda */
-    padding: 0;             /* sem padding extra */
-    margin: 0;
-    cursor: pointer;
-    border-radius: 50%;     /* arredondado, opcional */
-    transition: transform 0.2s ease;
-  }
-  
-  .hamburger:hover {
-    transform: scale(1.05); /* leve zoom ao passar o mouse */
-  }
-  
-  /* Imagem dentro do botão */
-  .hamburger :global(img) {
-    display: block;
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 50%;     /* se quiser imagem circular */
-  }
-  
-  /* Ícone X (quando o menu está aberto) */
-  .hamburger svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--muted);
-    transition: transform 0.2s ease;
-  }
-  
-  .hamburger svg:hover {
-    transform: rotate(90deg) scale(1.1);
-  }
-  
+  --muted: #6b6b6b;
+}
+
+.container {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Botão */
+.hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 6px;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  width: 40px;
+  height: 40px;
+
+  /* Necessário para posicionar as barras */
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger:hover {
+  transform: scale(1.05);
+}
+
+/* REMOVIDO — não existe mais img no botão
+.hamburger :global(img) {
+}
+*/
+
+/* Barrinhas do hambúrguer */
+.hamburger span {
+  display: block;
+  width: 70%;
+  height: 4px;
+  background: var(--muted);
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+/* Estado aberto — vira X */
+.open span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.open span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* SVG X antigo ainda fica aqui caso você queira usar depois */
+.hamburger svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--muted);
+  transition: transform 0.2s ease;
+}
+
+.hamburger svg:hover {
+  transform: rotate(90deg) scale(1.1);
+}

@@ -2,7 +2,6 @@
 import { useState } from "react";
 import SideBar from "../SideBar";
 import styles from './styles.module.css';
-import Image from "next/image";
 
 export default function Menu() {
     const [open, setOpen] = useState(false);
@@ -11,26 +10,13 @@ export default function Menu() {
         <>
             <div className={styles.container}>
                 <button
-                    className={styles.hamburger}
+                    className={`${styles.hamburger} ${open ? styles.open : ""}`}
                     onClick={() => setOpen((s) => !s)}
                     aria-label={open ? "Fechar menu" : "Abrir menu"}
                 >
-                    {/* Alterna entre hamburger e X */}
-                    {!open ? (
-                        <>
-                            <Image
-                                src="/user.png"
-                                alt="Símbolo Reciclagem"
-                                width={40}
-                                height={40}
-                            />
-                        </>
-                    ) : (
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                            <path d="M18 6L6 18" stroke="#2f4858" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M6 6l12 12" stroke="#2f4858" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    )}
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
             </div>
 
