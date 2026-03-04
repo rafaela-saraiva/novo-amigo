@@ -7,6 +7,7 @@ interface User {
   id: string;
   email: string;
   nome: string;
+  role: "ADMIN" | "USER";
 }
 
 interface AuthContextType {
@@ -17,7 +18,6 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// 🔥 AQUI É O ERRO — AGORA EXPORTADO
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -25,32 +25,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // 🔥 CORREÇÃO AQUI
   useEffect(() => {
-    const savedToken = localStorage.getItem("token");
+    async function loadUser() {
+      const savedToken = localStorage.getItem("token");
 
-    if (savedToken) {
-      setToken(savedToken);
-      api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+      if (savedToken) {
+        try {
+          setToken(savedToken);
+          api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
 
-      api.get("/me")
-        .then((res) => setUser(res.data))
-        .catch(() => logout());
+          const res = await api.get("/users/me");
+          setUser(res.data);
+        } catch (error) {
+          logout();
+        }
+      }
+
+      setLoading(false); // 👈 agora só roda depois da verificação
     }
 
-    setLoading(false);
+    loadUser();
   }, []);
 
   async function login(email: string, senha: string) {
-  const res = await api.post("/users/login", { email, senha });
+    const res = await api.post("/users/login", { email, senha });
 
-  const tk = res.data.token;
+    const tk = res.data.token;
 
-  localStorage.setItem("token", tk);
-  api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
+    localStorage.setItem("token", tk);
+    api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
 
-  setToken(tk);
-  setUser(res.data.usuario);
-}
+    setToken(tk);
+    setUser(res.data.usuario);
+  }
 
   function logout() {
     localStorage.removeItem("token");
