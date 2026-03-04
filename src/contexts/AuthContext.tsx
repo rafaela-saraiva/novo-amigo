@@ -41,15 +41,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function login(email: string, senha: string) {
-    const res = await api.post("/login", { email, senha });
-    const tk = res.data.token;
+  const res = await api.post("/users/login", { email, senha });
 
-    localStorage.setItem("token", tk);
-    api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
+  const tk = res.data.token;
 
-    setToken(tk);
-    setUser(res.data.usuario);
-  }
+  localStorage.setItem("token", tk);
+  api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
+
+  setToken(tk);
+  setUser(res.data.usuario);
+}
 
   function logout() {
     localStorage.removeItem("token");
