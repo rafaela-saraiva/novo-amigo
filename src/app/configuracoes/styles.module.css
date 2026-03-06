@@ -141,8 +141,55 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #e1ebe9; 
+  
 }
 
 .main {
   flex: 1;
+}
+/* Seção de ações */
+.actionSection {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.actionSection h2 {
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+/* Botões de ações principais */
+.logoutBtn,
+.desativarBtn,
+.deletarBtn {
+  display: block;
+  width: 200px;
+  margin: 8px auto;
+  padding: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  color: #333;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Hover suave */
+.logoutBtn:hover,
+.desativarBtn:hover,
+.deletarBtn:hover {
+  background: #e0e0e0;
+  border-color: #999;
+}
+
+/* Destaque leve para ações críticas (desativar/deletar) */
+.desativarBtn {
+  border-color: #d4a017;
+}
+
+.deletarBtn {
+  border-color: #c0392b;
 }
