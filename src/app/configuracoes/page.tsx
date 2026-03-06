@@ -41,15 +41,26 @@ export default function Configuracoes() {
     try {
       setSalvando(true);
 
-      await api.put(`/users/${user?.id}`, {
-        nome,
-        email,
-        pass: pass || undefined
-      });
+      const body: any = {
+        name: nome,
+        email: email
+      };
 
+      if (pass) {
+        body.pass = pass;
+      }
+
+      await api.put(`/users/${user?.id}`, body);
+
+      alert("Dados atualizados com sucesso!");
+
+      setPass("");
+      setConfirmarPass("");
       setModalAberto(false);
-    } catch {
-      alert("Erro ao atualizar.");
+
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.response?.data?.error || "Erro ao atualizar.");
     } finally {
       setSalvando(false);
     }
@@ -70,13 +81,12 @@ export default function Configuracoes() {
 
           <div className={styles.userCard}>
             <div className={styles.userLeft}>
-              
 
               <div className={styles.userInfo}>
-                <p className={styles.userName}>{user.nome}</p>
+                <p className={styles.userName}>{nome}</p>
 
                 <div className={styles.dataGrid}>
-                  <span>E-mail: {user.email}</span>
+                  <span>E-mail: {email}</span>
                   <span>Telefone: (***) *****</span>
                   <span>Aniversário: --/--/----</span>
                   <span>CPF: ***.***.***-**</span>
@@ -95,7 +105,6 @@ export default function Configuracoes() {
         </div>
       </main>
 
-      {/* MODAL */}
       {modalAberto && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
