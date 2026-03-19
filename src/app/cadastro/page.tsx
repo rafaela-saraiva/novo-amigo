@@ -1,12 +1,12 @@
 'use client';
 
-import TextField from "@/components/TextField";
-import styles from './styles.module.css';
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { useState } from "react";
-import api from "@/services/api";
+import Header from "@/components/Header";
 import LoginModal from "@/components/LoginModal";
+import TextField from "@/components/TextField";
+import api from "@/services/api";
+import { useState } from "react";
+import styles from './styles.module.css';
 
 export default function Cadastrar() {
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
@@ -70,7 +70,7 @@ export default function Cadastrar() {
       setShowSuccessModal(true);
 
     } catch (error: any) {
-      setErrorMessage(error.response?.data?.message || "Erro ao cadastrar");
+      setErrorMessage(error.response?.data?.error || "Erro ao cadastrar");
       setShowErrorModal(true);
     }
   }
