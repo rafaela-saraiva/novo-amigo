@@ -4,12 +4,12 @@ import api from "@/services/api";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
-  id: number;
+  id: string;
   email: string;
   nome: string;
-  phone?: string; // ✅ adicionado
-  cpf?: string;   // ✅ adicionado
-  role?: "ADMIN" | "USER";
+  role: "ADMIN" | "USER";
+  phone?: string;
+  cpf?: string;
 }
 
 interface AuthContextType {
@@ -27,68 +27,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // 🔥 CORREÇÃO AQUI
   useEffect(() => {
     async function loadUser() {
-      try {
-        const savedToken = localStorage.getItem("token");
+      const savedToken = localStorage.getItem("token");
 
-        if (!savedToken) {
-          setLoading(false);
-          return;
+      if (savedToken) {
+        try {
+          setToken(savedToken);
+          api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+
+          const res = await api.get("/users/me");
+          setUser(res.data);
+        } catch (error) {
+          logout();
         }
-
-        setToken(savedToken);
-        api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
-
-        const res = await api.get("/users/me");
-
-        // ✅ garante que não quebre mesmo se não vier tudo da API
-        setUser({
-          id: res.data.id,
-          nome: res.data.nome,
-          email: res.data.email,
-          phone: res.data.phone || "",
-          cpf: res.data.cpf || "",
-          role: res.data.role
-        });
-
-      } catch (error) {
-        console.error("Erro ao carregar usuário:", error);
-        logout();
-      } finally {
-        setLoading(false);
       }
+
+      setLoading(false); // 👈 agora só roda depois da verificação
     }
 
     loadUser();
   }, []);
 
   async function login(email: string, senha: string) {
-    try {
-      const res = await api.post("/users/login", { email, senha });
+    const res = await api.post("/users/login", { email, senha });
 
-      const tk = res.data.token;
-      const usuario = res.data.usuario;
+    const tk = res.data.token;
 
-      localStorage.setItem("token", tk);
-      api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
+    localStorage.setItem("token", tk);
+    api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
 
-      setToken(tk);
-
-      // ✅ mesma proteção aqui
-      setUser({
-        id: usuario.id,
-        nome: usuario.nome,
-        email: usuario.email,
-        phone: usuario.phone || "",
-        cpf: usuario.cpf || "",
-        role: usuario.role
-      });
-
-    } catch (error) {
-      console.error("Erro no login:", error);
-      throw new Error("Email ou senha inválidos");
-    }
+    setToken(tk);
+    setUser(res.data.usuario);
   }
 
   function logout() {
@@ -107,10 +78,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-
-  if (!ctx) {
-    throw new Error("useAuth deve ser usado dentro de AuthProvider");
-  }
-
+  if (!ctx) throw new Error("useAuth deve ser usado dentro de AuthProvider");
   return ctx;
 }
