@@ -1,13 +1,15 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
 import api from "@/services/api";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
   id: string;
   email: string;
   nome: string;
   role: "ADMIN" | "USER";
+  phone?: string;
+  cpf?: string;
 }
 
 interface AuthContextType {

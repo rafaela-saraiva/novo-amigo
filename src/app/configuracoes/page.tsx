@@ -1,15 +1,15 @@
 "use client";
 
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { useAuth } from "@/contexts/AuthContext";
+import api from "@/services/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import styles from "./styles.module.css";
-import api from "@/services/api";
 
 export default function Configuracoes() {
-  const { user, loading, logout } = useAuth();
+  const { user, token, loading, logout } = useAuth();
   const router = useRouter();
 
   const [modalAberto, setModalAberto] = useState(false);
@@ -69,7 +69,7 @@ export default function Configuracoes() {
   async function desativarConta() {
     try {
       setAcaoExecutando(true);
-      await api.put(`/users/${user.id}/desativar`);
+      await api.put(`/users/${user?.id}/desativar`);
       setModalDesativar(false);
       alert("Conta desativada. Você será deslogado.");
       logout?.();
@@ -84,8 +84,8 @@ export default function Configuracoes() {
   async function deletarConta() {
   try {
     setAcaoExecutando(true);
-    await api.delete(`/users/${user.id}`, {
-      headers: { Authorization: `Bearer ${user.token}` }
+    await api.delete(`/users/${user?.id}`, {
+      headers: { Authorization: `Bearer ${token}` }
     });
     setModalDeletar(false);
     alert("Conta deletada com sucesso.");
@@ -136,7 +136,7 @@ export default function Configuracoes() {
           {/* SEÇÃO DE AÇÕES */}
           <div className={styles.actionSection}>
             <h2>Ações da Conta</h2>
-            <button className={styles.logoutBtn} onClick={() => setModalAberto(false) || encerrarSessao()}>
+            <button className={styles.logoutBtn} onClick={() => { setModalAberto(false); encerrarSessao(); }}>
               Sair da Conta
             </button>
             <button className={styles.desativarBtn} onClick={() => setModalDesativar(true)}>
