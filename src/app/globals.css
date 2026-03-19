@@ -40,7 +40,7 @@ a {
    intenso, posso ajustar os seletores ou a espessura. */
 
 /* Aplica borda aos containers principais com classe container */
-.container, .main, .card, .modal, .backdrop, .footer, header, .pet {
+.container, .main, .card, .modal, .backdrop, .footer, .pet {
   border: 1px solid rgba(0,0,0,0.9);
 }
 

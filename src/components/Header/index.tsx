@@ -1,22 +1,114 @@
 "use client";
-import Logo from "../Logo";
-import Menu from "../Menu";
-import styles from './styles.module.css';
+
+import LoginModal from "@/components/LoginModal";
+import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import styles from "./styles.module.css";
 
 export default function Header() {
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  function handleLogout() {
+    logout();
+    setMenuOpen(false);
+  }
+
   return (
-    <header className={styles.header}>
+    <>
+      <nav className={styles.nav}>
+        <div className={styles.inner}>
 
-      {/* 🐾 Centro - logo */}
-      <div className={styles.center}>
-        <Logo />
-      </div>
+          {/* Logo */}
+          <Link href="/" className={styles.logo}>
+            <div className={styles.logoIcon}>
+              <span className="material-symbols-outlined">pets</span>
+            </div>
+            <h2 className={styles.logoText}>Novo Amigo</h2>
+          </Link>
 
-      {/* ☰ Direita - menu */}
-      <div className={styles.right}>
-        <Menu />
-      </div>
+          {/* Links de navegação (desktop) */}
+          <div className={styles.links}>
+            <Link href="/nossos-animais" className={styles.link}>Adotar</Link>
+            <Link href="/sobre" className={styles.link}>Como Funciona</Link>
+            <Link href="/" className={styles.link}>ONGs</Link>
+            <Link href="/sobre" className={styles.link}>Sobre</Link>
+          </div>
 
-    </header>
+          {/* Botões de ação (desktop) */}
+          <div className={styles.actions}>
+            {user ? (
+              <>
+                <Link href="/configuracoes" className={styles.userChip}>
+                  <span className="material-symbols-outlined">account_circle</span>
+                  <span className={styles.userName}>{user.nome.split(" ")[0]}</span>
+                </Link>
+                <button onClick={handleLogout} className={styles.btnLogout} title="Sair">
+                  <span className="material-symbols-outlined">logout</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => setLoginOpen(true)} className={styles.btnEntrar}>
+                  Entrar
+                </button>
+                <button onClick={() => router.push("/cadastro")} className={styles.btnCadastrar}>
+                  Cadastrar
+                </button>
+              </>
+            )}
+
+            {/* Hambúrguer (mobile) */}
+            <button
+              className={styles.hamburger}
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label="Menu"
+            >
+              <span className="material-symbols-outlined">
+                {menuOpen ? "close" : "menu"}
+              </span>
+            </button>
+          </div>
+
+        </div>
+
+        {/* Menu mobile */}
+        {menuOpen && (
+          <div className={styles.mobileMenu}>
+            <Link href="/nossos-animais" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Adotar</Link>
+            <Link href="/sobre" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
+            <Link href="/" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
+            <Link href="/sobre" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Sobre</Link>
+            <div className={styles.mobileDivider} />
+            {user ? (
+              <>
+                <Link href="/configuracoes" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
+                  Minha Conta
+                </Link>
+                <button className={styles.mobileBtnSair} onClick={handleLogout}>
+                  Sair
+                </button>
+              </>
+            ) : (
+              <>
+                <button className={styles.mobileBtnEntrar} onClick={() => { setLoginOpen(true); setMenuOpen(false); }}>
+                  Entrar
+                </button>
+                <button className={styles.mobileBtnCadastrar} onClick={() => { router.push("/cadastro"); setMenuOpen(false); }}>
+                  Cadastrar
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </nav>
+
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+    </>
   );
 }
