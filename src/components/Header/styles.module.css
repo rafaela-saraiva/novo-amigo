@@ -1,60 +1,318 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-:root {
-	--bg: #43959b;
-	--accent: #6AAE85;
-	--accent-2: #90C7B5;
-	--muted: #6b6b6b;
-	--shadow: 0 6px 18px rgba(16,24,32,0.06);
+/* ===== NAV HEADER ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  padding: 16px 24px;
 }
 
-/* 🔷 Layout geral */
-.header {
-	width: 100%;
-	height: 90px; /* AUMENTADO COMO PEDIDO */
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 20px;
-	background: var(--bg);
-	box-shadow: var(--shadow);
-	position: relative;
-	z-index: 40;
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.06);
 }
 
-/* 🔹 Divisões */
-.left, .center, .right {
-	display: flex;
-	align-items: center;
+/* ===== LOGO ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
-.left {
-	flex: 1;
-	justify-content: flex-start;
+.logoIcon {
+  background: #30e85e;
+  padding: 8px;
+  border-radius: 9999px;
+  color: #0d150f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.center {
-	flex: 100;
-	justify-content: center; /* GARANTE LOGO CENTRALIZADA */
+.logoIcon span {
+  font-size: 20px;
+  font-weight: 700;
 }
 
-.right {
-	flex: 1;
-	justify-content: flex-end;
+.logoText {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  font-family: 'Lexend', sans-serif;
 }
 
-/* 🔹 Login button (mantido, sem alteração) */
-.loginButton {
-	background: #5d8a6b;
-	color: white;
-	padding: 8px 14px;
-	border-radius: 8px;
-	border: none;
-	cursor: pointer;
-	font-weight: 600;
-	transition: 0.2s;
+/* ===== LINKS ===== */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
 }
 
-.loginButton:hover {
-	background: #4a6f57;
+.link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  text-decoration: none;
+  transition: color 0.2s;
+  font-family: 'Lexend', sans-serif;
 }
+
+.link:hover {
+  color: #30e85e;
+}
+
+/* ===== BOTOES ===== */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btnEntrar {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #0f172a;
+  padding: 8px 20px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  font-family: 'Lexend', sans-serif;
+}
+
+.btnEntrar:hover {
+  opacity: 0.65;
+}
+
+.btnCadastrar {
+  background: #30e85e;
+  color: #0d150f;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Lexend', sans-serif;
+}
+
+.btnCadastrar:hover {
+  box-shadow: 0 8px 24px rgba(48, 232, 94, 0.3);
+}
+
+.btnCadastrar:active {
+  transform: scale(0.95);
+}
+
+/* ===== USUARIO LOGADO ===== */
+.userChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Lexend', sans-serif;
+  padding: 6px 14px 6px 8px;
+  border-radius: 9999px;
+  background: rgba(48, 232, 94, 0.12);
+  border: 1px solid rgba(48, 232, 94, 0.3);
+  transition: background 0.2s;
+}
+
+.userChip:hover {
+  background: rgba(48, 232, 94, 0.22);
+}
+
+.userChip .material-symbols-outlined {
+  font-size: 22px;
+  color: #30e85e;
+}
+
+.userName {
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btnLogout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.btnLogout:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #ef4444;
+}
+
+.btnLogout .material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* ===== HAMBURGUER ===== */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #334155;
+  padding: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger .material-symbols-outlined {
+  font-size: 24px;
+}
+
+/* ===== MENU MOBILE ===== */
+.mobileMenu {
+  max-width: 1280px;
+  margin: 8px auto 0;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 24px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.mobileLink {
+  font-size: 15px;
+  font-weight: 500;
+  color: #334155;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: background 0.15s, color 0.15s;
+  font-family: 'Lexend', sans-serif;
+}
+
+.mobileLink:hover {
+  background: rgba(48, 232, 94, 0.1);
+  color: #1b8d39;
+}
+
+.mobileDivider {
+  height: 1px;
+  background: rgba(148, 163, 184, 0.25);
+  margin: 8px 0;
+}
+
+.mobileBtnEntrar {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Lexend', sans-serif;
+  transition: background 0.15s;
+}
+
+.mobileBtnEntrar:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.mobileBtnCadastrar {
+  background: #30e85e;
+  color: #0d150f;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Lexend', sans-serif;
+  transition: all 0.2s;
+}
+
+.mobileBtnCadastrar:hover {
+  background: #22c54e;
+}
+
+.mobileBtnSair {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ef4444;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Lexend', sans-serif;
+  transition: background 0.15s;
+}
+
+.mobileBtnSair:hover {
+  background: #fee2e2;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (min-width: 640px) {
+  .btnEntrar {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .links {
+    display: none;
+  }
+
+  .inner {
+    padding: 10px 16px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .btnEntrar,
+  .btnCadastrar {
+    display: none;
+  }
+
+  .userChip,
+  .btnLogout {
+    display: none;
+  }
+}
+
