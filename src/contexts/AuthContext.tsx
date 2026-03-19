@@ -7,7 +7,7 @@ interface User {
   id: string;
   nome: string;
   email: string;
-  role: "ADMIN" | "USER";
+  role?: "ADMIN" | "USER";
 
   // opcionais (usados pela ONG)
   telefone?: string;

@@ -1,10 +1,10 @@
 'use client';
-import { useState, ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import styles from './styles.module.css';
 
 type Props = {
   label: string;
-  type?: 'text' | 'email' | 'senha';
+  type?: 'text' | 'email' | 'password';
   text?: string;
   required?: boolean;
   autoComplete?: string;

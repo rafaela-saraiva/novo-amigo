@@ -1,8 +1,2 @@
-'use client';
-
-import { useContext } from 'react';
-import { AuthContext } from '@/contexts/AuthContext';
-
-export function useAuth() {
-  return useContext(AuthContext);
-}
+// Re-exporta o useAuth do AuthContext (com validação de Provider)
+export { useAuth } from '@/contexts/AuthContext';
