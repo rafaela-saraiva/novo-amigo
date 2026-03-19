@@ -184,7 +184,7 @@ export default function NossosAnimais() {
         <div className={styles.container}>
           {/* 🔹 Título e botões */}
           <div className={styles.titleSection}>
-            <h1 className={styles.title}>nossos animais para adoção</h1>
+            <h1 className={styles.title}>Animais para adoção</h1>
             <div className={styles.buttonGroup}>
               <button
                 className={styles.cadastrarBtn}

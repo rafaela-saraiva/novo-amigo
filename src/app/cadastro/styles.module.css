@@ -61,7 +61,7 @@
   font-size: 26px;
   font-weight: 600;
   color: #4a707a;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 .subtitulo {
@@ -316,4 +316,41 @@
   text-decoration: underline;
   font-size: 14px;
   padding: 0;
+}
+
+
+
+
+/* 🔲 BARRA BASE */
+.barra {
+  height: 6px;
+  width: 100%;
+  border-radius: 6px;
+  background: #ddd;
+  transition: all 0.3s ease;
+}
+
+/* ❌ FRACA */
+.fraca {
+  width: 33%;
+  background: #e74c3c;
+}
+
+/* ⚠️ MÉDIA */
+.media {
+  width: 66%;
+  background: #f39c12;
+}
+
+/* ✅ FORTE */
+.forte {
+  width: 100%;
+  background: #27ae60;
+}
+
+/* TEXTO */
+.textoSenha {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
 }

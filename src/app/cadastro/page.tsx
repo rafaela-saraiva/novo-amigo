@@ -19,22 +19,40 @@ export default function Cadastrar() {
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
-  // 🌸 Controle dos modais
+  function getForcaSenha(senha: string) {
+    if (senha.length < 6) return "fraca";
+
+    const temEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(senha);
+
+    if (senha.length >= 6 && !temEspecial) return "media";
+    if (senha.length >= 6 && temEspecial) return "forte";
+
+    return "fraca";
+  }
+
+  const forcaSenha = getForcaSenha(senha);
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [openLoginModal, setOpenLoginModal] = useState(false); // novo estado para login
+  const [openLoginModal, setOpenLoginModal] = useState(false);
 
   async function botaoCadastrarOnClick(e: React.FormEvent) {
     e.preventDefault();
 
     if (senha !== confirmarSenha) {
-      setErrorMessage("As senhas não coincidem! Por favor, verifique.");
+      setErrorMessage("As senhas não coincidem!");
       setShowErrorModal(true);
       return;
     }
 
-    const dados: any = {
+    if (senha.length < 6 || !/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
+      setErrorMessage("Senha deve ter no mínimo 6 caracteres e um especial");
+      setShowErrorModal(true);
+      return;
+    }
+
+    const dados: Record<string, any> = {
       name: nomeInteiro,
       email,
       pass: senha,
@@ -52,10 +70,7 @@ export default function Cadastrar() {
       await api.post(`/users`, dados);
       setShowSuccessModal(true);
     } catch (error: any) {
-      setErrorMessage(
-        error.response?.data?.message ||
-        "Ocorreu um erro ao cadastrar. Tente novamente."
-      );
+      setErrorMessage(error.response?.data?.message || "Erro ao cadastrar");
       setShowErrorModal(true);
     }
   }
@@ -63,18 +78,19 @@ export default function Cadastrar() {
   return (
     <>
       <Header />
+
       <div className={styles.pageContainer}>
         <div className={styles.sideLeft}>
           <img
             src="https://i.postimg.cc/PfCv1nfx/AQNdkv-Jru-Ftg-mr8-Wjeo-SCDw-YCyn3-FA3kr-Yjaa9n-BBSplt-T-14-Qc-Sk-IZL1jv-Fs-2q-w-Pd-LJ9m-Be-Uexk1l-KW3whxkc-Pen-Rqdf45-M.jpg"
-            alt="Logo Novo Amigo"
+            alt="Logo"
             className={styles.sideLeft}
           />
         </div>
 
         <div className={styles.formContainer}>
           <h1 className={styles.titulo}>Crie sua conta</h1>
-          <p className={styles.subtitulo}>Preencha os campos abaixo para se cadastrar</p>
+          <p className={styles.subtitulo}>Preencha os campos abaixo</p>
 
           <div className={styles.toggleContainer}>
             <button
@@ -94,6 +110,7 @@ export default function Cadastrar() {
           </div>
 
           <form className={styles.formCadastrar} onSubmit={botaoCadastrarOnClick}>
+
             <TextField
               label={tipo === 'usuario' ? 'Nome completo' : 'Nome da ONG'}
               type="text"
@@ -103,7 +120,7 @@ export default function Cadastrar() {
             />
 
             <TextField
-              label="E-mail"
+              label="Email"
               type="email"
               text={email}
               onChange={setEmail}
@@ -126,8 +143,7 @@ export default function Cadastrar() {
                 label="CPF"
                 type="text"
                 text={cpf}
-                onChange={(valor) => setCpf(valor.replace(/[^0-9]/g, ''))}
-                required
+                onChange={(v) => setCpf(v.replace(/[^0-9]/g, ''))}
               />
             ) : (
               <>
@@ -159,6 +175,13 @@ export default function Cadastrar() {
               required
             />
 
+            <div className={styles.senhaContainer}>
+              <div className={`${styles.barra} ${styles[forcaSenha]}`}></div>
+              <span className={styles.textoSenha}>
+                Senha {forcaSenha}
+              </span>
+            </div>
+
             <TextField
               label="Confirmar senha"
               type="password"
@@ -171,10 +194,9 @@ export default function Cadastrar() {
               Cadastrar
             </button>
 
-            {/* 🔹 Voltar ao login abre modal */}
             <p className={styles.voltarLogin}>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setOpenLoginModal(true)}
                 className={styles.voltarLoginButton}
               >
@@ -187,11 +209,11 @@ export default function Cadastrar() {
               <a href="#">Termos de Uso</a> e{" "}
               <a href="#">Política de Privacidade</a>.
             </p>
+
           </form>
         </div>
       </div>
 
-      {/* ✅ Modal de sucesso */}
       {showSuccessModal && (
         <div className={styles.modalOverlay}>
           <div className={`${styles.modalContainer} ${styles.modalSuccess}`}>
@@ -207,7 +229,6 @@ export default function Cadastrar() {
         </div>
       )}
 
-      {/* ❌ Modal de erro */}
       {showErrorModal && (
         <div className={styles.modalOverlay}>
           <div className={`${styles.modalContainer} ${styles.modalError}`}>
@@ -223,7 +244,6 @@ export default function Cadastrar() {
         </div>
       )}
 
-      {/* 🔹 Modal de login */}
       <LoginModal open={openLoginModal} onClose={() => setOpenLoginModal(false)} />
 
       <Footer />

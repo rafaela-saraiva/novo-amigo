@@ -41,6 +41,8 @@ export default function Configuracoes() {
   }, [user, loading, router]);
 
   async function atualizarDados() {
+    if (!user) return;
+
     if (pass && pass !== confirmarPass) {
       alert("As senhas não coincidem.");
       return;
@@ -49,17 +51,18 @@ export default function Configuracoes() {
     try {
       setSalvando(true);
 
-      await api.put(`/users/${user?.id}`, {
+      await api.put(`/users/${user.id}`, {
         name: nome,
         email: email,
         phone: telefone,
         cpf: cpf,
-        pass: pass || undefined
+        pass: pass || undefined,
       });
 
       setModalAberto(false);
       alert("Dados atualizados com sucesso!");
-    } catch {
+    } catch (err: any) {
+      console.error(err.response?.data || err);
       alert("Erro ao atualizar.");
     } finally {
       setSalvando(false);
@@ -67,14 +70,22 @@ export default function Configuracoes() {
   }
 
   async function desativarConta() {
+    if (!user) return;
+
     try {
       setAcaoExecutando(true);
-      await api.put(`/users/${user.id}/desativar`);
+
+      await api.put(`/users/${user.id}`, {
+        ativo: false, // 🔥 desativa aqui
+      });
+
       setModalDesativar(false);
       alert("Conta desativada. Você será deslogado.");
-      logout?.();
+
+      logout();
       router.push("/");
-    } catch {
+    } catch (err: any) {
+      console.error(err.response?.data || err);
       alert("Erro ao desativar conta.");
     } finally {
       setAcaoExecutando(false);
@@ -82,25 +93,28 @@ export default function Configuracoes() {
   }
 
   async function deletarConta() {
-  try {
-    setAcaoExecutando(true);
-    await api.delete(`/users/${user.id}`, {
-      headers: { Authorization: `Bearer ${user.token}` }
-    });
-    setModalDeletar(false);
-    alert("Conta deletada com sucesso.");
-    logout?.();
-    router.push("/");
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao deletar conta.");
-  } finally {
-    setAcaoExecutando(false);
+    if (!user) return;
+
+    try {
+      setAcaoExecutando(true);
+
+      await api.delete(`/users/${user.id}`);
+
+      setModalDeletar(false);
+      alert("Conta deletada com sucesso.");
+
+      logout();
+      router.push("/");
+    } catch (err: any) {
+      console.error(err.response?.data || err);
+      alert("Erro ao deletar conta.");
+    } finally {
+      setAcaoExecutando(false);
+    }
   }
-}
 
   function encerrarSessao() {
-    logout?.();
+    logout();
     router.push("/");
   }
 
@@ -112,7 +126,6 @@ export default function Configuracoes() {
 
       <main className={styles.main}>
         <div className={styles.container}>
-
           <p className={styles.subtitle}>Sua conta</p>
           <h1 className={styles.title}>Dados Pessoais</h1>
 
@@ -122,34 +135,45 @@ export default function Configuracoes() {
                 <p className={styles.userName}>{nome}</p>
                 <div className={styles.dataGrid}>
                   <span>E-mail: {email}</span>
-                  <span>Telefone: {telefone ? "(***) *****" : "(***) *****"}</span>
-                  <span>CPF: {cpf ? "***.***.***-**" : "***.***.***-**"}</span>
+                  <span>Telefone: (***) *****</span>
+                  <span>CPF: ***.***.***-**</span>
                 </div>
               </div>
             </div>
 
-            <button className={styles.editBtn} onClick={() => setModalAberto(true)}>
+            <button
+              className={styles.editBtn}
+              onClick={() => setModalAberto(true)}
+            >
               Alterar Dados ✏️
             </button>
           </div>
 
-          {/* SEÇÃO DE AÇÕES */}
           <div className={styles.actionSection}>
             <h2>Ações da Conta</h2>
-            <button className={styles.logoutBtn} onClick={() => setModalAberto(false) || encerrarSessao()}>
+
+            <button className={styles.logoutBtn} onClick={encerrarSessao}>
               Sair da Conta
             </button>
-            <button className={styles.desativarBtn} onClick={() => setModalDesativar(true)}>
+
+            <button
+              className={styles.desativarBtn}
+              onClick={() => setModalDesativar(true)}
+            >
               Desativar Conta
             </button>
-            <button className={styles.deletarBtn} onClick={() => setModalDeletar(true)}>
+
+            <button
+              className={styles.deletarBtn}
+              onClick={() => setModalDeletar(true)}
+            >
               Deletar Conta
             </button>
           </div>
         </div>
       </main>
 
-      {/* MODAL DE EDITAR DADOS */}
+      {/* MODAIS (mantive iguais) */}
       {modalAberto && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
@@ -221,35 +245,28 @@ export default function Configuracoes() {
           </div>
         </div>
       )}
-
-      {/* MODAL DE DESATIVAR */}
       {modalDesativar && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <h2>Desativar Conta</h2>
-            <p>Tem certeza que deseja desativar sua conta temporariamente?</p>
-            <div className={styles.actions}>
-              <button className={styles.cancelBtn} onClick={() => setModalDesativar(false)}>Cancelar</button>
-              <button className={styles.desativarBtn} onClick={desativarConta} disabled={acaoExecutando}>
-                {acaoExecutando ? "Processando..." : "Desativar"}
-              </button>
-            </div>
+            <p>Tem certeza?</p>
+            <button onClick={() => setModalDesativar(false)}>Cancelar</button>
+            <button onClick={desativarConta} disabled={acaoExecutando}>
+              {acaoExecutando ? "Processando..." : "Desativar"}
+            </button>
           </div>
         </div>
       )}
 
-      {/* MODAL DE DELETAR */}
       {modalDeletar && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <h2>Deletar Conta</h2>
-            <p>Essa ação é irreversível! Tem certeza que deseja deletar sua conta?</p>
-            <div className={styles.actions}>
-              <button className={styles.cancelBtn} onClick={() => setModalDeletar(false)}>Cancelar</button>
-              <button className={styles.deletarBtn} onClick={deletarConta} disabled={acaoExecutando}>
-                {acaoExecutando ? "Processando..." : "Deletar"}
-              </button>
-            </div>
+            <p>Irreversível!</p>
+            <button onClick={() => setModalDeletar(false)}>Cancelar</button>
+            <button onClick={deletarConta} disabled={acaoExecutando}>
+              {acaoExecutando ? "Processando..." : "Deletar"}
+            </button>
           </div>
         </div>
       )}
