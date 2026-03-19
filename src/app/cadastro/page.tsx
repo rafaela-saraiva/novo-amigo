@@ -12,9 +12,7 @@ export default function Cadastrar() {
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
   const [nomeInteiro, setNomeInteiro] = useState("");
   const [email, setEmail] = useState("");
-  const [cpf, setCpf] = useState("");
   const [cnpj, setCnpj] = useState("");
-  const [endereco, setEndereco] = useState("");
   const [telefone, setTelefone] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
@@ -52,23 +50,25 @@ export default function Cadastrar() {
       return;
     }
 
-    const dados: Record<string, any> = {
-      name: nomeInteiro,
-      email,
-      pass: senha,
-      phone: telefone,
-      endereco,
-    };
-
-    if (tipo === "usuario") {
-      dados.cpf = cpf;
-    } else {
-      dados.cnpj = cnpj;
-    }
-
     try {
-      await api.post(`/users`, dados);
+      if (tipo === "usuario") {
+        await api.post("/users", {
+          nome: nomeInteiro,
+          email,
+          senha,
+        });
+      } else {
+        await api.post("/shelters", {
+          nome: nomeInteiro,
+          email,
+          senha,
+          telefone,
+          cnpj,
+        });
+      }
+
       setShowSuccessModal(true);
+
     } catch (error: any) {
       setErrorMessage(error.response?.data?.message || "Erro ao cadastrar");
       setShowErrorModal(true);
@@ -127,26 +127,19 @@ export default function Cadastrar() {
               required
             />
 
-            <TextField
-              label="Telefone"
-              type="text"
-              text={telefone}
-              onChange={(valor) => {
-                const numeros = valor.replace(/[^0-9]/g, '');
-                if (numeros.length <= 11) setTelefone(numeros);
-              }}
-              required
-            />
-
-            {tipo === 'usuario' ? (
-              <TextField
-                label="CPF"
-                type="text"
-                text={cpf}
-                onChange={(v) => setCpf(v.replace(/[^0-9]/g, ''))}
-              />
-            ) : (
+            {tipo === 'ong' && (
               <>
+                <TextField
+                  label="Telefone"
+                  type="text"
+                  text={telefone}
+                  onChange={(valor) => {
+                    const numeros = valor.replace(/[^0-9]/g, '');
+                    if (numeros.length <= 11) setTelefone(numeros);
+                  }}
+                  required
+                />
+
                 <TextField
                   label="CNPJ"
                   type="text"
@@ -157,13 +150,8 @@ export default function Cadastrar() {
                   }}
                   required
                 />
-                <TextField
-                  label="Endereço"
-                  type="text"
-                  text={endereco}
-                  onChange={setEndereco}
-                  required
-                />
+
+                
               </>
             )}
 

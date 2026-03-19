@@ -5,11 +5,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
   id: string;
-  email: string;
   nome: string;
+  email: string;
   role: "ADMIN" | "USER";
-  phone?: string;
-  cpf?: string;
+
+  // opcionais (usados pela ONG)
+  telefone?: string;
+  endereco?: string;
+  cnpj?: string;
 }
 
 interface AuthContextType {
