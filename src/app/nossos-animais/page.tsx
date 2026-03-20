@@ -26,6 +26,7 @@ export default function NossosAnimais() {
     porte: 'todos',
     disponibilidade: 'somente_disponiveis',
     busca: '',
+    idade: 'todas',
   });
 
   // Atualiza filtros se a query `especie` mudar (navegação cliente)
@@ -182,119 +183,197 @@ export default function NossosAnimais() {
     );
   }
 
+  // Limpar todos os filtros
+  const limparFiltros = () => {
+    setFiltros({
+      especie: 'todas',
+      sexo: 'todos',
+      porte: 'todos',
+      disponibilidade: 'somente_disponiveis',
+      busca: '',
+      idade: 'todas',
+    });
+  };
+
   // 🔹 Layout principal
   return (
     <>
       <Header />
       <main className={styles.main}>
         <div className={styles.container}>
-          {/* 🔹 Título e botões */}
+          {/* 🔹 Título e botão cadastrar */}
           <div className={styles.titleSection}>
             <h1 className={styles.title}>Animais para adoção</h1>
-            <div className={styles.buttonGroup}>
-              <button
-                className={styles.cadastrarBtn}
-                onClick={() => setModalAberto(true)}
-              >
-                + cadastrar animal
+            <button
+              className={styles.cadastrarBtn}
+              onClick={() => setModalAberto(true)}
+            >
+              + cadastrar animal
+            </button>
+          </div>
+
+          {/* 🔹 Layout: sidebar + grid */}
+          <div className={styles.pageLayout}>
+
+            {/* Sidebar de Filtros */}
+            <aside className={styles.sidebar}>
+              <div className={styles.sidebarTitle}>Filtros</div>
+              <div className={styles.sidebarSubtitle}>Personalize sua busca</div>
+
+              {/* Espécie */}
+              <div className={styles.filterGroup}>
+                <div className={styles.filterLabel}>
+                  <span className="material-symbols-outlined">category</span>
+                  Espécie
+                </div>
+                <div className={styles.pillGroup}>
+                  {[
+                    { label: 'Todos', value: 'todas' },
+                    { label: 'Cães', value: 'cachorro' },
+                    { label: 'Gatos', value: 'gato' },
+                    { label: 'Outros', value: 'outros' },
+                  ].map((op) => (
+                    <button
+                      key={op.value}
+                      className={`${styles.pill} ${filtros.especie === op.value ? styles.pillActive : ''}`}
+                      onClick={() => handleFiltroChange('especie', op.value)}
+                    >
+                      {op.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Porte */}
+              <div className={styles.filterGroup}>
+                <div className={styles.filterLabel}>
+                  <span className="material-symbols-outlined">straighten</span>
+                  Porte
+                </div>
+                <div className={styles.checkboxGroup}>
+                  {[
+                    { label: 'Pequeno', value: 'pequeno' },
+                    { label: 'Médio', value: 'medio' },
+                    { label: 'Grande', value: 'grande' },
+                  ].map((op) => (
+                    <label key={op.value} className={styles.checkboxLabel}>
+                      <input
+                        type="radio"
+                        name="porte"
+                        className={styles.radioInput}
+                        checked={filtros.porte === op.value}
+                        onChange={() => handleFiltroChange('porte', op.value)}
+                      />
+                      <span>{op.label}</span>
+                    </label>
+                  ))}
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="radio"
+                      name="porte"
+                      className={styles.radioInput}
+                      checked={filtros.porte === 'todos'}
+                      onChange={() => handleFiltroChange('porte', 'todos')}
+                    />
+                    <span>Qualquer porte</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Idade */}
+              <div className={styles.filterGroup}>
+                <div className={styles.filterLabel}>
+                  <span className="material-symbols-outlined">calendar_today</span>
+                  Idade
+                </div>
+                <select
+                  className={styles.filterSelect}
+                  value={filtros.idade}
+                  onChange={(e) => handleFiltroChange('idade', e.target.value)}
+                >
+                  <option value="todas">Qualquer idade</option>
+                  <option value="filhote">Filhote (até 1 ano)</option>
+                  <option value="jovem">Jovem (1–3 anos)</option>
+                  <option value="adulto">Adulto (3–7 anos)</option>
+                  <option value="senior">Sênior (+7 anos)</option>
+                </select>
+              </div>
+
+              {/* Gênero */}
+              <div className={styles.filterGroup}>
+                <div className={styles.filterLabel}>
+                  <span className="material-symbols-outlined">wc</span>
+                  Gênero
+                </div>
+                <div className={styles.genderGroup}>
+                  {[
+                    { label: 'Macho', value: 'macho' },
+                    { label: 'Fêmea', value: 'femea' },
+                  ].map((op) => (
+                    <button
+                      key={op.value}
+                      className={`${styles.genderBtn} ${filtros.sexo === op.value ? styles.genderBtnActive : ''}`}
+                      onClick={() => handleFiltroChange('sexo', op.value === filtros.sexo ? 'todos' : op.value)}
+                    >
+                      {op.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Busca por nome */}
+              <div className={styles.filterGroup}>
+                <div className={styles.filterLabel}>
+                  <span className="material-symbols-outlined">search</span>
+                  Buscar
+                </div>
+                <input
+                  type="text"
+                  className={styles.searchInput}
+                  placeholder="nome ou cidade..."
+                  value={filtros.busca}
+                  onChange={(e) => handleFiltroChange('busca', e.target.value)}
+                />
+              </div>
+
+              <button className={styles.limparBtn} onClick={limparFiltros}>
+                Limpar Filtros
               </button>
+            </aside>
+
+            {/* Conteúdo principal */}
+            <div className={styles.mainContent}>
+              {/* Contador */}
+              <div className={styles.contentHeader}>
+                <h2 className={styles.contador}>
+                  {animaisFiltrados.length === 0
+                    ? 'Nenhum animal encontrado'
+                    : `${animaisFiltrados.length} ${animaisFiltrados.length === 1 ? 'animal disponível' : 'animais disponíveis'}`}
+                </h2>
+              </div>
+
+              {/* Grid de Animais */}
+              {animaisFiltrados.length > 0 ? (
+                <div className={styles.animaisGrid}>
+                  {animaisFiltrados.map((animal, index) => (
+                    <AnimalCard key={animal.id} animal={animal} priority={index === 0} />
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.emptyState}>
+                  <div className={styles.emptyIcon}>🐾</div>
+                  <h3>Nenhum animal encontrado</h3>
+                  <p>Tente ajustar os filtros para ver mais resultados.</p>
+                  <button
+                    className={styles.cadastrarBtn}
+                    onClick={() => setModalAberto(true)}
+                  >
+                    Cadastrar animal
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-
-          {/* 🔹 Filtros */}
-          <div className={styles.filtrosContainer}>
-            <div className={styles.filtrosLinha1}>
-              <select
-                className={styles.select}
-                value={filtros.especie}
-                onChange={(e) => handleFiltroChange('especie', e.target.value)}
-              >
-                <option value="todas">todas as espécies</option>
-                <option value="cachorro">cachorro</option>
-                <option value="gato">gato</option>
-                <option value="passaro">pássaro</option>
-                <option value="coelho">coelho</option>
-                <option value="hamster">hamster</option>
-                <option value="fazenda">animais de fazenda</option>
-              </select>
-
-              <select
-                className={styles.select}
-                value={filtros.sexo}
-                onChange={(e) => handleFiltroChange('sexo', e.target.value)}
-              >
-                <option value="todos">todos os sexos</option>
-                <option value="macho">macho</option>
-                <option value="femea">fêmea</option>
-              </select>
-
-              <select
-                className={styles.select}
-                value={filtros.porte}
-                onChange={(e) => handleFiltroChange('porte', e.target.value)}
-              >
-                <option value="todos">todos os portes</option>
-                <option value="pequeno">pequeno</option>
-                <option value="medio">médio</option>
-                <option value="grande">grande</option>
-              </select>
-
-              <select
-                className={styles.select}
-                value={filtros.disponibilidade}
-                onChange={(e) =>
-                  handleFiltroChange('disponibilidade', e.target.value)
-                }
-              >
-                <option value="somente_disponiveis">somente disponíveis</option>
-                <option value="todos">todos</option>
-              </select>
-            </div>
-
-            <div className={styles.filtrosLinha2}>
-              <input
-                type="text"
-                className={styles.inputBusca}
-                placeholder="buscar por nome ou cidade..."
-                value={filtros.busca}
-                onChange={(e) => handleFiltroChange('busca', e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* 🔹 Contador */}
-          <div className={styles.contador}>
-            <div className={styles.contadorTexto}>
-              {animaisFiltrados.length === 0
-                ? 'nenhum animal encontrado'
-                : `${animaisFiltrados.length} ${
-                    animaisFiltrados.length === 1
-                      ? 'animal encontrado'
-                      : 'animais encontrados'
-                  }`}
-            </div>
-          </div>
-
-          {/* 🔹 Grid de Animais */}
-          {animaisFiltrados.length > 0 ? (
-            <div className={styles.animaisGrid}>
-              {animaisFiltrados.map((animal, index) => (
-                <AnimalCard key={animal.id} animal={animal} priority={index === 0} />
-              ))}
-            </div>
-          ) : (
-            <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>🐾</div>
-              <h3>nenhum animal encontrado</h3>
-              <p>não há animais com os filtros aplicados.</p>
-              <button
-                className={styles.cadastrarBtn}
-                onClick={() => setModalAberto(true)}
-              >
-                cadastrar animal
-              </button>
-            </div>
-          )}
         </div>
       </main>
       <Footer />
