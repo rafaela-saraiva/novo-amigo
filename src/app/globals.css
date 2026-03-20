@@ -1,6 +1,52 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --surface: #ffffff;
+  --surface-secondary: #f6f8f6;
+  --surface-tertiary: #f1f5f9;
+  --border: #e2e8f0;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-faint: #94a3b8;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg-strong: rgba(255, 255, 255, 0.97);
+  --glass-border: rgba(148, 163, 184, 0.3);
+  --shadow: rgba(0, 0, 0, 0.07);
+  --shadow-strong: rgba(0, 0, 0, 0.14);
+  --input-bg: #f1f5f9;
+  --input-bg-focus: #ffffff;
+  --chip-bg: #f1f5f9;
+  --chip-text: #475569;
+  --card-bg: #ffffff;
+  --overlay: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] {
+  --background: #0f1117;
+  --foreground: #e2e8f0;
+  --surface: #1a1d27;
+  --surface-secondary: #12141c;
+  --surface-tertiary: #252836;
+  --border: #2d3044;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --glass-bg: rgba(26, 29, 39, 0.88);
+  --glass-bg-strong: rgba(26, 29, 39, 0.97);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-strong: rgba(0, 0, 0, 0.5);
+  --input-bg: #252836;
+  --input-bg-focus: #2d3044;
+  --chip-bg: #252836;
+  --chip-text: #cbd5e1;
+  --card-bg: #1a1d27;
+  --overlay: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
 }
 
 html,
@@ -29,12 +75,6 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 /* ===== Bordas pretas globais para melhorar contraste visual =====
    Estas regras aplicam uma borda discreta preta em elementos de
    container e cartões mais comuns. Se quiser algo mais ou menos
@@ -42,12 +82,12 @@ a {
 
 /* Aplica borda aos containers principais com classe container */
 .container, .main, .card, .modal, .backdrop, .footer, .pet {
-  border: 1px solid rgba(0,0,0,0.9);
+  border: 1px solid var(--border);
 }
 
 /* Inputs e selects recebem uma borda preta mais sutil */
 input, select, textarea, .select, .inputBusca {
-  border: 1px solid rgba(0,0,0,0.9) !important;
+  border: 1px solid var(--border) !important;
 }
 
 /* Ajuste em elementos com borda-radius para manter visual arredondado */

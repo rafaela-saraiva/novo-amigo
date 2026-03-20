@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.45); 
+    background: var(--overlay); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,19 +13,13 @@
   
   /* === MODAL COM AS NOVAS CORES === */
   .modal {
-    background: #eef7f7; /* azul bem claro puxado do #43959b */
+    background: var(--card-bg, #eef7f7);
     padding: 30px;
     border-radius: 16px;
     width: 350px;
     box-shadow: 0 4px 25px rgba(0,0,0,0.35);
     position: relative;
-    border: 1px solid #c8e6e5; /* tom suave azul claro */
-  }
-  
-  /* === BOTÃO DE FECHAR === */
-  .closeBtn {
-    position: absolute;
-    top: 10px;
+    border: 1px solid var(--border, #c8e6e5);
     right: 10px;
     background: #f7a930; /* amarelo solicitado */
     color: #ffffff;

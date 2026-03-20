@@ -17,7 +17,7 @@
 
 /* === CONTAINER PRINCIPAL DO MODAL === */
 .modal {
-  background: white;
+  background: var(--card-bg, white);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   max-width: 600px;
@@ -25,6 +25,7 @@
   max-height: 90vh;
   overflow-y: auto;
   animation: slideIn 0.3s ease-out;
+  color: var(--text-primary, #2d5a60);
 }
 
 /* === CABEÇALHO DO MODAL === */
@@ -33,7 +34,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 32px 16px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border, #e5e7eb);
 }
 
 .header h2 {

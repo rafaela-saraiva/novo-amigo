@@ -1,8 +1,8 @@
 /* ===== Footer ===== */
 
 .footer {
-  background: #fff;
-  border-top: 1px solid #e2e8f0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
   padding: 64px 0 0;
   font-family: 'Lexend', sans-serif;
 }
@@ -51,13 +51,13 @@
 .logoText {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
 .description {
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
 }
@@ -73,11 +73,11 @@
   width: 40px;
   height: 40px;
   border-radius: 9999px;
-  background: #f1f5f9;
+  background: var(--surface-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #334155;
+  color: var(--text-secondary);
   transition: background 0.2s, color 0.2s;
   text-decoration: none;
 }
@@ -95,7 +95,7 @@
 .colTitle {
   font-size: 0.9375rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-primary);
   margin: 0 0 8px;
 }
 
@@ -112,7 +112,7 @@
 .links a {
   text-decoration: none;
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--text-muted);
   transition: color 0.2s;
 }
 
@@ -123,7 +123,7 @@
 /* Newsletter */
 .newsletterText {
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--text-muted);
   line-height: 1.5;
   margin: 0;
 }
@@ -135,7 +135,7 @@
 
 .newsletterInput {
   width: 100%;
-  background: #f1f5f9;
+  background: var(--input-bg);
   border: 1px solid transparent;
   border-radius: 12px;
   padding: 12px 48px 12px 16px;
@@ -144,11 +144,12 @@
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.2s;
+  color: var(--text-primary);
 }
 
 .newsletterInput:focus {
   border-color: #fb7084;
-  background: #fff;
+  background: var(--input-bg-focus);
 }
 
 .newsletterBtn {
@@ -172,7 +173,7 @@
 
 /* Barra final */
 .footerBottom {
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border);
   padding: 24px 16px;
   max-width: 1200px;
   margin: 0 auto;
@@ -185,7 +186,7 @@
 
 .footerBottom p {
   font-size: 0.8125rem;
-  color: #94a3b8;
+  color: var(--text-faint);
   margin: 0;
 }
 
@@ -194,7 +195,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8125rem;
-  color: #94a3b8;
+  color: var(--text-faint);
 }
 
 .heartIcon {

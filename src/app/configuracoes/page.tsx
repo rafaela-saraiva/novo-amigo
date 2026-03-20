@@ -3,6 +3,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ import styles from "./styles.module.css";
 
 export default function Configuracoes() {
   const { user, token, loading, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const router = useRouter();
 
   const [modalAberto, setModalAberto] = useState(false);
@@ -131,6 +133,22 @@ export default function Configuracoes() {
             <button className={styles.editBtn} onClick={() => setModalAberto(true)}>
               Alterar Dados ✏️
             </button>
+          </div>
+
+          {/* SEÇÃO DE APARÊNCIA */}
+          <div className={styles.themeSection}>
+            <h2>Aparência</h2>
+            <div className={styles.themeToggle}>
+              <div className={styles.themeInfo}>
+                <span className="material-symbols-outlined">
+                  {theme === 'dark' ? 'dark_mode' : 'light_mode'}
+                </span>
+                <span>{theme === 'dark' ? 'Modo Escuro' : 'Modo Claro'}</span>
+              </div>
+              <button className={styles.toggleBtn} onClick={toggleTheme} aria-label="Alternar tema">
+                <span className={`${styles.toggleThumb} ${theme === 'dark' ? styles.toggleActive : ''}`} />
+              </button>
+            </div>
           </div>
 
           {/* SEÇÃO DE AÇÕES */}

@@ -5,7 +5,7 @@
 }
 
 .subtitle {
-  color: #555;
+  color: var(--text-muted);
   margin-bottom: 10px;
 }
 
@@ -13,11 +13,12 @@
   font-size: 32px;
   font-weight: 600;
   margin-bottom: 20px;
+  color: var(--text-primary);
 }
 
 .userCard {
-  background: white;
-  border: 1px solid #e6e6e6;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 25px 30px;
 
@@ -44,6 +45,7 @@
 .userName {
   font-weight: 600;
   font-size: 18px;
+  color: var(--text-primary);
 }
 
 .dataGrid {
@@ -74,7 +76,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: var(--overlay);
 
   display: flex;
   justify-content: center;
@@ -86,9 +88,10 @@
 .modal {
   width: 900px;
   max-width: 95%;
-  background: white;
+  background: var(--card-bg);
   border-radius: 10px;
   padding: 35px;
+  color: var(--text-primary);
 }
 
 .modalTitle {
@@ -106,9 +109,11 @@
 .input {
   width: 100%;
   height: 42px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0 10px;
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .actions {
@@ -119,11 +124,12 @@
 }
 
 .cancelBtn {
-  border: 1px solid #ccc;
-  background: white;
+  border: 1px solid var(--border);
+  background: var(--surface);
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
+  color: var(--text-primary);
 }
 
 .confirmBtn {
@@ -141,7 +147,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #e1ebe9; 
+  background-color: var(--surface-secondary); 
   
 }
 
@@ -157,7 +163,7 @@
 .actionSection h2 {
   margin-bottom: 16px;
   font-size: 1.3rem;
-  color: #333;
+  color: var(--text-secondary);
 }
 
 /* Botões de ações principais */
@@ -169,9 +175,9 @@
   margin: 8px auto;
   padding: 10px 0;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  background: #f5f5f5;
-  color: #333;
+  border: 1px solid var(--border);
+  background: var(--surface-tertiary);
+  color: var(--text-secondary);
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -192,4 +198,69 @@
 
 .deletarBtn {
   border-color: #c0392b;
+}
+
+/* SEÇÃO APARÊNCIA / TOGGLE DE TEMA */
+.themeSection {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.themeSection h2 {
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+}
+
+.themeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.themeInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.themeInfo .material-symbols-outlined {
+  font-size: 22px;
+  color: #fb7084;
+}
+
+.toggleBtn {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 9999px;
+  border: none;
+  background: var(--border);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s;
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.25s;
+}
+
+.toggleActive {
+  transform: translateX(24px);
+}
+
+.toggleBtn:has(.toggleActive) {
+  background: #fb7084;
 }
