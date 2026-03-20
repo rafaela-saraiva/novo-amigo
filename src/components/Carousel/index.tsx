@@ -85,7 +85,7 @@ export default function Carousel() {
 
           <div className={styles.matchCard}>
             <div className={styles.matchHeader}>
-              <span className="material-symbols-outlined" style={{ color: '#30e85e', fontSize: 28 }}>
+              <span className="material-symbols-outlined" style={{ color: '#fb7084', fontSize: 28 }}>
                 favorite
               </span>
               <p className={styles.matchTitle}>Match de Hoje!</p>

@@ -33,7 +33,7 @@
 }
 
 .logoIcon {
-  background: #30e85e;
+  background: #fb7084;
   padding: 8px;
   border-radius: 9999px;
   color: #0d150f;
@@ -72,7 +72,7 @@
 }
 
 .link:hover {
-  color: #30e85e;
+  color: #fb7084;
 }
 
 /* ===== BOTOES ===== */
@@ -101,7 +101,7 @@
 }
 
 .btnCadastrar {
-  background: #30e85e;
+  background: #fb7084;
   color: #0d150f;
   font-size: 14px;
   font-weight: 700;
@@ -144,7 +144,7 @@
 
 .userChip .material-symbols-outlined {
   font-size: 22px;
-  color: #30e85e;
+  color: #fb7084;
 }
 
 .userName {
@@ -223,7 +223,7 @@
 
 .mobileLink:hover {
   background: rgba(48, 232, 94, 0.1);
-  color: #1b8d39;
+  color: #c9384d;
 }
 
 .mobileDivider {
@@ -251,7 +251,7 @@
 }
 
 .mobileBtnCadastrar {
-  background: #30e85e;
+  background: #fb7084;
   color: #0d150f;
   font-size: 15px;
   font-weight: 700;

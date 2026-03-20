@@ -116,7 +116,7 @@
 }
 
 .heartBtn:hover {
-  background: #30e85e;
+  background: #fb7084;
   color: #0d150f;
 }
 
@@ -194,8 +194,8 @@
   width: 100%;
   padding: 12px;
   border-radius: 9999px;
-  border: 2px solid #30e85e;
-  color: #30e85e;
+  border: 2px solid #fb7084;
+  color: #fb7084;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
@@ -204,6 +204,6 @@
 }
 
 .conhecerBtn:hover {
-  background: #30e85e;
+  background: #fb7084;
   color: #0d150f;
 }  
