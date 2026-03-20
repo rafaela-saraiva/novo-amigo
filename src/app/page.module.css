@@ -178,6 +178,103 @@
     position: static;
   }
 }
+
+/* ===== Como funciona a adoção ===== */
+
+.howSection {
+  max-width: 1200px;
+  margin: 80px auto 0;
+  padding: 0 16px 80px;
+}
+
+.howCenter {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.howTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+}
+
+.howSubtitle {
+  color: #64748b;
+  font-size: 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.howGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.howCard {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.howNumber {
+  position: absolute;
+  top: -16px;
+  left: 16px;
+  font-size: 6rem;
+  font-weight: 900;
+  color: rgba(48, 232, 94, 0.12);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+.howIconBox {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  background: rgba(48, 232, 94, 0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1b8d39;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.howCardTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+
+.howCardText {
+  font-size: 0.9375rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .howGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .howTitle {
+    font-size: 1.75rem;
+  }
+}
 @media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;

@@ -1,4 +1,4 @@
-"use client"
+import Link from 'next/link';
 import styles from './styles.module.css';
 
 export default function Footer() {
@@ -6,92 +6,80 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.container}>
 
-        {/* COLUNA 1 — Sobre */}
+        {/* COLUNA 1 — Logo + descrição */}
         <div className={styles.col}>
-          <h3 className={styles.title}>Novo Amigo</h3>
-          <p className={styles.text}>
-            Resgatando, cuidando e encontrando um novo lar para animais em situação de risco.
+          <div className={styles.logo}>
+            <div className={styles.logoBadge}>
+              <span className="material-symbols-outlined">pets</span>
+            </div>
+            <span className={styles.logoText}>Novo Amigo</span>
+          </div>
+          <p className={styles.description}>
+            Transformando vidas através da adoção consciente e responsável.
+            Somos a maior rede de ONGs do Brasil.
           </p>
-
-          <p className={styles.address}>
-            Rua D. Carlos Botelho, 1900<br />
-            São Carlos — SP
-          </p>
-
-          <p className={styles.cnpj}>
-            CNPJ: 00.000.000/0001-00
-          </p>
+          <div className={styles.social}>
+            <a href="#" className={styles.socialBtn} aria-label="Instagram">
+              <span className="material-symbols-outlined">camera</span>
+            </a>
+            <a href="#" className={styles.socialBtn} aria-label="Compartilhar">
+              <span className="material-symbols-outlined">share</span>
+            </a>
+            <a href="#" className={styles.socialBtn} aria-label="YouTube">
+              <span className="material-symbols-outlined">videocam</span>
+            </a>
+          </div>
         </div>
 
-        {/* COLUNA 2 — Links úteis */}
+        {/* COLUNA 2 — Plataforma */}
         <div className={styles.col}>
-          <h3 className={styles.title}>Links úteis</h3>
+          <h4 className={styles.colTitle}>Plataforma</h4>
           <ul className={styles.links}>
-            <li><a href="/nossos-animais">Nossos Animais</a></li>
-            <li><a href="/doacao">Doe Agora</a></li>
-            <li><a href="/faleConosco">Fale Conosco</a></li>
-            
+            <li><Link href="/nossos-animais">Adotar</Link></li>
+            <li><Link href="/#como-funciona">Como Funciona</Link></li>
+            <li><Link href="/nossos-animais">ONGs Parceiras</Link></li>
+            <li><a href="#">Blog</a></li>
           </ul>
         </div>
 
-        {/* COLUNA 3 — Contato / Social */}
+        {/* COLUNA 3 — Institucional */}
         <div className={styles.col}>
-          <h3 className={styles.title}>Contato</h3>
+          <h4 className={styles.colTitle}>Institucional</h4>
+          <ul className={styles.links}>
+            <li><Link href="/sobre">Sobre Nós</Link></li>
+            <li><a href="#">Trabalhe Conosco</a></li>
+            <li><a href="#">Privacidade</a></li>
+            <li><a href="#">Termos de Uso</a></li>
+          </ul>
+        </div>
 
-          <div className={styles.contactItem}>
-            <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" 
-                 width="18" height="18" alt="Email" />
-            contato@novoamigo.com
-          </div>
-
-          <a
-            className={styles.contactItem}
-            href="https://wa.me/5500000000000"
-            target="_blank"
-          >
-            <img 
-              src="https://cdn-icons-png.flaticon.com/512/733/733585.png" 
-              width="18" 
-              height="18" 
-              alt="WhatsApp"
+        {/* COLUNA 4 — Novidades */}
+        <div className={styles.col}>
+          <h4 className={styles.colTitle}>Novidades</h4>
+          <p className={styles.newsletterText}>
+            Receba dicas de cuidados e novas histórias de adoção.
+          </p>
+          <div className={styles.newsletterForm}>
+            <input
+              type="email"
+              placeholder="Seu e-mail"
+              className={styles.newsletterInput}
             />
-            WhatsApp
-          </a>
-
-          <div className={styles.social}>
-            <a href="#" aria-label="Instagram">
-              <img 
-                src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" 
-                width="22" 
-                height="22" 
-                alt="Instagram"
-              />
-            </a>
-
-            <a href="#" aria-label="Facebook">
-              <img 
-                src="https://cdn-icons-png.flaticon.com/512/174/174848.png" 
-                width="22" 
-                height="22" 
-                alt="Facebook"
-              />
-            </a>
-
-            <a href="#" aria-label="YouTube">
-              <img 
-                src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" 
-                width="22" 
-                height="22" 
-                alt="YouTube"
-              />
-            </a>
+            <button className={styles.newsletterBtn} aria-label="Enviar">
+              <span className="material-symbols-outlined">send</span>
+            </button>
           </div>
         </div>
       </div>
 
       {/* BARRA FINAL */}
       <div className={styles.footerBottom}>
-        © {new Date().getFullYear()} Novo Amigo — Todos os direitos reservados.
+        <p>© {new Date().getFullYear()} Novo Amigo. Todos os direitos reservados.</p>
+        <div className={styles.footerBottomRight}>
+          <span>Feito com</span>
+          <span className={`material-symbols-outlined ${styles.heartIcon}`}>favorite</span>
+          <span>pela comunidade.</span>
+        </div>
       </div>
     </footer>
   );

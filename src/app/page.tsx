@@ -6,7 +6,6 @@ import Header from "@/components/Header";
 import { PetCard } from "@/components/ProductCard";
 import "./page.css";
 import styles from "./page.module.css";
-import SobreNos from "./sobre/page";
 
 const featuredPets = [
   {
@@ -110,7 +109,51 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <SobreNos/>
+
+        {/* Como funciona a adoção */}
+        <section className={styles.howSection}>
+          <div className={styles.howCenter}>
+            <h2 className={styles.howTitle}>Como funciona a adoção?</h2>
+            <p className={styles.howSubtitle}>
+              Três passos simples para você encontrar seu novo melhor amigo de forma segura e responsável.
+            </p>
+          </div>
+
+          <div className={styles.howGrid}>
+            <div className={styles.howCard}>
+              <span className={styles.howNumber}>1</span>
+              <div className={styles.howIconBox}>
+                <span className="material-symbols-outlined">search_check</span>
+              </div>
+              <h4 className={styles.howCardTitle}>Escolha um pet</h4>
+              <p className={styles.howCardText}>
+                Navegue pelos perfis e encontre o pet que mais combina com seu perfil e rotina.
+              </p>
+            </div>
+
+            <div className={styles.howCard}>
+              <span className={styles.howNumber}>2</span>
+              <div className={styles.howIconBox}>
+                <span className="material-symbols-outlined">chat</span>
+              </div>
+              <h4 className={styles.howCardTitle}>Converse com a ONG</h4>
+              <p className={styles.howCardText}>
+                Tire suas dúvidas, agende uma visita e conheça a história por trás de cada resgate.
+              </p>
+            </div>
+
+            <div className={styles.howCard}>
+              <span className={styles.howNumber}>3</span>
+              <div className={styles.howIconBox}>
+                <span className="material-symbols-outlined">home_filled</span>
+              </div>
+              <h4 className={styles.howCardTitle}>Leve para casa</h4>
+              <p className={styles.howCardText}>
+                Prepare seu lar para receber seu novo amigo com todo amor e segurança que ele merece.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
       
       
