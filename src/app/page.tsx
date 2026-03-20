@@ -27,18 +27,41 @@ interface AnimalAPI {
 }
 
 export default function Home() {
-  const [featuredPets, setFeaturedPets] = useState<AnimalAPI[]>([]);
+  const [todosAnimais, setTodosAnimais] = useState<AnimalAPI[]>([]);
+  const [busca, setBusca] = useState('');
+  const [especie, setEspecie] = useState('');
+  const [idade, setIdade] = useState('');
+  const [porte, setPorte] = useState('');
 
   useEffect(() => {
     api.get('/animals')
       .then((res) => {
-        const disponiveis = (res.data as AnimalAPI[])
-          .filter((a) => a.disponivel !== false)
-          .slice(0, 4);
-        setFeaturedPets(disponiveis);
+        const disponiveis = (res.data as AnimalAPI[]).filter((a) => a.disponivel !== false);
+        setTodosAnimais(disponiveis);
       })
-      .catch(() => setFeaturedPets([]));
+      .catch(() => setTodosAnimais([]));
   }, []);
+
+  const animaisFiltrados = todosAnimais.filter((pet) => {
+    const buscaOk = busca === '' ||
+      pet.nome.toLowerCase().includes(busca.toLowerCase()) ||
+      (pet.raca ?? '').toLowerCase().includes(busca.toLowerCase());
+
+    const especieOk = especie === '' ||
+      (pet.especie ?? '').toLowerCase().includes(especie.toLowerCase());
+
+    const idadeNum = Number(pet.idade);
+    const idadeOk = idade === '' ||
+      (idade === 'filhote' && idadeNum <= 1) ||
+      (idade === 'jovem' && idadeNum > 1 && idadeNum <= 3) ||
+      (idade === 'adulto' && idadeNum > 3 && idadeNum <= 8) ||
+      (idade === 'idoso' && idadeNum > 8);
+
+    const porteOk = porte === '' ||
+      (pet.porte ?? '').toLowerCase() === porte.toLowerCase();
+
+    return buscaOk && especieOk && idadeOk && porteOk;
+  }).slice(0, 4);
 
   return (
     <>
@@ -63,26 +86,55 @@ export default function Home() {
               <input
                 className={styles.searchInput}
                 type="text"
-                placeholder="Buscar por raça, cidade..."
+                placeholder="Buscar por nome ou raça..."
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
               />
             </div>
             <div className={styles.filterBtns}>
-              <button className={styles.filterBtn}>
-                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>category</span>
-                Espécie
-              </button>
-              <button className={styles.filterBtn}>
-                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>calendar_month</span>
-                Idade
-              </button>
-              <button className={styles.filterBtn}>
-                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>straighten</span>
-                Porte
-              </button>
+              <select
+                className={styles.filterSelect}
+                value={especie}
+                onChange={(e) => setEspecie(e.target.value)}
+              >
+                <option value="">🐾 Espécie</option>
+                <option value="cachorro">🐶 Cães</option>
+                <option value="gato">🐱 Gatos</option>
+                <option value="passaro">🐦 Pássaros</option>
+                <option value="coelho">🐰 Coelhos</option>
+                <option value="hamster">🐹 Hamsters</option>
+              </select>
+              <select
+                className={styles.filterSelect}
+                value={idade}
+                onChange={(e) => setIdade(e.target.value)}
+              >
+                <option value="">📅 Idade</option>
+                <option value="filhote">Filhote (até 1 ano)</option>
+                <option value="jovem">Jovem (1-3 anos)</option>
+                <option value="adulto">Adulto (3-8 anos)</option>
+                <option value="idoso">Idoso (+ 8 anos)</option>
+              </select>
+              <select
+                className={styles.filterSelect}
+                value={porte}
+                onChange={(e) => setPorte(e.target.value)}
+              >
+                <option value="">📏 Porte</option>
+                <option value="pequeno">Pequeno</option>
+                <option value="medio">Médio</option>
+                <option value="grande">Grande</option>
+              </select>
             </div>
-            <button className={styles.tuneBtn} aria-label="Filtros avançados">
-              <span className="material-symbols-outlined">tune</span>
-            </button>
+            {(busca || especie || idade || porte) && (
+              <button
+                className={styles.tuneBtn}
+                onClick={() => { setBusca(''); setEspecie(''); setIdade(''); setPorte(''); }}
+                title="Limpar filtros"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            )}
           </div>
 
           {/* Grid de pets */}
@@ -95,10 +147,10 @@ export default function Home() {
               </Link>
             </div>
             <div className={styles.petsGrid}>
-              {featuredPets.length === 0 ? (
-                <p style={{ color: '#64748b', gridColumn: '1/-1' }}>Nenhum animal disponível no momento.</p>
+              {animaisFiltrados.length === 0 ? (
+                <p style={{ color: '#64748b', gridColumn: '1/-1' }}>Nenhum animal encontrado com esses filtros.</p>
               ) : (
-                featuredPets.map((pet) => {
+                animaisFiltrados.map((pet) => {
                   const idadeStr = pet.idade != null ? `${pet.idade} ${Number(pet.idade) === 1 ? 'ano' : 'anos'}` : '';
                   const badge = pet.vacinado ? 'Vacinado' : pet.castrado ? 'Castrado' : pet.especie ?? '';
                   const traits = [pet.raca, pet.sexo].filter(Boolean) as string[];

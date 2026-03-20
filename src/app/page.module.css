@@ -100,7 +100,31 @@
 }
 
 .filterBtn:hover {
-  background: rgba(48, 232, 94, 0.1);
+  background: rgba(251, 112, 132, 0.1);
+  color: #c9384d;
+}
+
+.filterSelect {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Lexend', sans-serif;
+  cursor: pointer;
+  color: #334155;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.filterSelect:focus {
+  background: rgba(251, 112, 132, 0.1);
   color: #c9384d;
 }
 
