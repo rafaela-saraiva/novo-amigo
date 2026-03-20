@@ -305,19 +305,10 @@ export default function NossoTime() {
             <div className={styles.focusItem}>
               <div className={styles.focusBarLabels}><span>Backend</span><span>Frontend</span></div>
               <div className={styles.focusTrack}>
-                <div className={styles.focusBack} style={{ width: '60%' }} />
-                <div className={styles.focusFront} style={{ width: '40%' }} />
+                <div className={styles.focusBack} style={{ width: '20%' }} />
+                <div className={styles.focusFront} style={{ width: '80%' }} />
               </div>
-              <p className={styles.focusCaption}>João: Backend Specialist com Alta Frequência</p>
-            </div>
-
-            <div className={styles.focusItem}>
-              <div className={styles.focusBarLabels}><span>Backend</span><span>Frontend</span></div>
-              <div className={styles.focusTrack}>
-                <div className={styles.focusBack} style={{ width: '80%' }} />
-                <div className={styles.focusFront} style={{ width: '20%' }} />
-              </div>
-              <p className={styles.focusCaption}>Giovanna: Data & Structure com Base Backend</p>
+              <p className={styles.focusCaption}>Rafaela: UI & Frontend Lead do Projeto</p>
             </div>
 
             <div className={styles.focusItem}>
@@ -332,10 +323,19 @@ export default function NossoTime() {
             <div className={styles.focusItem}>
               <div className={styles.focusBarLabels}><span>Backend</span><span>Frontend</span></div>
               <div className={styles.focusTrack}>
-                <div className={styles.focusBack} style={{ width: '20%' }} />
-                <div className={styles.focusFront} style={{ width: '80%' }} />
+                <div className={styles.focusBack} style={{ width: '60%' }} />
+                <div className={styles.focusFront} style={{ width: '40%' }} />
               </div>
-              <p className={styles.focusCaption}>Rafaela: UI & Frontend Lead do Projeto</p>
+              <p className={styles.focusCaption}>João: Backend Specialist com Alta Frequência</p>
+            </div>
+
+            <div className={styles.focusItem}>
+              <div className={styles.focusBarLabels}><span>Backend</span><span>Frontend</span></div>
+              <div className={styles.focusTrack}>
+                <div className={styles.focusBack} style={{ width: '80%' }} />
+                <div className={styles.focusFront} style={{ width: '20%' }} />
+              </div>
+              <p className={styles.focusCaption}>Giovanna: Data & Structure com Base Backend</p>
             </div>
 
           </div>
