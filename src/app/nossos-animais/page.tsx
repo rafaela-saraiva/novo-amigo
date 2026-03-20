@@ -33,7 +33,6 @@ export default function NossosAnimais() {
 
   const OUTROS_ESPECIES = [
     { label: 'Animais de Fazenda', value: 'fazenda' },
-    { label: 'Pássaros', value: 'passaro' },
     { label: 'Animais Exóticos', value: 'exotico' },
   ];
 
@@ -237,6 +236,9 @@ export default function NossosAnimais() {
                     { label: 'Todos', value: 'todas' },
                     { label: 'Cães', value: 'cachorro' },
                     { label: 'Gatos', value: 'gato' },
+                    { label: 'Pássaros', value: 'passaro' },
+                    { label: 'Coelhos', value: 'coelho' },
+                    { label: 'Hamsters', value: 'hamster' },
                   ].map((op) => (
                     <button
                       key={op.value}
