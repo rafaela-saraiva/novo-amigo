@@ -137,7 +137,7 @@
 .petsTitle {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #fb7084;
   margin: 0;
   letter-spacing: -0.01em;
 }
@@ -196,7 +196,7 @@
   font-family: 'Lexend', sans-serif;
   font-size: 2.25rem;
   font-weight: 900;
-  color: #0f172a;
+  color: #fb7084;
   margin: 0 0 16px;
   letter-spacing: -0.02em;
 }
@@ -231,7 +231,7 @@
   left: 16px;
   font-size: 6rem;
   font-weight: 900;
-  color: rgba(48, 232, 94, 0.12);
+  color: rgba(161, 60, 75, 0.25);
   line-height: 1;
   user-select: none;
   pointer-events: none;
@@ -586,7 +586,7 @@ a.secondary {
   .content{ min-height: calc(100vh - 200px); padding: 0 20px 20px; }
 }
 .content h2{
-   color: #ffbd59; 
+   color: #fb7084; 
 }
 
 
