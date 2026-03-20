@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -13,6 +13,8 @@ export default function Configuracoes() {
   const { user, token, loading, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
+  const isOng = user?.role === 'ONG'; // ou o campo que você tiver
+  const isAdmin = user?.email === 'admin@pet.com'; // ⭐ NOVO
 
   const [modalAberto, setModalAberto] = useState(false);
   const [modalDesativar, setModalDesativar] = useState(false);
@@ -84,22 +86,22 @@ export default function Configuracoes() {
   }
 
   async function deletarConta() {
-  try {
-    setAcaoExecutando(true);
-    await api.delete(`/users/${user?.id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    setModalDeletar(false);
-    alert("Conta deletada com sucesso.");
-    logout?.();
-    router.push("/");
-  } catch (err) {
-    console.error(err);
-    alert("Erro ao deletar conta.");
-  } finally {
-    setAcaoExecutando(false);
+    try {
+      setAcaoExecutando(true);
+      await api.delete(`/users/${user?.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setModalDeletar(false);
+      alert("Conta deletada com sucesso.");
+      logout?.();
+      router.push("/");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao deletar conta.");
+    } finally {
+      setAcaoExecutando(false);
+    }
   }
-}
 
   function encerrarSessao() {
     logout?.();
@@ -124,8 +126,8 @@ export default function Configuracoes() {
                 <p className={styles.userName}>{nome}</p>
                 <div className={styles.dataGrid}>
                   <span>E-mail: {email}</span>
-                  <span>Telefone: {telefone ? "(***) *****" : "(***) *****"}</span>
-                  <span>CPF: {cpf ? "***.***.***-**" : "***.***.***-**"}</span>
+                  <span>Telefone: (***) *****</span>
+                  <span>CPF: ***.***.***-**</span>
                 </div>
               </div>
             </div>
@@ -135,7 +137,7 @@ export default function Configuracoes() {
             </button>
           </div>
 
-          {/* SEÇÃO DE APARÊNCIA */}
+          {/* APARÊNCIA */}
           <div className={styles.themeSection}>
             <h2>Aparência</h2>
             <div className={styles.themeToggle}>
@@ -145,129 +147,101 @@ export default function Configuracoes() {
                 </span>
                 <span>{theme === 'dark' ? 'Modo Escuro' : 'Modo Claro'}</span>
               </div>
-              <button className={styles.toggleBtn} onClick={toggleTheme} aria-label="Alternar tema">
+              <button className={styles.toggleBtn} onClick={toggleTheme}>
                 <span className={`${styles.toggleThumb} ${theme === 'dark' ? styles.toggleActive : ''}`} />
               </button>
             </div>
           </div>
 
-          {/* SEÇÃO DE AÇÕES */}
+          {/* AÇÕES */}
           <div className={styles.actionSection}>
             <h2>Ações da Conta</h2>
-            <button className={styles.logoutBtn} onClick={() => { setModalAberto(false); encerrarSessao(); }}>
-              Sair da Conta
-            </button>
-            <button className={styles.desativarBtn} onClick={() => setModalDesativar(true)}>
-              Desativar Conta
-            </button>
-            <button className={styles.deletarBtn} onClick={() => setModalDeletar(true)}>
-              Deletar Conta
-            </button>
-          </div>
+
+          {/* 👑 ADMIN */}
+          {isAdmin && (
+          <>
+          <button
+             className={styles.adminBtn}
+              onClick={() => router.push('/admin/users')}
+           >
+            Gerenciar Usuários 👥
+        </button>
+
+          <button
+            className={styles.adminBtn}
+            onClick={() => router.push('/admin/pets')}
+          >
+          Gerenciar Pets 🐶
+        </button>
+
+        <button
+        className={styles.adminBtn}
+        onClick={() => router.push('/admin/ong')}
+        >
+        Gerenciar ONG 🏠
+      </button>
+      </>
+)}
+
+      
+
+  <button className={styles.logoutBtn} onClick={encerrarSessao}>
+    Sair da Conta
+  </button>
+
+  {!isAdmin && (
+    <>
+      <button className={styles.desativarBtn}>
+        Desativar Conta
+      </button>
+
+      <button className={styles.deletarBtn}>
+        Deletar Conta
+      </button>
+    </>
+  )}
+</div>
         </div>
       </main>
 
-      {/* MODAL DE EDITAR DADOS */}
+      {/* MODAL EDITAR */}
       {modalAberto && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
-            <h2 className={styles.modalTitle}>Editar dados pessoais</h2>
+            <h2>Editar dados</h2>
 
-            <div className={styles.formGrid}>
-              <div>
-                <label>Nome</label>
-                <input
-                  className={styles.input}
-                  value={nome}
-                  onChange={(e) => setNome(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>Email</label>
-                <input
-                  className={styles.input}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>Telefone</label>
-                <input
-                  className={styles.input}
-                  value={telefone}
-                  onChange={(e) => setTelefone(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>CPF</label>
-                <input
-                  className={styles.input}
-                  value={cpf}
-                  onChange={(e) => setCpf(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>Nova senha</label>
-                <input
-                  type="password"
-                  className={styles.input}
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>Confirmar senha</label>
-                <input
-                  type="password"
-                  className={styles.input}
-                  value={confirmarPass}
-                  onChange={(e) => setConfirmarPass(e.target.value)}
-                />
-              </div>
-            </div>
+            <input value={nome} onChange={(e) => setNome(e.target.value)} />
+            <input value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+            <input value={cpf} onChange={(e) => setCpf(e.target.value)} />
 
-            <div className={styles.actions}>
-              <button className={styles.cancelBtn} onClick={() => setModalAberto(false)}>Cancelar</button>
-              <button
-                className={styles.confirmBtn}
-                onClick={atualizarDados}
-                disabled={salvando}
-              >
-                {salvando ? "Salvando..." : "Confirmar dados"}
-              </button>
-            </div>
+            <input type="password" placeholder="Nova senha" value={pass} onChange={(e) => setPass(e.target.value)} />
+            <input type="password" placeholder="Confirmar senha" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)} />
+
+            <button onClick={atualizarDados}>
+              {salvando ? "Salvando..." : "Salvar"}
+            </button>
+            <button onClick={() => setModalAberto(false)}>Cancelar</button>
           </div>
         </div>
       )}
 
-      {/* MODAL DE DESATIVAR */}
-      {modalDesativar && (
+      {/* MODAL DESATIVAR (só aparece se não for admin) */}
+      {modalDesativar && !isAdmin && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <h2>Desativar Conta</h2>
-            <p>Tem certeza que deseja desativar sua conta temporariamente?</p>
-            <div className={styles.actions}>
-              <button className={styles.cancelBtn} onClick={() => setModalDesativar(false)}>Cancelar</button>
-              <button className={styles.desativarBtn} onClick={desativarConta} disabled={acaoExecutando}>
-                {acaoExecutando ? "Processando..." : "Desativar"}
-              </button>
-            </div>
+            <button onClick={desativarConta}>Confirmar</button>
           </div>
         </div>
       )}
 
-      {/* MODAL DE DELETAR */}
-      {modalDeletar && (
+      {/* MODAL DELETAR (só aparece se não for admin) */}
+      {modalDeletar && !isAdmin && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <h2>Deletar Conta</h2>
-            <p>Essa ação é irreversível! Tem certeza que deseja deletar sua conta?</p>
-            <div className={styles.actions}>
-              <button className={styles.cancelBtn} onClick={() => setModalDeletar(false)}>Cancelar</button>
-              <button className={styles.deletarBtn} onClick={deletarConta} disabled={acaoExecutando}>
-                {acaoExecutando ? "Processando..." : "Deletar"}
-              </button>
-            </div>
+            <button onClick={deletarConta}>Confirmar</button>
           </div>
         </div>
       )}

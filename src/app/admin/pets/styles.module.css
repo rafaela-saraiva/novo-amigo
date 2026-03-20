@@ -1,0 +1,109 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-secondary);
+}
+
+.main {
+  flex: 1;
+  padding-top: 110px;
+}
+
+.container {
+  max-width: 1150px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: var(--text-primary);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+/* CARD */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+
+  display: flex;
+  flex-direction: column;
+
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* HOVER CARD */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+/* IMAGE */
+.image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* TEXTO */
+.card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+/* AÇÕES */
+.actions {
+  margin-top: auto;
+}
+
+/* BOTÃO DELETE */
+.deleteBtn {
+  width: 100%;
+  padding: 10px;
+
+  border-radius: 8px;
+  border: 1px solid #e74c3c;
+
+  background: transparent;
+  color: #e74c3c;
+
+  font-weight: 500;
+  font-size: 14px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.deleteBtn:hover {
+  background: #e74c3c;
+  color: #fff;
+  transform: scale(1.02);
+}
+
+/* CLICK */
+.deleteBtn:active {
+  transform: scale(0.97);
+}

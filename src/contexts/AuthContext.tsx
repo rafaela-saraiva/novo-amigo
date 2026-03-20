@@ -7,6 +7,7 @@ interface User {
   id: string;
   nome: string;
   email: string;
+  groups?: string[];
   role?: "ADMIN" | "USER";
 
   // opcionais (usados pela ONG)
