@@ -124,17 +124,23 @@ export default function NossosAnimais() {
         return;
       }
 
-      const formData = new FormData();
-      Object.entries(novoAnimal).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          formData.append(key, value as any);
-        }
-      });
+      const payload = {
+        nome: novoAnimal.nome,
+        especie: novoAnimal.especie,
+        raca: novoAnimal.raca,
+        idade: novoAnimal.idade ? Number(novoAnimal.idade) : null,
+        sexo: novoAnimal.sexo,
+        porte: novoAnimal.porte,
+        descricao: novoAnimal.descricao,
+        foto: novoAnimal.foto || novoAnimal.imagem || '',
+        vacinado: novoAnimal.vacinado ?? false,
+        castrado: novoAnimal.castrado ?? false,
+        disponivel: novoAnimal.disponivel ?? true,
+      };
 
-      const res = await api.post('/animals', formData, {
+      const res = await api.post('/animals', payload, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
         },
       });
 

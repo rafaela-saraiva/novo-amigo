@@ -5,87 +5,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.postimg.cc',
+        hostname: '**',
         pathname: '/**',
       },
       {
-        protocol: 'https',
-        hostname: 'encrypted-tbn1.gstatic.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'encrypted-tbn0.gstatic.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'encrypted-tbn2.gstatic.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'encrypted-tbn3.gstatic.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'via.placeholder.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.uninassau.edu.br',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'uninassau.edu.br',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.dokhospitalveterinario.com.br',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.google.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.petz.com.br',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'petz.com.br',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'm.media-amazon.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images-na.ssl-images-amazon.com',
+        protocol: 'http',
+        hostname: '**',
         pathname: '/**',
       },
     ],
