@@ -123,10 +123,31 @@ export default function AnimalProfilePage() {
                 </section>
               )}
 
+              
               <footer className={styles.footerActions}>
-                <a href={`mailto:${animal.donoNome || ''}`} className={styles.contactBtn}>
-                  Entrar em contato
-                </a>
+              <a href={`mailto:${animal.donoNome || ''}`} className={styles.contactBtn}>
+              Entrar em contato
+              </a>
+
+              <button
+              className={styles.contactBtn}
+              onClick={() => {
+              const favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
+
+              const jaExiste = favoritos.find((a: any) => a.id === animal.id);
+
+
+              if (!jaExiste) {
+              favoritos.push(animal);
+              localStorage.setItem("favoritos", JSON.stringify(favoritos));
+              alert("Animal adicionado aos favoritos ❤️");
+              } else {
+                alert("Esse animal já está nos favoritos");
+              }
+               }}
+                >
+                   ❤️
+              </button>
               </footer>
             </article>
           )}
