@@ -69,3 +69,55 @@ export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
   );
 }
 
+// ===== PetCard — novo design de card individual =====
+
+type PetCardProps = {
+  image: string;
+  alt: string;
+  nome: string;
+  idade: string;
+  badge: string;
+  porte: string;
+  traits: string[];
+  href?: string;
+};
+
+export function PetCard({
+  image,
+  alt,
+  nome,
+  idade,
+  badge,
+  porte,
+  traits,
+  href = "/nossos-animais",
+}: PetCardProps) {
+  return (
+    <div className={styles.petCard}>
+      <div className={styles.petImageWrapper}>
+        <img src={image} alt={alt} className={styles.petImage} />
+        <button className={styles.heartBtn} aria-label="Favoritar">
+          <span className="material-symbols-outlined">favorite</span>
+        </button>
+        <div className={styles.petBadges}>
+          <span className={styles.badgeGreen}>{badge}</span>
+          <span className={styles.badgeDark}>{porte}</span>
+        </div>
+      </div>
+
+      <div className={styles.petBody}>
+        <div className={styles.petNameRow}>
+          <h3 className={styles.petNome}>{nome}</h3>
+          <span className={styles.petIdade}>{idade}</span>
+        </div>
+        <div className={styles.petTraits}>
+          {traits.map((t) => (
+            <span key={t} className={styles.traitPill}>{t}</span>
+          ))}
+        </div>
+        <Link href={href} className={styles.conhecerBtn}>Conhecer</Link>
+      </div>
+    </div>
+  );
+}
+

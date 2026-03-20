@@ -3,51 +3,51 @@ import Carousel from "@/components/Carousel";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
-import { ProductCardTeste } from "@/components/ProductCard";
+import { PetCard } from "@/components/ProductCard";
 import "./page.css";
 import styles from "./page.module.css";
 import SobreNos from "./sobre/page";
 
+const featuredPets = [
+  {
+    nome: "Bento",
+    idade: "2 anos",
+    badge: "Resgatado",
+    porte: "Porte Médio",
+    traits: ["Ama carinho", "Calmo"],
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpHYVL3L1WqN6iAWbnfyYdw-dsNbSXDcbZTr6PlzYCA4oA7mktmZdJ4Xh9kl47HSE6r08fC7OWrL8W8U9V1z-y9dDbseDaXN3_aMHjxs6gWgZqiOJt31HyEeOS_BiHIR0Z0SwwYZLfSqoBGgoq4FSy4VU7tAtYnSjzvhI8dvH6uCkWiTrKb3JXompzeuCCg8gxDwvuixyAcoaehnNgdU63TQ3sSyMu1r1kUInv4moFoq2wwbZzIduqU-bC9vPnvTtWY31UJW7LYL3",
+    alt: "Cachorro golden retriever filhote com gravata azul",
+  },
+  {
+    nome: "Luna",
+    idade: "4 meses",
+    badge: "Filhote",
+    porte: "Gato",
+    traits: ["Brincalhona", "Curiosa"],
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDytx25Iu_iHc7nTyd104_kJS7e2kQM4lq0o7OVyKWFP8I69swYo4L6T24fdKUfae6qgjAMpqPHzliZqVbxoqoz9Sd-Gzmf5pUa1Kdx3e2or-zzH44Yn9fKmvPaR26IZNRrd3-1AG1YXf-sTZ9uzEDPsUb0svTyqfR12-g8tUuwacqN7cfCBSFP-CBoFlui-YXzm6w7r_SX2QPFt5IMW7e5fOOJirXfyTxecFFkAC1utvFrVnKIYr7pgD9QfAUQE_3OzETVwBfu665E",
+    alt: "Gato cinza fofo olhando cur curiosamente",
+  },
+  {
+    nome: "Toby",
+    idade: "5 anos",
+    badge: "Castrado",
+    porte: "Pequeno",
+    traits: ["Sociável", "Protetor"],
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBOjYNx6GAEshMKINi6rasQ8IvAlQkPuh4luQ4Mi53rZjaDHUDOZEQnnDRe-UabnbpegEEatFpttr2yACPKOy4Ra5DT5pylQOyxZwI-pDGzOeQWwz0DTT0_ikVE4js8-GcQf-go0K-hWFv6gz5XyuuPXTelaUuWx5huYnfW876XRpozpDEglbLrQMkFKl1iJCTR-KPCFrmG302dzTu1AFEeLf0cvlPW11ACX3nhlltX3dSWrHW6IrFRjBp8TG0F-ku9IzCm9H1mhsVO",
+    alt: "Cachorrinho marrom sentado na grama sorrindo",
+  },
+  {
+    nome: "Zeus",
+    idade: "1 ano",
+    badge: "Especial",
+    porte: "Grande",
+    traits: ["Muita energia", "Amigável"],
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDdPPn80diOPob_670RBqyG1YeKHZcXzlI2SJC-HaucbZqrExq0-vCF_TZv3CMucrTclm6soPCIANgbMhO3Uxv-Yl-9uvSllyCc5Vj8n3ne4H7uGUwUFdBWf7DXD0v4e8EJ9K8XeKcyjPfF_rl4aawOW8Whrnj9B9mH-9sI2JPxeqtMDhpWz3JTnFGprvKoVqV4aBkMiC8tkiACDgrbrcEUnyzNRjh0KfcjzuRna1Je7NZ5FSzKjYOj7Pbuv33l1wgwuzdDRBxIM4V9",
+    alt: "Cão preto e branco com olhar expressivo",
+  },
+];
+
 export default function Home() {
-  // 👇 As imagens são links externos diretos (URLs)
-  const pets = [
-    {
-      id: 1,
-      nome: "Gato",
-      img: "https://i.postimg.cc/1ynRMXym/retrato-de-um-gato-preto-e-branco.jpg",
-      tipo: "gato",
-    },
-    {
-      id: 2,
-      nome: "Cachorro",
-      img: "https://i.postimg.cc/fRmNs3bF/adoravel-cachorro-basenji-marrom-e-branco-sorrindo-e-dando-mais-uns-cinco-isolado-no-branco.jpg",
-      tipo: "cachorro",
-    },
-    {
-      id: 3,
-      nome: "Pássaro",
-      img: "https://i.postimg.cc/pdvtL2hr/belo-passaro-arara-azul-e-dourado-empoleirado-em-uma-arvore.jpg",
-      tipo: "passaro",
-    },
-    {
-      id: 4,
-      nome: "Coelho",
-      img: "https://i.postimg.cc/mknsLCMN/coelho-peludo-fofo-isolado.jpg",
-      tipo: "coelho",
-    },
-    {
-      id: 5,
-      nome: "Hamster",
-      img: "https://i.postimg.cc/RZKBm30s/close-de-uma-pessoa-segurando-uma-cobaia-marrom.jpg",
-      tipo: "hamster",
-    },
-    {
-      id: 6,
-      nome: "Animais de Fazenda",
-      img: "https://i.postimg.cc/vmmwV0z2/vista-de-tres-poneis-pastando-no-campo-de-uma-fazenda.jpg",
-      tipo: "fazenda",
-    },
-  ];
 
   return (
     <>
@@ -63,39 +63,53 @@ export default function Home() {
           <Carousel />
         </div>
 
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 16px" }}>
-          <h2> Escolha uma categoria</h2>
-        </div>
-        
-        <section
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)", // 3 cards por linha fixo
-    gap: "24px",
-    justifyItems: "center",
-    padding: "48px 16px",
-    maxWidth: "1000px",
-    margin: "0 auto",
-  }}
->
-  {pets.map((pet) => (
-    <ProductCardTeste
-      key={pet.id}
-      nome={pet.nome}
-      img={pet.img}
-      tipo={pet.tipo as "gato" | "cachorro" | "passaro" | "coelho" | "hamster" | "fazenda" | "teste"}
-    />
-  ))}
-</section>
+        {/* Seção de Pets — novo design */}
+        <div className={styles.petsWrapper}>
+          {/* Barra de busca */}
+          <div className={styles.searchBar}>
+            <div className={styles.searchInputWrapper}>
+              <span className={`material-symbols-outlined ${styles.searchIcon}`}>search</span>
+              <input
+                className={styles.searchInput}
+                type="text"
+                placeholder="Buscar por raça, cidade..."
+              />
+            </div>
+            <div className={styles.filterBtns}>
+              <button className={styles.filterBtn}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>category</span>
+                Espécie
+              </button>
+              <button className={styles.filterBtn}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>calendar_month</span>
+                Idade
+              </button>
+              <button className={styles.filterBtn}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>straighten</span>
+                Porte
+              </button>
+            </div>
+            <button className={styles.tuneBtn} aria-label="Filtros avançados">
+              <span className="material-symbols-outlined">tune</span>
+            </button>
+          </div>
 
-        <section
-          style={{
-            maxWidth: 800,
-            margin: "0 auto",
-            padding: "32px 16px",
-          }}
-        >
-        </section>
+          {/* Grid de pets */}
+          <div className={styles.petsSection}>
+            <div className={styles.petsHeader}>
+              <h2 className={styles.petsTitle}>Pets esperando por você</h2>
+              <a href="/nossos-animais" className={styles.verTodos}>
+                Ver todos
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>chevron_right</span>
+              </a>
+            </div>
+            <div className={styles.petsGrid}>
+              {featuredPets.map((pet) => (
+                <PetCard key={pet.nome} {...pet} />
+              ))}
+            </div>
+          </div>
+        </div>
         <SobreNos/>
       </main>
       

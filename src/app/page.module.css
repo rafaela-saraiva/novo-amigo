@@ -18,6 +18,166 @@
 .h2{
   color: #ffbd59;
 }
+
+/* ===== Seção de Pets (novo design) ===== */
+
+.petsWrapper {
+  max-width: 1200px;
+  margin: 48px auto 0;
+  padding: 0 16px;
+}
+
+.searchBar {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 80px;
+  z-index: 40;
+}
+
+.searchInputWrapper {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  font-size: 20px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-family: 'Lexend', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.searchInput:focus {
+  border-color: #30e85e;
+  background: #fff;
+}
+
+.filterBtns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Lexend', sans-serif;
+  cursor: pointer;
+  color: #334155;
+  transition: background 0.2s, color 0.2s;
+}
+
+.filterBtn:hover {
+  background: rgba(48, 232, 94, 0.1);
+  color: #1b8d39;
+}
+
+.tuneBtn {
+  background: #30e85e;
+  color: #0d150f;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+
+.tuneBtn:hover {
+  transform: scale(1.05);
+}
+
+.petsSection {
+  margin-top: 48px;
+}
+
+.petsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.petsTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.verTodos {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #30e85e;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: text-decoration 0.2s;
+}
+
+.verTodos:hover {
+  text-decoration: underline;
+}
+
+.petsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .petsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .petsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .searchBar {
+    position: static;
+  }
+}
 @media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;
