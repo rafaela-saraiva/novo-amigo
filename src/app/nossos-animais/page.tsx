@@ -213,15 +213,9 @@ export default function NossosAnimais() {
       <Header />
       <main className={styles.main}>
         <div className={styles.container}>
-          {/* 🔹 Título e botão cadastrar */}
+          {/* 🔹 Título */}
           <div className={styles.titleSection}>
             <h1 className={styles.title}>Animais para adoção</h1>
-            <button
-              className={styles.cadastrarBtn}
-              onClick={() => setModalAberto(true)}
-            >
-              + cadastrar animal
-            </button>
           </div>
 
           {/* 🔹 Layout: sidebar + grid */}
@@ -385,6 +379,14 @@ export default function NossosAnimais() {
                   onChange={(e) => handleFiltroChange('busca', e.target.value)}
                 />
               </div>
+
+              <button
+                className={styles.cadastrarBtn}
+                style={{ width: '100%', marginBottom: 8 }}
+                onClick={() => setModalAberto(true)}
+              >
+                + cadastrar animal
+              </button>
 
               <button className={styles.limparBtn} onClick={limparFiltros}>
                 Limpar Filtros
