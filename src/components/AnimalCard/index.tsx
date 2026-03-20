@@ -30,11 +30,10 @@ export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
           src={imageSrc}
           alt={animal.nome}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={styles.image}
           style={{ objectFit: 'cover' }}
           onError={handleImageError}
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..."
         />
         <div className={styles.statusBadge}>
           {animal.disponivel ? 'Disponível' : 'Adotado'}
