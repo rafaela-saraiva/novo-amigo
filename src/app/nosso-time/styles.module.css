@@ -84,7 +84,214 @@
   font-family: 'Lexend', sans-serif;
 }
 
+/* ===== CARDS DOS MEMBROS ===== */
+.cardsSection {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1280px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+}
+
+@media (max-width: 1024px) {
+  .cardsSection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cardsSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+.memberCard {
+  background: var(--card-bg);
+  border: 1px solid rgba(251, 112, 132, 0.15);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.memberCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(251, 112, 132, 0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.memberCard:hover {
+  box-shadow: 0 12px 40px rgba(251, 112, 132, 0.18);
+  transform: translateY(-4px);
+}
+
+.memberCard:hover::before {
+  opacity: 1;
+}
+
+/* Badge */
+.cardBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #fb7084;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-family: 'Lexend', sans-serif;
+  z-index: 1;
+}
+
+/* Foto */
+.photoWrapper {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  transform: rotate(-3deg);
+  transition: transform 0.5s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 1;
+}
+
+.memberCard:hover .photoWrapper {
+  transform: rotate(0deg);
+}
+
+.photoPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fb7084 0%, #f43f5e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.initials {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ffffff;
+  font-family: 'Lexend', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Corpo */
+.cardBody {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.memberName {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  font-family: 'Lexend', sans-serif;
+  line-height: 1.15;
+}
+
+.memberRole {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fb7084;
+  margin: 0 0 12px;
+  font-family: 'Lexend', sans-serif;
+}
+
+.memberDesc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin: 0 0 20px;
+  font-family: 'Lexend', sans-serif;
+}
+
+/* Porcentagem destaque */
+.percentBlock {
+  margin-bottom: 20px;
+}
+
+.percentValue {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fb7084;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-family: 'Lexend', sans-serif;
+}
+
+.percentLabel {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Lexend', sans-serif;
+}
+
+/* Barras de progresso */
+.bars {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.barRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.barLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-family: 'Lexend', sans-serif;
+}
+
+.barTrack {
+  width: 100%;
+  height: 10px;
+  background: var(--surface-tertiary);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: #fb7084;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(251, 112, 132, 0.4);
+  transition: width 0.6s ease;
+}
+
 /* ===== DARK MODE ===== */
 [data-theme='dark'] .main {
   background: linear-gradient(135deg, #0f1117 0%, #1a0d10 50%, #0f1117 100%);
+}
+
+[data-theme='dark'] .photoPlaceholder {
+  background: linear-gradient(135deg, #c0394a 0%, #a0273a 100%);
 }
