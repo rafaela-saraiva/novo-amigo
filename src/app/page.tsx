@@ -122,7 +122,7 @@ export default function Home() {
         </div>
 
         {/* Como funciona a adoção */}
-        <section className={styles.howSection}>
+        <section id="como-funciona" className={styles.howSection}>
           <div className={styles.howCenter}>
             <h2 className={styles.howTitle}>Como funciona a adoção?</h2>
             <p className={styles.howSubtitle}>

@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./styles.module.css";
@@ -29,9 +31,12 @@ export default function Carousel() {
               Quero Adotar
               <span className="material-symbols-outlined">arrow_forward</span>
             </Link>
-            <Link href="/sobre" className={styles.ctaSecondary}>
+            <button
+              className={styles.ctaSecondary}
+              onClick={() => document.getElementById('como-funciona')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Como Funciona
-            </Link>
+            </button>
           </div>
 
           <div className={styles.stats}>

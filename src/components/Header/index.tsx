@@ -35,7 +35,7 @@ export default function Header() {
           {/* Links de navegação (desktop) */}
           <div className={styles.links}>
             <Link href="/nossos-animais" className={styles.link}>Adotar</Link>
-            <Link href="/sobre" className={styles.link}>Como Funciona</Link>
+            <Link href="/#como-funciona" className={styles.link}>Como Funciona</Link>
             <Link href="/" className={styles.link}>ONGs</Link>
             <Link href="/sobre" className={styles.link}>Sobre</Link>
           </div>
@@ -81,7 +81,7 @@ export default function Header() {
         {menuOpen && (
           <div className={styles.mobileMenu}>
             <Link href="/nossos-animais" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Adotar</Link>
-            <Link href="/sobre" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
+            <Link href="/#como-funciona" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
             <Link href="/" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
             <Link href="/sobre" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Sobre</Link>
             <div className={styles.mobileDivider} />
