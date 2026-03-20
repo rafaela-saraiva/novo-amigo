@@ -7,9 +7,10 @@ import styles from './styles.module.css';
 interface AnimalCardProps {
   animal: Pet;
   onAdotar?: () => void;
+  priority?: boolean;
 }
 
-export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
+export default function AnimalCard({ animal, onAdotar, priority = false }: AnimalCardProps) {
   // 🔹 funciona com 'foto' (do backend) e 'imagem' (fallback)
   const [imageSrc, setImageSrc] = useState(
     animal.foto || animal.imagem || '/placeholder.svg'
@@ -34,6 +35,7 @@ export default function AnimalCard({ animal, onAdotar }: AnimalCardProps) {
           className={styles.image}
           style={{ objectFit: 'cover' }}
           onError={handleImageError}
+          priority={priority}
         />
         <div className={styles.statusBadge}>
           {animal.disponivel ? 'Disponível' : 'Adotado'}

@@ -278,8 +278,8 @@ export default function NossosAnimais() {
           {/* 🔹 Grid de Animais */}
           {animaisFiltrados.length > 0 ? (
             <div className={styles.animaisGrid}>
-              {animaisFiltrados.map((animal) => (
-                <AnimalCard key={animal.id} animal={animal} />
+              {animaisFiltrados.map((animal, index) => (
+                <AnimalCard key={animal.id} animal={animal} priority={index === 0} />
               ))}
             </div>
           ) : (
