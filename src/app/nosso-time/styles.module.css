@@ -1,0 +1,90 @@
+/* ===== MAIN ===== */
+.main {
+  padding-top: 100px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffffff 0%, #fff0f2 50%, #ffffff 100%);
+}
+
+/* ===== HERO ===== */
+.hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 24px 64px;
+  text-align: center;
+  position: relative;
+}
+
+.heroBadge {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  background-color: rgba(251, 112, 132, 0.12);
+  color: #fb7084;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-family: 'Lexend', sans-serif;
+}
+
+.heroTitle {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  font-family: 'Lexend', sans-serif;
+}
+
+.heroHighlight {
+  color: #fb7084;
+  font-style: italic;
+}
+
+.heroSub {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 620px;
+  margin: 0 auto 56px;
+  font-family: 'Lexend', sans-serif;
+}
+
+/* ===== STATS ===== */
+.heroStats {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.statValue {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  font-family: 'Lexend', sans-serif;
+}
+
+.statLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-family: 'Lexend', sans-serif;
+}
+
+/* ===== DARK MODE ===== */
+[data-theme='dark'] .main {
+  background: linear-gradient(135deg, #0f1117 0%, #1a0d10 50%, #0f1117 100%);
+}

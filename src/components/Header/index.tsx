@@ -38,6 +38,7 @@ export default function Header() {
             <Link href="/#como-funciona" className={styles.link}>Como Funciona</Link>
             <Link href="/" className={styles.link}>ONGs</Link>
             <Link href="/sobre" className={styles.link}>Sobre</Link>
+            <Link href="/nosso-time" className={styles.link}>Nosso Time</Link>
           </div>
 
           {/* Botões de ação (desktop) */}
@@ -84,6 +85,7 @@ export default function Header() {
             <Link href="/#como-funciona" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
             <Link href="/" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
             <Link href="/sobre" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Sobre</Link>
+            <Link href="/nosso-time" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Nosso Time</Link>
             <div className={styles.mobileDivider} />
             {user ? (
               <>
