@@ -29,6 +29,16 @@ export default function NossosAnimais() {
     idade: 'todas',
   });
 
+  const [outrosAberto, setOutrosAberto] = useState(false);
+
+  const OUTROS_ESPECIES = [
+    { label: 'Animais de Fazenda', value: 'fazenda' },
+    { label: 'Pássaros', value: 'passaro' },
+    { label: 'Animais Exóticos', value: 'exotico' },
+  ];
+
+  const isOutrosAtivo = OUTROS_ESPECIES.some((e) => e.value === filtros.especie);
+
   // Atualiza filtros se a query `especie` mudar (navegação cliente)
   useEffect(() => {
     const esp = searchParams?.get('especie');
@@ -90,8 +100,9 @@ export default function NossosAnimais() {
     if (filtros.especie === 'todas') {
       matchEspecie = true;
     } else if (filtros.especie === 'fazenda') {
-      // Aceita "fazenda", "animal de fazenda", ou qualquer string contendo "fazenda"
       matchEspecie = a.especie?.includes('fazenda') || false;
+    } else if (filtros.especie === 'exotico') {
+      matchEspecie = a.especie?.includes('exotico') || a.especie?.includes('exótico') || false;
     } else {
       matchEspecie = a.especie === filtros.especie;
     }
@@ -193,6 +204,7 @@ export default function NossosAnimais() {
       busca: '',
       idade: 'todas',
     });
+    setOutrosAberto(false);
   };
 
   // 🔹 Layout principal
@@ -231,17 +243,55 @@ export default function NossosAnimais() {
                     { label: 'Todos', value: 'todas' },
                     { label: 'Cães', value: 'cachorro' },
                     { label: 'Gatos', value: 'gato' },
-                    { label: 'Outros', value: 'outros' },
                   ].map((op) => (
                     <button
                       key={op.value}
                       className={`${styles.pill} ${filtros.especie === op.value ? styles.pillActive : ''}`}
-                      onClick={() => handleFiltroChange('especie', op.value)}
+                      onClick={() => {
+                        handleFiltroChange('especie', op.value);
+                        setOutrosAberto(false);
+                      }}
                     >
                       {op.label}
                     </button>
                   ))}
+
+                  {/* Botão Outros com expansão */}
+                  <button
+                    className={`${styles.pill} ${isOutrosAtivo || outrosAberto ? styles.pillActive : ''}`}
+                    onClick={() => {
+                      const abrindo = !outrosAberto;
+                      setOutrosAberto(abrindo);
+                      // Se fechar sem selecionar subopção, volta para 'todas'
+                      if (!abrindo && isOutrosAtivo) {
+                        handleFiltroChange('especie', 'todas');
+                      }
+                    }}
+                  >
+                    Outros
+                    <span
+                      className="material-symbols-outlined"
+                      style={{ fontSize: 14, verticalAlign: 'middle', marginLeft: 2 }}
+                    >
+                      {outrosAberto ? 'expand_less' : 'expand_more'}
+                    </span>
+                  </button>
                 </div>
+
+                {/* Sub-opções de Outros */}
+                {outrosAberto && (
+                  <div className={styles.subPillGroup}>
+                    {OUTROS_ESPECIES.map((op) => (
+                      <button
+                        key={op.value}
+                        className={`${styles.subPill} ${filtros.especie === op.value ? styles.subPillActive : ''}`}
+                        onClick={() => handleFiltroChange('especie', op.value)}
+                      >
+                        {op.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Porte */}

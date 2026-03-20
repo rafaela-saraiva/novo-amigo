@@ -105,6 +105,50 @@
   gap: 8px;
 }
 
+/* Sub-pills (expandidos a partir de "Outros") */
+.subPillGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 3px solid #fb7084;
+  animation: slideDown 0.18s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.subPill {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  background: #fff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.subPill:hover {
+  border-color: #fb7084;
+  color: #c9384d;
+  background: rgba(251, 112, 132, 0.06);
+}
+
+.subPillActive {
+  border-color: #fb7084;
+  background: rgba(251, 112, 132, 0.12);
+  color: #c9384d;
+  font-weight: 700;
+}
+
 .pill {
   padding: 6px 14px;
   border-radius: 9999px;
