@@ -1,7 +1,13 @@
+'use client';
+
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 import styles from './styles.module.css';
 
 export default function NossoTime() {
   return (
+    <>
+    <Header />
     <main className={styles.main}>
 
       {/* ===== HERO ===== */}
@@ -36,5 +42,7 @@ export default function NossoTime() {
       </section>
 
     </main>
+    <Footer />
+    </>
   );
 }
