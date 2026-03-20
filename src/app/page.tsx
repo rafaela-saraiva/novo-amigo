@@ -6,8 +6,9 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { PetCard } from "@/components/ProductCard";
 import api from "@/services/api";
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import "./page.css";
 import styles from "./page.module.css";
 
 interface AnimalAPI {
@@ -88,10 +89,10 @@ export default function Home() {
           <div className={styles.petsSection}>
             <div className={styles.petsHeader}>
               <h2 className={styles.petsTitle}>Pets esperando por você</h2>
-              <a href="/nossos-animais" className={styles.verTodos}>
+              <Link href="/nossos-animais" className={styles.verTodos}>
                 Ver todos
                 <span className="material-symbols-outlined" style={{ fontSize: 18 }}>chevron_right</span>
-              </a>
+              </Link>
             </div>
             <div className={styles.petsGrid}>
               {featuredPets.length === 0 ? (
@@ -174,8 +175,8 @@ export default function Home() {
                 Nossa equipe auxilia em todo o processo de adaptação para garantir que você e seu novo amigo sejam felizes.
               </p>
               <div className={styles.ctaBtns}>
-                <a href="/nossos-animais" className={styles.ctaBtnPrimary}>Quero começar</a>
-                <a href="/faleConosco" className={styles.ctaBtnSecondary}>Falar com consultor</a>
+                <Link href="/nossos-animais" className={styles.ctaBtnPrimary}>Quero começar</Link>
+                <Link href="/faleConosco" className={styles.ctaBtnSecondary}>Falar com consultor</Link>
               </div>
             </div>
 
@@ -183,29 +184,41 @@ export default function Home() {
               <div className={styles.ctaImgGrid}>
                 <div className={styles.ctaColOffset}>
                   <div className={styles.ctaImgBox}>
-                    <img
+                    <Image
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcFIl4PyQnQJlzqmw4PHyph0k-fQKFSLAod-eXMKAlkaD40g8573fYqWSJ4Pll8HbAydU1pAknp_GoFlWZSZNkAIJZc5pbqZycMNcvQY0nNOQRK_KKvyM12JoPyVrGdLajne3lk-3rwQZnAiOCQv3kIwRrjEfDVLfY5xJVkitgAR1PJZYwwkO8r1SbGVEH2FheyhY6mz_B4cvFU7FQUuYK4av0KycA_SczID_hn5EiYkRpeB_p_E6ei7uFoGtHaLW5KwRQMXW_Yb2D"
                       alt="Cães brincando"
+                      width={300}
+                      height={220}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
                   <div className={styles.ctaImgBox}>
-                    <img
+                    <Image
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSCDhlxa_15lKGo3QUaEP33akCQEl5if9EBhJbnCnQu2ZwjK_PsjP1Fd8gez9V67zhv3cO1TbRIH98sJUuhRwV8vxoHfEUQGw9bQhmo2dqvS62Q23j99cFsLgwmQ8izlzGuU8YeNf3zOp9T6OR_i5HIbvr9U4qawpsSyv16R2PSkkXCsCjcUxRot60eyzvOYwKzSPgYII7mSaNiPhXqxDrL9tFygThTxKzg5e0Lnnyg003uvPj5c-VTQ0cCzDM7q2EsblP-Eji7fm2"
                       alt="Retrato de gato"
+                      width={300}
+                      height={220}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
                 </div>
                 <div className={styles.ctaCol}>
                   <div className={styles.ctaImgBox}>
-                    <img
+                    <Image
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9NafNsG-qsGgjzKzm4qLjZs-fMTzM7ujxynf-wNeSqUJ8QusnRrFhplJFKGmdLvDXw4NB9qPMqo5lFsnm1byb1mcLAy34iBhis6buWxjjkr5Zb6LROMln_n0s5wYLifViunDO7PTW3HvGnw8UYsdADGFN73WEOeE7MO4cXaNsUqlrwKEbbGOv6kfivmbDsf6v_i_OXqMNyKjLrlJTioMur2AWe4R_w5q6nu0r_DmmQpdxYDmxVOPZaAX_BMLCstOY6S1Q_K5fKvKd"
                       alt="Filhote golden"
+                      width={300}
+                      height={220}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
                   <div className={styles.ctaImgBox}>
-                    <img
+                    <Image
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFYSyuc288b0RpGd-8xRU8UA2hlvc2tCSjLxNgIAkw3_xtL0LE4PtbxD1Zy9ycO-l0LuQGnVsGfb3lTz6ZkNIa8BBfFQLzxgk97zx5eQYe9G8oI6dVu3U1gUrEncoN0BIEl1lBAoylotqe3cPIkRtXF1CTrN8b3SWt63VVkSqPEQK0_xncdBQMXijiM5I5UUIzKTGdAQiMVvZ-485FdUAAOE9u__ixry1Mq1MIh6QkjGh1mdeCPZ83XYBgltR38Rz9lRQW-Ea_QVEq"
                       alt="Cão inteligente"
+                      width={300}
+                      height={220}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
                 </div>
