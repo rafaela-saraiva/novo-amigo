@@ -57,7 +57,7 @@ export default function Home() {
       {/* <AdBanner position="left" />
       <AdBanner position="right" /> */}
 
-      <main className={styles.content}>
+      <main className={styles.content} style={{ paddingTop: '128px' }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 16px" }}>
           <Carousel />
         </div>

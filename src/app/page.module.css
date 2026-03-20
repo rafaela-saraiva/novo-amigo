@@ -577,13 +577,13 @@ a.secondary {
 
 /* Espaço principal quando não há conteúdo suficiente - evita Footer colado ao Header */
 .content{
-  min-height: calc(100vh - 144px); /* estima: header 72px + footer 72px */
-  padding: 128px 20px 32px;
+  min-height: calc(100vh - 144px);
+  padding: 0 20px 32px;
   box-sizing: border-box;
 }
 
 @media (max-width:720px){
-  .content{ min-height: calc(100vh - 200px); padding: 100px 20px 20px; }
+  .content{ min-height: calc(100vh - 200px); padding: 0 20px 20px; }
 }
 .content h2{
    color: #ffbd59; 

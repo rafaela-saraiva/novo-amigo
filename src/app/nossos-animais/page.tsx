@@ -169,7 +169,7 @@ export default function NossosAnimais() {
     return (
       <>
         <Header />
-        <main className={styles.main}>
+        <main className={styles.main} style={{ paddingTop: '128px' }}>
           <div className={styles.container}>
             <p>carregando animais...</p>
           </div>
@@ -184,7 +184,7 @@ export default function NossosAnimais() {
     return (
       <>
         <Header />
-        <main className={styles.main}>
+        <main className={styles.main} style={{ paddingTop: '128px' }}>
           <div className={styles.container}>
             <p>❌ {error}</p>
           </div>
@@ -211,7 +211,7 @@ export default function NossosAnimais() {
   return (
     <>
       <Header />
-      <main className={styles.main}>
+      <main className={styles.main} style={{ paddingTop: '128px' }}>
         <div className={styles.container}>
           {/* 🔹 Título */}
           <div className={styles.titleSection}>
