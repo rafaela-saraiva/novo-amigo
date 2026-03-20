@@ -59,9 +59,11 @@ export default function Home() {
       <AdBanner position="right" /> */}
 
       <main className={styles.content}>
-        <div style={{ maxWidth: 1200, margin: "32px auto", padding: "0 16px", }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 16px" }}>
           <Carousel />
-          
+        </div>
+
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 16px" }}>
           <h2> Escolha uma categoria</h2>
         </div>
         
