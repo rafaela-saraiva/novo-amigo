@@ -1,12 +1,14 @@
 'use client';
 
 
+import Header from '@/components/Header';
 import styles from './styles.module.css';
+import Footer from '@/components/Footer';
 
 
 export default function SobreNos() {
   return (<>
-      
+      <Header/>
     <section className={styles.section}>
       <h2 className={styles.sobre}>Sobre Nós</h2>
 
@@ -29,7 +31,7 @@ export default function SobreNos() {
         </p>
       </div>
     </section>
-      
+      <Footer />
           </>
   );
 }

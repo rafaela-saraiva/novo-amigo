@@ -39,7 +39,11 @@ export default function Header() {
             <Link href="/" className={styles.link}>ONGs</Link>
             <Link href="/sobre" className={styles.link}>Sobre</Link>
             <Link href="/nosso-time" className={styles.link}>Nosso Time</Link>
-            <Link href="/animais-favoritos" className={styles.link}>Animais Favoritos</Link>
+            {user && (
+            <Link href="/animais-favoritos" className={styles.link}>
+            Animais Favoritos
+            </Link>
+)}
             
           </div>
 
