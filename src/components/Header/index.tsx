@@ -17,6 +17,7 @@ export default function Header() {
   function handleLogout() {
     logout();
     setMenuOpen(false);
+    router.push("/");
   }
 
   return (
@@ -36,10 +37,7 @@ export default function Header() {
           <div className={styles.links}>
             <Link href="/nossos-animais" className={styles.link}>Adotar</Link>
             <Link href="/#como-funciona" className={styles.link}>Como Funciona</Link>
-            <Link href="/" className={styles.link}>ONGs</Link>
-            <Link href="/sobre" className={styles.link}>Sobre</Link>
-            <Link href="/nosso-time" className={styles.link}>Nosso Time</Link>
-            <Link href="/animais-favoritos" className={styles.link}>Animais Favoritos</Link>
+            <Link href="/#ongs" className={styles.link}>ONGs</Link>
             
           </div>
 
@@ -49,7 +47,7 @@ export default function Header() {
               <>
                 <Link href="/configuracoes" className={styles.userChip}>
                   <span className="material-symbols-outlined">account_circle</span>
-                  <span className={styles.userName}>{user.nome.split(" ")[0]}</span>
+                  <span className={styles.userName}>{user?.nome?.split(" ")[0] || "Usuário"}</span>
                 </Link>
                 <button onClick={handleLogout} className={styles.btnLogout} title="Sair">
                   <span className="material-symbols-outlined">logout</span>
@@ -57,7 +55,7 @@ export default function Header() {
               </>
             ) : (
               <>
-                <button onClick={() => setLoginOpen(true)} className={styles.btnEntrar}>
+                <button onClick={() =>{ setLoginOpen(true); setMenuOpen(false);}} className={styles.btnEntrar}>
                   Entrar
                 </button>
                 <button onClick={() => router.push("/cadastro")} className={styles.btnCadastrar}>
@@ -85,9 +83,7 @@ export default function Header() {
           <div className={styles.mobileMenu}>
             <Link href="/nossos-animais" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Adotar</Link>
             <Link href="/#como-funciona" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
-            <Link href="/" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
-            <Link href="/sobre" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Sobre</Link>
-            <Link href="/nosso-time" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Nosso Time</Link>
+            <Link href="/#ongs" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
             <div className={styles.mobileDivider} />
             {user ? (
               <>
