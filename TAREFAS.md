@@ -14,9 +14,9 @@
 
 ---
 
-## 2. Fale Conosco  **João**
+## 2. Fale Conosco  **Rafaela**
 
-- 🔴 **UI** — Redesenhar completamente a interface da página. O design atual não combina com o restante do site
+- 🔴 **UI** — Redesenhar completamente a interface da página. O design atual não combina com o restante do site 
 - 🔴 **Formulário quebrado** — O formulário usa variáveis locais (`let`) em vez de `useState`, não captura os dados digitados e nunca envia nada para a API — apenas exibe um `alert()`. Precisa ser reescrito
 - 🟡 **Backend** — Criar endpoint para receber mensagens/dúvidas dos usuários e armazená-las no banco de dados
 - 🟡 **Painel de mensagens** — As mensagens enviadas pelos usuários devem aparecer em uma tela do painel administrativo, onde administradores possam ver e responder
