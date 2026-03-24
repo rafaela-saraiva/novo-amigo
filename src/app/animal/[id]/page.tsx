@@ -130,24 +130,31 @@ export default function AnimalProfilePage() {
               </a>
 
               <button
-              className={styles.contactBtn}
-              onClick={() => {
-              const favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
+                className={styles.contactBtn}
+                  onClick={() => {
+                const token = localStorage.getItem("token");
 
-              const jaExiste = favoritos.find((a: any) => a.id === animal.id);
+                 // 🔒 BLOQUEIO se não estiver logado
+                if (!token) {
+               alert("Você precisa estar logado para favoritar!");
+                 return;
+                }
 
+                const favoritos = JSON.parse(localStorage.getItem("favoritos") || "[]");
 
-              if (!jaExiste) {
-              favoritos.push(animal);
-              localStorage.setItem("favoritos", JSON.stringify(favoritos));
-              alert("Animal adicionado aos favoritos ❤️");
-              } else {
-                alert("Esse animal já está nos favoritos");
-              }
-               }}
-                >
-                   ❤️
-              </button>
+                const jaExiste = favoritos.find((a: any) => a.id === animal.id);
+
+                if (!jaExiste) {
+                favoritos.push(animal);
+                localStorage.setItem("favoritos", JSON.stringify(favoritos));
+                 alert("Animal adicionado aos favoritos ❤️");
+                } else {
+                 alert("Esse animal já está nos favoritos");
+                }
+                 }}
+                    >
+                     ❤️
+                </button>
               </footer>
             </article>
           )}
