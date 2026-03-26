@@ -13,8 +13,11 @@ interface AnimalCardProps {
 }
 
 export default function AnimalCard({ animal, priority = false }: AnimalCardProps) {
+  const resolvedFoto = Array.isArray(animal.foto)
+    ? animal.foto.find((f) => f && f.trim()) ?? ''
+    : animal.foto;
   const [imageSrc, setImageSrc] = useState(
-    animal.foto || animal.imagem || '/placeholder.svg'
+    resolvedFoto || animal.imagem || '/placeholder.svg'
   );
   const [imageError, setImageError] = useState(false);
   const [favorito, setFavorito] = useState(false);

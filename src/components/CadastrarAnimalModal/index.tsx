@@ -21,13 +21,42 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
     descricao: '',
     vacinado: false,
     castrado: false,
-    foto: ''
   });
 
+  const [fotos, setFotos] = useState<string[]>([]);
+  const [urlInput, setUrlInput] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        if (result) setFotos(prev => [...prev, result]);
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = '';
+  };
+
+  const handleAddUrl = () => {
+    if (!urlInput.trim()) return;
+    try {
+      new URL(urlInput);
+      setFotos(prev => [...prev, urlInput.trim()]);
+      setUrlInput('');
+    } catch {
+      alert('URL inválida. Por favor, insira uma URL válida.');
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setFotos(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,16 +66,7 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       return;
     }
     
-    // Validar URL da foto se fornecida
-    let imagemUrl = '/placeholder.svg';
-    if (formData.foto.trim()) {
-      try {
-        new URL(formData.foto);
-        imagemUrl = formData.foto;
-      } catch {
-        alert('URL da foto inválida. Usando imagem padrão.');
-      }
-    }
+    const imagemUrl = fotos[0] || '/placeholder.svg';
     
     const novoAnimal: Pet = {
       id: crypto.randomUUID(),
@@ -58,11 +78,12 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       porte: formData.porte,
       descricao: formData.descricao,
       imagem: imagemUrl,
+      imagens: fotos,
       disponivel: true,
       donoId: '1',
       donoNome: 'Nome da ONG Exemplo',
       donoTipo: 'ong',
-      donoEndereco: 'Endereço da ONG', // Endereço fixo ou vindo de outro lugar
+      donoEndereco: 'Endereço da ONG',
     };
     
     onSave(novoAnimal);
@@ -78,8 +99,9 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       descricao: '',
       vacinado: false,
       castrado: false,
-      foto: ''
     });
+    setFotos([]);
+    setUrlInput('');
     
     onClose();
   };
@@ -182,59 +204,69 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
           </div>
 
           <div className={styles.section}>
-            <h3>Foto do Animal</h3>
+            <h3>Fotos do Animal</h3>
             <div className={styles.formGroup}>
-              <label htmlFor="fotoFile">Enviar Foto (opcional)</label>
+              <label>Enviar Fotos (opcional)</label>
               <div className={styles.fileUploadRow}>
                 <input
-                  id="fotoFile"
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                      const result = reader.result as string | null;
-                      if (result) {
-                        handleInputChange('foto', result);
-                      }
-                    };
-                    reader.readAsDataURL(file);
-                  }}
+                  multiple
+                  onChange={handleFilesChange}
                   style={{ display: 'none' }}
                 />
                 <button
                   type="button"
                   className={styles.uploadBtn}
-                  onClick={() => {
-                    fileInputRef?.current?.click();
-                  }}
+                  onClick={() => fileInputRef.current?.click()}
                 >
-                  Escolher arquivo
+                  Escolher arquivos
                 </button>
 
                 <span className={styles.orText}>ou</span>
 
                 <input
-                  id="foto"
                   type="url"
-                  value={formData.foto}
-                  onChange={(e) => handleInputChange('foto', e.target.value)}
+                  value={urlInput}
+                  onChange={(e) => setUrlInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddUrl(); } }}
                   placeholder="https://i.postimg.cc/exemplo-da-foto.jpg"
                 />
+                <button
+                  type="button"
+                  className={styles.addUrlBtn}
+                  onClick={handleAddUrl}
+                >
+                  Adicionar
+                </button>
               </div>
-              {formData.foto && (
-                <div className={styles.previewRow}>
-                  <div className={styles.previewWrapper}>
-                    <Image src={formData.foto} alt="pré-visualização" fill style={{ objectFit: 'cover' }} />
-                  </div>
+
+              {fotos.length > 0 && (
+                <div className={styles.previewGrid}>
+                  {fotos.map((foto, index) => (
+                    <div key={index} className={styles.previewWrapper}>
+                      <Image src={foto} alt={`foto ${index + 1}`} fill style={{ objectFit: 'cover' }} />
+                      <button
+                        type="button"
+                        className={styles.removePreviewBtn}
+                        onClick={() => handleRemoveImage(index)}
+                        title="Remover foto"
+                      >
+                        ×
+                      </button>
+                      {index === 0 && (
+                        <span className={styles.mainPhotoLabel}>Principal</span>
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
+
               <small>
-                📸 Cole aqui o link de uma foto do animal hospedada na internet.<br/>
-                💡 Recomendamos usar sites como <a href="https://postimages.org/" target="_blank" rel="noopener">PostImg</a> para hospedar suas fotos gratuitamente.
+                📸 Adicione uma ou mais fotos do animal (arquivo local ou link).<br/>
+                💡 Recomendamos usar <a href="https://postimages.org/" target="_blank" rel="noopener">PostImg</a> para hospedar suas fotos gratuitamente.<br/>
+                🏷️ A primeira foto será usada como imagem principal.
               </small>
             </div>
           </div>

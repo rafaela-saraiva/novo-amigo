@@ -174,6 +174,14 @@
   justify-content: center;
 }
 
+/* === GRID DE MÚLTIPLAS FOTOS === */
+.previewGrid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
 .previewWrapper {
   position: relative;
   width: 180px;
@@ -218,6 +226,39 @@
 .removePreviewBtn:hover {
   background: #ef4444;
   color: white;
+}
+
+/* === LABEL FOTO PRINCIPAL === */
+.mainPhotoLabel {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background: rgba(67, 149, 155, 0.9);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === BOTÃO ADICIONAR URL === */
+.addUrlBtn {
+  padding: 10px 14px;
+  background: #43959b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.addUrlBtn:hover {
+  background: #2d5a60;
 }
 /* === CHECKBOXES PERSONALIZADOS === */
 .checkboxGroup {
