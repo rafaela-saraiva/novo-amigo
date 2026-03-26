@@ -143,7 +143,9 @@ export default function NossosAnimais() {
         sexo: novoAnimal.sexo,
         porte: novoAnimal.porte,
         descricao: novoAnimal.descricao,
-        foto: novoAnimal.foto || novoAnimal.imagem || '',
+        foto: novoAnimal.imagens && novoAnimal.imagens.length > 0
+          ? novoAnimal.imagens
+          : (novoAnimal.imagem && novoAnimal.imagem !== '/placeholder.svg' ? [novoAnimal.imagem] : []),
         vacinado: novoAnimal.vacinado ?? false,
         castrado: novoAnimal.castrado ?? false,
         disponivel: novoAnimal.disponivel ?? true,
