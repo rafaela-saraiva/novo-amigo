@@ -5,6 +5,7 @@ import AnimalCard from '@/components/AnimalCard';
 import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import { useAuth } from '@/hooks/useAuth';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
 import { useSearchParams } from 'next/navigation';
@@ -14,7 +15,11 @@ import styles from './styles.module.css';
 export default function NossosAnimais() {
   const searchParams = useSearchParams();
   const especieParam = searchParams?.get('especie') as string | undefined;
+  const { user } = useAuth();
 
+  const podeAdicionarAnimal =
+    user?.groups?.includes('Administrador') ||
+    user?.groups?.includes('ONG');
   const [animais, setAnimais] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -384,13 +389,15 @@ export default function NossosAnimais() {
                 />
               </div>
 
-              <button
-                className={styles.cadastrarBtn}
-                style={{ width: '100%', marginBottom: 8 }}
-                onClick={() => setModalAberto(true)}
-              >
-                + cadastrar animal
-              </button>
+              {podeAdicionarAnimal && (
+                <button
+                  className={styles.cadastrarBtn}
+                  style={{ width: '100%', marginBottom: 8 }}
+                  onClick={() => setModalAberto(true)}
+                >
+                  + cadastrar animal
+                </button>
+              )}
 
               <button className={styles.limparBtn} onClick={limparFiltros}>
                 Limpar Filtros
@@ -420,12 +427,14 @@ export default function NossosAnimais() {
                   <div className={styles.emptyIcon}>🐾</div>
                   <h3>Nenhum animal encontrado</h3>
                   <p>Tente ajustar os filtros para ver mais resultados.</p>
-                  <button
-                    className={styles.cadastrarBtn}
-                    onClick={() => setModalAberto(true)}
-                  >
-                    Cadastrar animal
-                  </button>
+                  {podeAdicionarAnimal && (
+                    <button
+                      className={styles.cadastrarBtn}
+                      onClick={() => setModalAberto(true)}
+                    >
+                      Cadastrar animal
+                    </button>
+                  )}
                 </div>
               )}
             </div>
