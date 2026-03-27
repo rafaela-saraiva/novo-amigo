@@ -414,6 +414,118 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+/* ===== COVER NOTICE ===== */
+.coverNotice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(169, 50, 73, 0.06);
+  border-radius: 12px;
+  color: #a93249;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ===== FOTO TAB TOGGLE ===== */
+.tabToggle {
+  display: flex;
+  gap: 6px;
+  background: #f3f3f7;
+  padding: 4px;
+  border-radius: 14px;
+}
+
+.tabBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #8a7172;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tabBtn:hover {
+  color: #a93249;
+}
+
+.tabBtnActive {
+  background: #ffffff;
+  color: #a93249;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== URL SECTION ===== */
+.urlSection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.urlInputRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.urlInputRow .input {
+  flex: 1;
+}
+
+.urlAddBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: none;
+  background: #a93249;
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.urlAddBtn:hover {
+  background: #891932;
+}
+
+.urlHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  color: #8a7172;
+  margin: 0;
+}
+
+.urlHintLink {
+  color: #a93249;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.urlHintLink:hover {
+  color: #891932;
+}
+
 .addMoreBtn {
   display: inline-flex;
   align-items: center;

@@ -26,6 +26,8 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
   const [fotos, setFotos] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [fotoTab, setFotoTab] = useState<'upload' | 'url'>('upload');
+  const [urlInput, setUrlInput] = useState('');
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -196,17 +198,19 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
                   <label className={styles.labelUpper}>Espécie</label>
                   <div className={styles.pillGroup}>
                     {[
-                      { value: 'cachorro', label: 'Cachorro', icon: 'pets' },
-                      { value: 'gato', label: 'Gato', icon: 'pets' },
-                      { value: 'outro', label: 'Outro', icon: 'cruelty_free' },
-                    ].map(({ value, label, icon }) => (
+                      { value: 'cachorro', label: 'Cachorro' },
+                      { value: 'gato', label: 'Gato' },
+                      { value: 'passaro', label: 'Pássaro' },
+                      { value: 'coelho', label: 'Coelho' },
+                      { value: 'hamster', label: 'Hamster' },
+                      { value: 'fazenda', label: 'Animais de Fazenda' },
+                    ].map(({ value, label }) => (
                       <button
                         key={value}
                         type="button"
                         className={`${styles.pill} ${formData.especie === value ? styles.pillActive : ''}`}
                         onClick={() => handleInputChange('especie', value)}
                       >
-                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>{icon}</span>
                         {label}
                       </button>
                     ))}
@@ -237,9 +241,9 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
                       value={formData.porte}
                       onChange={(e) => handleInputChange('porte', e.target.value)}
                     >
-                      <option value="pequeno">Pequeno (até 10kg)</option>
-                      <option value="medio">Médio (11kg a 25kg)</option>
-                      <option value="grande">Grande (acima de 25kg)</option>
+                      <option value="pequeno">Pequeno</option>
+                      <option value="medio">Médio</option>
+                      <option value="grande">Grande</option>
                     </select>
                   </div>
                 </div>
@@ -260,60 +264,136 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
               </div>
 
               <div className={styles.cardBody}>
-                {fotos.length === 0 ? (
-                  <label
-                    className={`${styles.dropzone} ${dragActive ? styles.dropzoneActive : ''}`}
-                    onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
-                    onDragLeave={() => setDragActive(false)}
-                    onDrop={handleDrop}
+                {/* Aviso de capa */}
+                <div className={styles.coverNotice}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>info</span>
+                  <span>A <strong>primeira imagem</strong> enviada será usada como capa do perfil do animal.</span>
+                </div>
+
+                {/* Toggle upload / URL */}
+                <div className={styles.tabToggle}>
+                  <button
+                    type="button"
+                    className={`${styles.tabBtn} ${fotoTab === 'upload' ? styles.tabBtnActive : ''}`}
+                    onClick={() => setFotoTab('upload')}
                   >
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className={styles.hiddenInput}
-                      onChange={handleFilesChange}
-                    />
-                    <span
-                      className="material-symbols-outlined"
-                      style={{ fontSize: '56px', fontVariationSettings: "'wght' 200", color: '#a93249' }}
-                    >cloud_upload</span>
-                    <p className={styles.dropzoneTitle}>Arraste a foto ou clique</p>
-                    <p className={styles.dropzoneHint}>PNG, JPG ou WEBP (Max 5MB)</p>
-                  </label>
-                ) : (
-                  <>
-                    <div className={styles.previewGrid}>
-                      {fotos.map((foto, index) => (
-                        <div key={index} className={styles.previewWrapper}>
-                          <Image src={foto} alt={`foto ${index + 1}`} fill style={{ objectFit: 'cover' }} />
-                          <button
-                            type="button"
-                            className={styles.removeBtn}
-                            onClick={() => handleRemoveImage(index)}
-                          >×</button>
-                          {index === 0 && <span className={styles.mainLabel}>Principal</span>}
-                        </div>
-                      ))}
-                    </div>
-                    <button
-                      type="button"
-                      className={styles.addMoreBtn}
-                      onClick={() => fileInputRef.current?.click()}
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>upload</span>
+                    Enviar arquivo
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.tabBtn} ${fotoTab === 'url' ? styles.tabBtnActive : ''}`}
+                    onClick={() => setFotoTab('url')}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>link</span>
+                    Adicionar URL
+                  </button>
+                </div>
+
+                {fotoTab === 'upload' ? (
+                  fotos.length === 0 ? (
+                    <label
+                      className={`${styles.dropzone} ${dragActive ? styles.dropzoneActive : ''}`}
+                      onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+                      onDragLeave={() => setDragActive(false)}
+                      onDrop={handleDrop}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
-                      Adicionar mais fotos
-                    </button>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className={styles.hiddenInput}
-                      onChange={handleFilesChange}
-                    />
-                  </>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className={styles.hiddenInput}
+                        onChange={handleFilesChange}
+                      />
+                      <span
+                        className="material-symbols-outlined"
+                        style={{ fontSize: '56px', fontVariationSettings: "'wght' 200", color: '#a93249' }}
+                      >cloud_upload</span>
+                      <p className={styles.dropzoneTitle}>Arraste a foto ou clique</p>
+                      <p className={styles.dropzoneHint}>PNG, JPG ou WEBP (Max 5MB)</p>
+                    </label>
+                  ) : (
+                    <>
+                      <div className={styles.previewGrid}>
+                        {fotos.map((foto, index) => (
+                          <div key={index} className={styles.previewWrapper}>
+                            <Image src={foto} alt={`foto ${index + 1}`} fill style={{ objectFit: 'cover' }} />
+                            <button
+                              type="button"
+                              className={styles.removeBtn}
+                              onClick={() => handleRemoveImage(index)}
+                            >×</button>
+                            {index === 0 && <span className={styles.mainLabel}>★ Capa</span>}
+                          </div>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        className={styles.addMoreBtn}
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+                        Adicionar mais fotos
+                      </button>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className={styles.hiddenInput}
+                        onChange={handleFilesChange}
+                      />
+                    </>
+                  )
+                ) : (
+                  /* Aba URL */
+                  <div className={styles.urlSection}>
+                    <div className={styles.urlInputRow}>
+                      <input
+                        className={styles.input}
+                        type="url"
+                        placeholder="https://exemplo.com/foto-do-pet.jpg"
+                        value={urlInput}
+                        onChange={(e) => setUrlInput(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className={styles.urlAddBtn}
+                        onClick={() => {
+                          const trimmed = urlInput.trim();
+                          if (trimmed) {
+                            setFotos(prev => [...prev, trimmed]);
+                            setUrlInput('');
+                          }
+                        }}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+                        Adicionar
+                      </button>
+                    </div>
+                    {fotos.length > 0 && (
+                      <div className={styles.previewGrid}>
+                        {fotos.map((foto, index) => (
+                          <div key={index} className={styles.previewWrapper}>
+                            <Image src={foto} alt={`foto ${index + 1}`} fill style={{ objectFit: 'cover' }} />
+                            <button
+                              type="button"
+                              className={styles.removeBtn}
+                              onClick={() => handleRemoveImage(index)}
+                            >×</button>
+                            {index === 0 && <span className={styles.mainLabel}>★ Capa</span>}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <p className={styles.urlHint}>
+                      <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>info</span>
+                      Hospede a imagem gratuitamente em{' '}
+                      <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" className={styles.urlHintLink}>postimages.org</a>{' '}
+                      e cole o link direto aqui.
+                    </p>
+                  </div>
                 )}
               </div>
             </section>
