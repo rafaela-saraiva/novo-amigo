@@ -663,7 +663,7 @@
 .tagGroup {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 7px;
 }
 
 .tagGroupLabel {
@@ -678,19 +678,19 @@
 .tagCloud {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tagChip {
   display: inline-flex;
   align-items: center;
-  padding: 6px 14px;
+  padding: 4px 11px;
   border-radius: 99px;
   border: 1.5px solid #e5e7eb;
   background: #ffffff;
   color: #574143;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;

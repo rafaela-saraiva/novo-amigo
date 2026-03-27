@@ -154,6 +154,8 @@ export default function NossosAnimais() {
         vacinado: novoAnimal.vacinado ?? false,
         castrado: novoAnimal.castrado ?? false,
         disponivel: novoAnimal.disponivel ?? true,
+        tags: novoAnimal.tags ?? [],
+        comoAdotar: novoAnimal.comoAdotar ?? null,
       };
 
       const res = await api.post('/animals', payload, {

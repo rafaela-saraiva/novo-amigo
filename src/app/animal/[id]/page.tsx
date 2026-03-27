@@ -229,9 +229,9 @@ export default function AnimalProfilePage() {
               )}
 
               {/* Tags de personalidade */}
-              {(animal as Pet & { tags?: string[] }).tags && (animal as Pet & { tags?: string[] }).tags!.length > 0 && (
+              {animal.tags && animal.tags.length > 0 && (
                 <div className={styles.tagsSection}>
-                  {(animal as Pet & { tags?: string[] }).tags!.map(tag => (
+                  {animal.tags.map(tag => (
                     <span key={tag} className={styles.tagPill}>{tag}</span>
                   ))}
                 </div>
@@ -278,7 +278,7 @@ export default function AnimalProfilePage() {
           )}
 
           {/* Como Adotar */}
-          {(animal as Pet & { comoAdotar?: string }).comoAdotar && (
+          {animal.comoAdotar && (
             <section className={styles.adoptSection}>
               <h3 className={styles.adoptTitle}>
                 Como Adotar o {animal.nome}
@@ -289,7 +289,7 @@ export default function AnimalProfilePage() {
                   <span className="material-symbols-outlined">volunteer_activism</span>
                 </div>
                 <p className={styles.adoptText}>
-                  {(animal as Pet & { comoAdotar?: string }).comoAdotar}
+                  {animal.comoAdotar}
                 </p>
               </div>
             </section>

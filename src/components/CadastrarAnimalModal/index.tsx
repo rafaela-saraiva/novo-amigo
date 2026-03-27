@@ -476,7 +476,6 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
                 { group: '🐾 Comportamento', tags: ['#GostaDeCrianças', '#Amigável', '#Sociável', '#SeDáBemComCães', '#SeDáBemComGatos', '#Educado', '#Brincalhão', '#Dócil', '#Calmo', '#Ativo', '#Protetor', '#Independente', '#Carente', '#Dorminhoco', '#Comilão', '#Curioso', '#Inteligente', '#Assustado'] },
                 { group: '🏠 Estilo de Vida', tags: ['#AdaptadoAApartamento', '#Silencioso', '#GostaDePassear', '#GostaDeColo'] },
                 { group: '📅 Fase de Vida', tags: ['#Filhote', '#Adulto', '#Sênior'] },
-                { group: '⚕️ Saúde', tags: ['#Castrado', '#Vacinado', '#Vermifugado', '#Saudável'] },
               ].map(({ group, tags }) => (
                 <div key={group} className={styles.tagGroup}>
                   <span className={styles.tagGroupLabel}>{group}</span>
