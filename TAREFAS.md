@@ -31,7 +31,7 @@
 
 ---
 
-## 4. Tela de ONGs (nova) **João**
+## 4. Tela de ONGs (nova)
 
 - 🟡 **Criar tela de listagem de ONGs** — Ainda não foi feito nem planejado. Criar uma página pública listando as ONGs cadastradas com seus respectivos animais
 - 🟡 **Criar tela de perfil de ONG** — Página individual para cada ONG com informações, animais disponíveis e forma de contato
@@ -131,7 +131,7 @@
 
 ## 14. Segurança do Backend (Vulnerabilidades)
 
-- 🔴 **`DELETE /animals/:id` sem autenticação** — Qualquer pessoa (sem login) pode deletar qualquer animal. Adicionar middleware `verificaToken` e role adequada
+- 🔴 **`DELETE /animal/:id` sem autenticação** — Qualquer pessoa (sem login) pode deletar qualquer animal. Adicionar middleware `verificaToken` e role adequada
 - 🔴 **`GET /users` sem proteção** — Lista todos os usuários (incluindo emails) sem exigir autenticação. Restringir para admin
 - 🔴 **`PUT /users/:id` sem proteção** — Qualquer pessoa pode alterar dados de qualquer usuário sem autenticação
 - 🔴 **`PUT /shelters/:id` sem proteção** — Qualquer pessoa pode alterar dados de uma ONG sem autenticação
@@ -153,7 +153,7 @@
 
 - 🟡 **ID do animal: número vs. string** — O backend usa `id: Int` (número) e o frontend define `id: string` no modelo `Pet`. Isso pode causar bugs em comparações. Padronizar em ambos os lados
 - 🟡 **Dados do usuário logado incompletos** — O endpoint `/users/me` retorna apenas `{id, email, nome}`, mas a tela de Configurações tenta acessar `phone` e `cpf` do contexto, que não existem. Expandir o retorno do endpoint
-- 🟡 **`sampleAnimals.ts` desatualizado** — Arquivo de dados de exemplo usa campos antigos (`img`, `tipo`, `id: number`) incompatíveis com o modelo atual. Atualizar ou remover
+- 🟡 **`sampleAnimal.ts` desatualizado** — Arquivo de dados de exemplo usa campos antigos (`img`, `tipo`, `id: number`) incompatíveis com o modelo atual. Atualizar ou remover
 
 ---
 
