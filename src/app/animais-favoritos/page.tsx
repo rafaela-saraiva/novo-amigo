@@ -44,9 +44,7 @@ export default function AnimaisFavoritos() {
     
       <main className={styles.main}>
         <div className={styles.container}>
-          <button className={styles.backBtn} onClick={() => router.back()}>
-            ← voltar
-          </button>
+          
           <h1>Meus Favoritos</h1>
 
           {favoritos.length === 0 && (

@@ -8,8 +8,9 @@ export interface Pet {
   sexo: string;
   porte: string;
   descricao: string;
-  foto?: string;
+  foto?: string | string[];
   imagem?: string;
+  imagens?: string[];
   disponivel: boolean;
   vacinado?: boolean;
   castrado?: boolean;
@@ -18,4 +19,6 @@ export interface Pet {
   donoNome: string;
   donoTipo: 'usuario' | 'ong';
   donoEndereco?: string;
+  tags?: string[];
+  comoAdotar?: string;
 }

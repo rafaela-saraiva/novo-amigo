@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lexend } from "next/font/google";
+import Script from 'next/script';
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -32,13 +33,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
-        <script
-          async
+        {/* load ads script only after hydration to avoid DOM mutations before React hydrates */}
+        <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3232590255400417"
+          strategy="afterInteractive"
           crossOrigin="anonymous"
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${lexend.variable}`}>
+      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${lexend.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

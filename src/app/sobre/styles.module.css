@@ -9,7 +9,7 @@
 
 .sobre {
   font-size: 2.5rem;
-  color: #ffbd59;
+  color: #fb7084;
   margin-bottom: 1.5rem;
   position: relative;
 }
@@ -18,7 +18,7 @@
   content: '';
   width: 80px;
   height: 4px;
-  background-color: #ffbd59;
+  background-color: #fb7084;
   display: block;
   margin: 0.5rem auto 0;
   border-radius: 2px;
@@ -33,7 +33,7 @@
 }
 
 .texto strong{
-  color: #ffbd59;
+  color: #fb7084;
 }
 
 .animais {
@@ -63,7 +63,7 @@
 
 .valores h3 {
   font-size: 1.8rem;
-  color: #ffbd59;
+  color: #fb7084;
   margin-bottom: 1rem;
 }
 
@@ -76,6 +76,6 @@
 }
 
 .valores strong{
-  color: #ffbd59;
+  color: #fb7084;
 }
 

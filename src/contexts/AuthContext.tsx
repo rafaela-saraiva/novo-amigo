@@ -63,7 +63,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
 
     setToken(tk);
-    setUser(res.data.usuario);
+
+    // Busca o usuário completo (com grupos) após o login
+    const meRes = await api.get("/users/me");
+    setUser(meRes.data);
   }
 
   function logout() {
