@@ -24,8 +24,8 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
   });
 
   const [fotos, setFotos] = useState<string[]>([]);
-  const [urlInput, setUrlInput] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [dragActive, setDragActive] = useState(false);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -44,30 +44,34 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
     e.target.value = '';
   };
 
-  const handleAddUrl = () => {
-    if (!urlInput.trim()) return;
-    try {
-      new URL(urlInput);
-      setFotos(prev => [...prev, urlInput.trim()]);
-      setUrlInput('');
-    } catch {
-      alert('URL inválida. Por favor, insira uma URL válida.');
-    }
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+    const files = Array.from(e.dataTransfer.files);
+    files.forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        if (result) setFotos(prev => [...prev, result]);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleRemoveImage = (index: number) => {
     setFotos(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!formData.nome || !formData.idade) {
       alert('Por favor, preencha todos os campos obrigatórios (Nome, Idade)');
       return;
     }
-    
+
     const imagemUrl = fotos[0] || '/placeholder.svg';
-    
+
     const novoAnimal: Pet = {
       id: crypto.randomUUID(),
       nome: formData.nome,
@@ -85,10 +89,9 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       donoTipo: 'ong',
       donoEndereco: 'Endereço da ONG',
     };
-    
+
     onSave(novoAnimal);
-    
-    // Limpar formulário
+
     setFormData({
       nome: '',
       idade: '',
@@ -101,8 +104,6 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       castrado: false,
     });
     setFotos([]);
-    setUrlInput('');
-    
     onClose();
   };
 
@@ -110,210 +111,269 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.header}>
-          <h2>Cadastrar Novo Animal</h2>
-          <button className={styles.closeBtn} onClick={onClose}>×</button>
-        </div>
-        
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.section}>
-            <h3>Informações Básicas *</h3>
-            <div className={styles.formGroup}>
-              <label htmlFor="nome">Nome do Animal *</label>
-              <input
-                id="nome"
-                type="text"
-                value={formData.nome}
-                onChange={(e) => handleInputChange('nome', e.target.value)}
-                placeholder="Ex: Rex, Mia, Pingo..."
-                required
-              />
-            </div>
-            
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label htmlFor="idade">Idade *</label>
-                <input
-                  id="idade"
-                  type="text"
-                  value={formData.idade}
-                  onChange={(e) => handleInputChange('idade', e.target.value)}
-                  placeholder="Ex: 2 anos, 6 meses..."
-                  required
-                />
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label htmlFor="raca">Raça</label>
-                <input
-                  id="raca"
-                  type="text"
-                  value={formData.raca}
-                  onChange={(e) => handleInputChange('raca', e.target.value)}
-                  placeholder="Ex: Labrador, SRD, Siamês..."
-                />
-              </div>
-            </div>
+      <div className={styles.page} onClick={(e) => e.stopPropagation()}>
+
+        {/* ===== HEADER ===== */}
+        <header className={styles.pageHeader}>
+          <div>
+            <h1 className={styles.pageTitle}>Cadastrar Novo Amigo</h1>
+            <p className={styles.pageSubtitle}>
+              Preencha os detalhes para integrar um novo pet ao nosso sistema de gestão e cuidado.
+            </p>
           </div>
-
-          <div className={styles.section}>
-            <h3>Características</h3>
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label htmlFor="especie">Espécie</label>
-                <select
-                  id="especie"
-                  value={formData.especie}
-                  onChange={(e) => handleInputChange('especie', e.target.value)}
-                >
-                  <option value="cachorro">Cachorro</option>
-                  <option value="gato">Gato</option>
-                  <option value="passaro">Pássaro</option>
-                  <option value="coelho">Coelho</option>
-                  <option value="hamster">Hamster</option>
-                  <option value="fazenda">Animal de Fazenda</option>
-                </select>
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label htmlFor="sexo">Sexo</label>
-                <select
-                  id="sexo"
-                  value={formData.sexo}
-                  onChange={(e) => handleInputChange('sexo', e.target.value)}
-                >
-                  <option value="macho">Macho</option>
-                  <option value="femea">Fêmea</option>
-                </select>
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label htmlFor="porte">Porte</label>
-                <select
-                  id="porte"
-                  value={formData.porte}
-                  onChange={(e) => handleInputChange('porte', e.target.value)}
-                >
-                  <option value="pequeno">Pequeno</option>
-                  <option value="medio">Médio</option>
-                  <option value="grande">Grande</option>
-                </select>
-              </div>
-            </div>
+          <div className={styles.headerActions}>
+            <button type="button" className={styles.cancelBtn} onClick={onClose}>Cancelar</button>
+            <button type="button" className={styles.saveBtn} onClick={() => handleSubmit()}>Salvar Animal</button>
           </div>
+        </header>
 
-          <div className={styles.section}>
-            <h3>Fotos do Animal</h3>
-            <div className={styles.formGroup}>
-              <label>Enviar Fotos (opcional)</label>
-              <div className={styles.fileUploadRow}>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleFilesChange}
-                  style={{ display: 'none' }}
-                />
-                <button
-                  type="button"
-                  className={styles.uploadBtn}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  Escolher arquivos
-                </button>
+        {/* ===== FORM BENTO GRID ===== */}
+        <form className={styles.bentoGrid} onSubmit={handleSubmit}>
 
-                <span className={styles.orText}>ou</span>
+          {/* ---- COLUNA ESQUERDA ---- */}
+          <div className={styles.colLeft}>
 
-                <input
-                  type="url"
-                  value={urlInput}
-                  onChange={(e) => setUrlInput(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddUrl(); } }}
-                  placeholder="https://i.postimg.cc/exemplo-da-foto.jpg"
-                />
-                <button
-                  type="button"
-                  className={styles.addUrlBtn}
-                  onClick={handleAddUrl}
-                >
-                  Adicionar
-                </button>
+            {/* Card: Informações Básicas */}
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span className={styles.cardIcon}>
+                  <span className="material-symbols-outlined">badge</span>
+                </span>
+                <h3 className={styles.cardTitle}>Informações Básicas</h3>
               </div>
 
-              {fotos.length > 0 && (
-                <div className={styles.previewGrid}>
-                  {fotos.map((foto, index) => (
-                    <div key={index} className={styles.previewWrapper}>
-                      <Image src={foto} alt={`foto ${index + 1}`} fill style={{ objectFit: 'cover' }} />
+              <div className={styles.cardBody}>
+                <div className={styles.fieldGroup}>
+                  <label className={styles.labelUpper}>Nome Completo</label>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="Ex: Tobias Silva"
+                    value={formData.nome}
+                    onChange={(e) => handleInputChange('nome', e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className={styles.row2}>
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.labelUpper}>Idade Aproximada</label>
+                    <input
+                      className={styles.input}
+                      type="text"
+                      placeholder="Ex: 2 anos"
+                      value={formData.idade}
+                      onChange={(e) => handleInputChange('idade', e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.labelUpper}>Raça / Linhagem</label>
+                    <input
+                      className={styles.input}
+                      type="text"
+                      placeholder="Ex: Golden Retriever"
+                      value={formData.raca}
+                      onChange={(e) => handleInputChange('raca', e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Card: Características */}
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span className={`${styles.cardIcon} ${styles.cardIconSecondary}`}>
+                  <span className="material-symbols-outlined">genetics</span>
+                </span>
+                <h3 className={styles.cardTitle}>Características</h3>
+              </div>
+
+              <div className={styles.cardBody}>
+                {/* Espécie pills */}
+                <div className={styles.fieldGroup}>
+                  <label className={styles.labelUpper}>Espécie</label>
+                  <div className={styles.pillGroup}>
+                    {[
+                      { value: 'cachorro', label: 'Cachorro', icon: 'pets' },
+                      { value: 'gato', label: 'Gato', icon: 'pets' },
+                      { value: 'outro', label: 'Outro', icon: 'cruelty_free' },
+                    ].map(({ value, label, icon }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        className={`${styles.pill} ${formData.especie === value ? styles.pillActive : ''}`}
+                        onClick={() => handleInputChange('especie', value)}
+                      >
+                        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>{icon}</span>
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Sexo + Porte */}
+                <div className={styles.row2}>
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.labelUpper}>Sexo</label>
+                    <div className={styles.segmented}>
                       <button
                         type="button"
-                        className={styles.removePreviewBtn}
-                        onClick={() => handleRemoveImage(index)}
-                        title="Remover foto"
-                      >
-                        ×
-                      </button>
-                      {index === 0 && (
-                        <span className={styles.mainPhotoLabel}>Principal</span>
-                      )}
+                        className={`${styles.segOption} ${formData.sexo === 'macho' ? styles.segActive : ''}`}
+                        onClick={() => handleInputChange('sexo', 'macho')}
+                      >Macho</button>
+                      <button
+                        type="button"
+                        className={`${styles.segOption} ${formData.sexo === 'femea' ? styles.segActive : ''}`}
+                        onClick={() => handleInputChange('sexo', 'femea')}
+                      >Fêmea</button>
                     </div>
-                  ))}
+                  </div>
+                  <div className={styles.fieldGroup}>
+                    <label className={styles.labelUpper}>Porte</label>
+                    <select
+                      className={styles.select}
+                      value={formData.porte}
+                      onChange={(e) => handleInputChange('porte', e.target.value)}
+                    >
+                      <option value="pequeno">Pequeno (até 10kg)</option>
+                      <option value="medio">Médio (11kg a 25kg)</option>
+                      <option value="grande">Grande (acima de 25kg)</option>
+                    </select>
+                  </div>
                 </div>
-              )}
-
-              <small>
-                📸 Adicione uma ou mais fotos do animal (arquivo local ou link).<br/>
-                💡 Recomendamos usar <a href="https://postimages.org/" target="_blank" rel="noopener">PostImg</a> para hospedar suas fotos gratuitamente.<br/>
-                🏷️ A primeira foto será usada como imagem principal.
-              </small>
-            </div>
+              </div>
+            </section>
           </div>
 
-          <div className={styles.section}>
-            <h3>Informações Adicionais</h3>
-            <div className={styles.formGroup}>
-              <label htmlFor="descricao">Descrição (opcional)</label>
-              <textarea
-                id="descricao"
-                value={formData.descricao}
-                onChange={(e) => handleInputChange('descricao', e.target.value)}
-                placeholder="Conte um pouco sobre a personalidade do animal, cuidados especiais, etc..."
-                rows={3}
-              />
-            </div>
-            
-            <div className={styles.checkboxGroup}>
-              <label className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={formData.vacinado}
-                  onChange={(e) => handleInputChange('vacinado', e.target.checked)}
-                />
-                <span>Vacinado</span>
-              </label>
-              
-              <label className={styles.checkbox}>
-                <input
-                  type="checkbox"
-                  checked={formData.castrado}
-                  onChange={(e) => handleInputChange('castrado', e.target.checked)}
-                />
-                <span>Castrado</span>
-              </label>
-            </div>
-          </div>
+          {/* ---- COLUNA DIREITA ---- */}
+          <div className={styles.colRight}>
 
-          <div className={styles.actions}>
-            <button type="button" className={styles.cancelBtn} onClick={onClose}>
-              Cancelar
-            </button>
-            <button type="submit" className={styles.saveBtn}>
-              Cadastrar Animal
-            </button>
+            {/* Card: Foto do Amigo */}
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span className={styles.cardIcon}>
+                  <span className="material-symbols-outlined">add_a_photo</span>
+                </span>
+                <h3 className={styles.cardTitle}>Foto do Amigo</h3>
+              </div>
+
+              <div className={styles.cardBody}>
+                {fotos.length === 0 ? (
+                  <label
+                    className={`${styles.dropzone} ${dragActive ? styles.dropzoneActive : ''}`}
+                    onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+                    onDragLeave={() => setDragActive(false)}
+                    onDrop={handleDrop}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className={styles.hiddenInput}
+                      onChange={handleFilesChange}
+                    />
+                    <span
+                      className="material-symbols-outlined"
+                      style={{ fontSize: '56px', fontVariationSettings: "'wght' 200", color: '#a93249' }}
+                    >cloud_upload</span>
+                    <p className={styles.dropzoneTitle}>Arraste a foto ou clique</p>
+                    <p className={styles.dropzoneHint}>PNG, JPG ou WEBP (Max 5MB)</p>
+                  </label>
+                ) : (
+                  <>
+                    <div className={styles.previewGrid}>
+                      {fotos.map((foto, index) => (
+                        <div key={index} className={styles.previewWrapper}>
+                          <Image src={foto} alt={`foto ${index + 1}`} fill style={{ objectFit: 'cover' }} />
+                          <button
+                            type="button"
+                            className={styles.removeBtn}
+                            onClick={() => handleRemoveImage(index)}
+                          >×</button>
+                          {index === 0 && <span className={styles.mainLabel}>Principal</span>}
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      className={styles.addMoreBtn}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+                      Adicionar mais fotos
+                    </button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className={styles.hiddenInput}
+                      onChange={handleFilesChange}
+                    />
+                  </>
+                )}
+              </div>
+            </section>
+
+            {/* Card: Informações Adicionais */}
+            <section className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span className={`${styles.cardIcon} ${styles.cardIconTertiary}`}>
+                  <span className="material-symbols-outlined">description</span>
+                </span>
+                <h3 className={styles.cardTitle}>Informações Adicionais</h3>
+              </div>
+
+              <div className={styles.cardBody}>
+                <div className={styles.checkRow}>
+                  <label className={styles.checkCard}>
+                    <input
+                      type="checkbox"
+                      className={styles.checkInput}
+                      checked={formData.vacinado}
+                      onChange={(e) => handleInputChange('vacinado', e.target.checked)}
+                    />
+                    <span className={styles.checkLabel}>Vacinado</span>
+                  </label>
+                  <label className={styles.checkCard}>
+                    <input
+                      type="checkbox"
+                      className={styles.checkInput}
+                      checked={formData.castrado}
+                      onChange={(e) => handleInputChange('castrado', e.target.checked)}
+                    />
+                    <span className={styles.checkLabel}>Castrado</span>
+                  </label>
+                </div>
+
+                <div className={styles.fieldGroup}>
+                  <label className={styles.labelUpper}>Descrição / Histórico</label>
+                  <textarea
+                    className={styles.textarea}
+                    placeholder="Conte-nos sobre a personalidade, cuidados especiais ou a história do animal..."
+                    rows={6}
+                    value={formData.descricao}
+                    onChange={(e) => handleInputChange('descricao', e.target.value)}
+                  />
+                </div>
+              </div>
+            </section>
           </div>
         </form>
+
+        {/* ===== FOOTER ===== */}
+        <footer className={styles.pageFooter}>
+          <div className={styles.footerInfo}>
+            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: '#a93249' }}>info</span>
+            <p>Os dados inseridos são protegidos conforme a LGPD.</p>
+          </div>
+          <button type="button" className={styles.finishBtn} onClick={() => handleSubmit()}>
+            Finalizar Cadastro
+          </button>
+        </footer>
       </div>
     </div>
   );
