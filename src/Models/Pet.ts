@@ -19,4 +19,6 @@ export interface Pet {
   donoNome: string;
   donoTipo: 'usuario' | 'ong';
   donoEndereco?: string;
+  tags?: string[];
+  comoAdotar?: string;
 }

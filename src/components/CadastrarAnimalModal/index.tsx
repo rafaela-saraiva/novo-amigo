@@ -21,7 +21,16 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
     descricao: '',
     vacinado: false,
     castrado: false,
+    comoAdotar: '',
   });
+
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    );
+  };
 
   const [fotos, setFotos] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -90,6 +99,8 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       donoNome: 'Nome da ONG Exemplo',
       donoTipo: 'ong',
       donoEndereco: 'Endereço da ONG',
+      tags: selectedTags,
+      comoAdotar: formData.comoAdotar,
     };
 
     onSave(novoAnimal);
@@ -104,7 +115,9 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
       descricao: '',
       vacinado: false,
       castrado: false,
+      comoAdotar: '',
     });
+    setSelectedTags([]);
     setFotos([]);
     onClose();
   };
@@ -443,6 +456,70 @@ export default function CadastrarAnimalModal({ isOpen, onClose, onSave }: Cadast
             </section>
           </div>
         </form>
+
+        {/* ===== CARD TAGS (full width abaixo do grid) ===== */}
+        <div className={styles.fullWidthSection}>
+
+          {/* Card: Tags de Personalidade */}
+          <section className={styles.card}>
+            <div className={styles.cardHeader}>
+              <span className={`${styles.cardIcon} ${styles.cardIconPurple}`}>
+                <span className="material-symbols-outlined">sell</span>
+              </span>
+              <div>
+                <h3 className={styles.cardTitle}>Tags de Personalidade</h3>
+                <p className={styles.cardSubtitle}>Selecione todas as que descrevem bem o animal</p>
+              </div>
+            </div>
+            <div className={styles.cardBody}>
+              {[
+                { group: '🐾 Comportamento', tags: ['#GostaDeCrianças', '#Amigável', '#Sociável', '#SeDáBemComCães', '#SeDáBemComGatos', '#Educado', '#Brincalhão', '#Dócil', '#Calmo', '#Ativo', '#Protetor', '#Independente', '#Carente', '#Dorminhoco', '#Comilão', '#Curioso', '#Inteligente', '#Assustado'] },
+                { group: '🏠 Estilo de Vida', tags: ['#AdaptadoAApartamento', '#Silencioso', '#GostaDePassear', '#GostaDeColo'] },
+                { group: '📅 Fase de Vida', tags: ['#Filhote', '#Adulto', '#Sênior'] },
+                { group: '⚕️ Saúde', tags: ['#Castrado', '#Vacinado', '#Vermifugado', '#Saudável'] },
+              ].map(({ group, tags }) => (
+                <div key={group} className={styles.tagGroup}>
+                  <span className={styles.tagGroupLabel}>{group}</span>
+                  <div className={styles.tagCloud}>
+                    {tags.map(tag => (
+                      <button
+                        key={tag}
+                        type="button"
+                        className={`${styles.tagChip} ${selectedTags.includes(tag) ? styles.tagChipActive : ''}`}
+                        onClick={() => toggleTag(tag)}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Card: Como Adotar */}
+          <section className={styles.card}>
+            <div className={styles.cardHeader}>
+              <span className={`${styles.cardIcon} ${styles.cardIconOrange}`}>
+                <span className="material-symbols-outlined">volunteer_activism</span>
+              </span>
+              <div>
+                <h3 className={styles.cardTitle}>Como Adotar</h3>
+                <p className={styles.cardSubtitle}>Explique o processo de adoção deste animal</p>
+              </div>
+            </div>
+            <div className={styles.cardBody}>
+              <textarea
+                className={styles.textarea}
+                placeholder="Ex: Entre em contato pelo WhatsApp (11) 99999-9999. Realizamos entrevista com o adotante e visita ao novo lar. O animal é entregue com cartão de vacinação e documento de adoção responsável."
+                rows={5}
+                value={formData.comoAdotar}
+                onChange={(e) => handleInputChange('comoAdotar', e.target.value)}
+              />
+            </div>
+          </section>
+
+        </div>
 
         {/* ===== FOOTER ===== */}
         <footer className={styles.pageFooter}>

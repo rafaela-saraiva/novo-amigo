@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           crossOrigin="anonymous"
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${lexend.variable}`}>
+      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${lexend.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

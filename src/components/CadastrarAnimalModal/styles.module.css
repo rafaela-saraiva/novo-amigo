@@ -633,6 +633,87 @@
   transform: scale(0.97);
 }
 
+/* ===== FULL WIDTH SECTION (abaixo do bento grid) ===== */
+.fullWidthSection {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 0 48px 32px;
+}
+
+.cardSubtitle {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  color: #8a7172;
+  font-weight: 500;
+  margin: 2px 0 0;
+}
+
+.cardIconPurple {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.cardIconOrange {
+  background: rgba(234, 88, 12, 0.1);
+  color: #ea580c;
+}
+
+/* ===== TAG GROUPS ===== */
+.tagGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tagGroupLabel {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #574143;
+}
+
+.tagCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+  color: #574143;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tagChip:hover {
+  border-color: #a93249;
+  color: #a93249;
+  background: rgba(169, 50, 73, 0.04);
+}
+
+.tagChipActive {
+  background: #a93249;
+  border-color: #a93249;
+  color: #ffffff;
+}
+
+.tagChipActive:hover {
+  background: #891932;
+  border-color: #891932;
+  color: #ffffff;
+}
+
 /* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -654,6 +735,10 @@
 @media (max-width: 900px) {
   .bentoGrid {
     grid-template-columns: 1fr;
+    padding: 0 24px 24px;
+  }
+
+  .fullWidthSection {
     padding: 0 24px 24px;
   }
 
