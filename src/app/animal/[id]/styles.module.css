@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap");
 
 /* ===== PÁGINA ===== */
 .main {
-  background: #f6f8f6;
+  background: var(--surface-secondary);
   min-height: 80vh;
   padding: 40px 16px 100px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .container {
@@ -26,9 +26,9 @@
   padding: 5px 13px;
   border-radius: 99px;
   border: 1.5px solid rgba(169, 50, 73, 0.25);
-  background: rgba(169, 50, 73, 0.05);
-  color: #a93249;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 12px;
   font-weight: 700;
 }
@@ -44,22 +44,22 @@
 .adoptTitle {
   font-size: 34px;
   font-weight: 900;
-  color: #191c1e;
+  color: var(--text-primary);
   margin: 0 0 28px;
   display: flex;
   align-items: center;
   gap: 20px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   letter-spacing: -0.5px;
 }
 
 .adoptCard {
   position: relative;
   padding: 40px 48px;
-  background: white;
+  background: var(--card-bg);
   border-radius: 28px;
   border-left: 6px solid #ea580c;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 16px 48px var(--shadow);
   overflow: hidden;
   display: flex;
   gap: 20px;
@@ -82,10 +82,10 @@
 .adoptText {
   font-size: 16px;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-secondary);
   line-height: 1.8;
   margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   white-space: pre-line;
 }
 
@@ -97,8 +97,8 @@
   justify-content: center;
   min-height: 60vh;
   gap: 16px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: #574143;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: var(--text-muted);
 }
 
 .spinner {
@@ -111,7 +111,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error {
@@ -128,10 +130,10 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: white;
+  background: var(--card-bg);
   border: 2px solid #a93249;
   color: #a93249;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 600;
   font-size: 14px;
   padding: 10px 18px;
@@ -152,7 +154,7 @@
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #8a7172;
+  color: var(--text-muted);
   margin-bottom: 36px;
   font-weight: 500;
 }
@@ -161,8 +163,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #8a7172;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-muted);
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 13px;
   font-weight: 500;
   padding: 0;
@@ -174,7 +176,7 @@
 }
 
 .breadcrumbCurrent {
-  color: #191c1e;
+  color: var(--text-primary);
   font-weight: 700;
 }
 
@@ -216,7 +218,12 @@
 .heroOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.15) 55%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    var(--overlay) 0%,
+    rgba(0, 0, 0, 0.15) 55%,
+    transparent 100%
+  );
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -231,7 +238,7 @@
   line-height: 1;
   letter-spacing: -1.5px;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .heroTagline {
@@ -239,7 +246,7 @@
   font-weight: 600;
   color: #fb7084;
   margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .thumbGrid {
@@ -256,8 +263,8 @@
   border: 3px solid transparent;
   cursor: pointer;
   padding: 0;
-  background: #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: var(--surface-tertiary);
+  box-shadow: 0 4px 12px var(--shadow);
   transition: all 0.3s;
 }
 
@@ -288,7 +295,7 @@
   color: white;
   font-weight: 800;
   font-size: 18px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 /* ===== COLUNA INFO ===== */
@@ -313,7 +320,7 @@
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 700;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   letter-spacing: 0.2px;
 }
 
@@ -342,19 +349,26 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.85); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
 }
 
 /* ===== NOME ===== */
 .animalName {
   font-size: 52px;
   font-weight: 900;
-  color: #191c1e;
+  color: var(--text-primary);
   margin: 0 0 4px;
   letter-spacing: -2px;
   line-height: 1;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .animalBreed {
@@ -362,18 +376,18 @@
   font-weight: 700;
   color: #a93249;
   margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 /* ===== ATRIBUTOS ===== */
 .attrsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: white;
+  background: var(--card-bg);
   border-radius: 24px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px var(--shadow);
 }
 
 .attrCell {
@@ -382,7 +396,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  border-right: 1px solid #f1f5f9;
+  border-right: 1px solid var(--border);
   transition: background 0.2s;
 }
 
@@ -391,7 +405,7 @@
 }
 
 .attrCell:hover {
-  background: #fafafa;
+  background: var(--surface-secondary);
 }
 
 .attrLabel {
@@ -399,15 +413,15 @@
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #94a3b8;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-faint);
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .attrValue {
   font-size: 16px;
   font-weight: 800;
-  color: #191c1e;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-primary);
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .capitalize {
@@ -425,7 +439,7 @@
   border-radius: 12px;
   font-size: 13px;
   font-weight: 700;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   width: fit-content;
 }
 
@@ -438,11 +452,11 @@
 .quoteText {
   font-size: 15px;
   font-weight: 500;
-  color: #574143;
+  color: var(--text-secondary);
   font-style: italic;
   line-height: 1.7;
   margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 /* ===== CTA ===== */
@@ -459,7 +473,7 @@
   border: none;
   background: linear-gradient(135deg, #a93249, #fb7084);
   color: white;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 16px;
   font-weight: 900;
   cursor: pointer;
@@ -471,20 +485,29 @@
 }
 
 .ctaBtn::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.25), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
   transform: skewX(-25deg);
   animation: shine 3s infinite;
 }
 
 @keyframes shine {
-  from { left: -100%; }
-  to { left: 200%; }
+  from {
+    left: -100%;
+  }
+  to {
+    left: 200%;
+  }
 }
 
 .ctaBtn:hover {
@@ -500,9 +523,9 @@
   width: 60px;
   height: 60px;
   border-radius: 16px;
-  border: 2px solid #e5e7eb;
-  background: white;
-  color: #94a3b8;
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-faint);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -525,12 +548,12 @@
 .ctaNote {
   font-size: 12px;
   font-weight: 500;
-  color: #8a7172;
+  color: var(--text-muted);
   text-align: center;
   margin: 0;
   padding: 0 8px;
   line-height: 1.6;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 /* ===== STORYTELLING ===== */
@@ -544,12 +567,12 @@
 .storyTitle {
   font-size: 34px;
   font-weight: 900;
-  color: #191c1e;
+  color: var(--text-primary);
   margin: 0 0 28px;
   display: flex;
   align-items: center;
   gap: 20px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   letter-spacing: -0.5px;
 }
 
@@ -563,21 +586,21 @@
 .storyCard {
   position: relative;
   padding: 48px 56px;
-  background: white;
+  background: var(--card-bg);
   border-radius: 28px;
   border-left: 6px solid #a93249;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 16px 48px var(--shadow);
   overflow: hidden;
 }
 
 .storyText {
   font-size: 18px;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-secondary);
   line-height: 1.85;
   margin: 0;
   font-style: italic;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   position: relative;
   z-index: 1;
 }
@@ -597,18 +620,18 @@
 .relatedTitle {
   font-size: 28px;
   font-weight: 900;
-  color: #191c1e;
+  color: var(--text-primary);
   margin: 0 0 6px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   letter-spacing: -0.3px;
 }
 
 .relatedSub {
   font-size: 14px;
-  color: #8a7172;
+  color: var(--text-muted);
   margin: 0;
   font-weight: 500;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .relatedLink {
@@ -618,7 +641,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 14px;
   font-weight: 800;
   color: #a93249;
@@ -637,11 +660,11 @@
 }
 
 .relCard {
-  background: white;
+  background: var(--card-bg);
   border-radius: 24px;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px var(--shadow);
   cursor: pointer;
   width: 100%;
   padding: 0;
@@ -685,16 +708,16 @@
 .relName {
   font-size: 18px;
   font-weight: 900;
-  color: #191c1e;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-primary);
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .relSub {
   font-size: 13px;
-  color: #8a7172;
+  color: var(--text-muted);
   font-weight: 600;
   margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   text-transform: capitalize;
 }
 
@@ -736,4 +759,3 @@
     gap: 14px;
   }
 }
-
