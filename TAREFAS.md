@@ -51,7 +51,7 @@
 
 ---
 
-## 6. Cadastro de Animal (Modal / Tela) **João**
+## 6. Cadastro de Animal (Modal / Tela) **João ( Concluído ✔ )**
 
 - 🟡 **UI** — Atualizar o design do modal/tela de cadastro de animal
 - 🟡 **Múltiplas fotos** — Adicionar suporte para cadastrar mais de uma foto por animal
@@ -73,7 +73,7 @@
 
 ---
 
-## 8. Perfil do Animal **João**
+## 8. Perfil do Animal **João ( Concluido ✔ )**
 
 - 🔴 **Botão "Entrar em Contato"** — O botão está presente mas **não funciona**. Implementar ação (ex: redirecionar para Fale Conosco, abrir modal com dados da ONG, ou enviar email)
 - 🟡 **Tags de Personalidade** — Após implementar o campo de personalidade no cadastro, exibi-las no perfil do animal
