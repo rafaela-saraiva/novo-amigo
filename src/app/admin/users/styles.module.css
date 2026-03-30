@@ -1,79 +1,92 @@
+/* ===== PAGE ===== */
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
  
-  background: #f8fafc;
-  color: #0f172a;
+  color: #333;
 }
- 
-/* MAIN */
+
+/* ===== MAIN ===== */
 .main {
   flex: 1;
   width: 100%;
   max-width: 1100px;
- 
   margin: 140px auto 60px;
   padding: 0 20px;
 }
- 
-/* TÍTULO */
+
+/* ===== TÍTULO ===== */
 .main h1 {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 30px;
   letter-spacing: -0.5px;
+  color: #ff6b81;
 }
- 
-/* BUSCA */
+
+/* ===== BUSCA ===== */
 .search {
   width: 100%;
   max-width: 400px;
- 
   padding: 10px 14px;
   margin-bottom: 20px;
- 
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
- 
+  border-radius: 12px;
+  border: 1px solid #eee;
   background: #fff;
   font-size: 14px;
- 
   outline: none;
-  transition: all 0.2s ease;
+  transition: 0.2s;
 }
- 
+
 .search:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  border-color: #ff6b81;
+  box-shadow: 0 0 0 3px rgba(255, 107, 129, 0.2);
 }
- 
-/* LISTA */
+
+/* ===== FILTROS ===== */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #ffd1d9;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  color: #ff6b81;
+  transition: 0.2s;
+}
+
+.filters button:hover {
+  background: #ffe4e8;
+}
+
+/* ===== LISTA ===== */
 .table {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
- 
-/* CARD */
+
+/* ===== CARD ===== */
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
- 
   padding: 18px 24px;
- 
   background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
- 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
- 
+  border-radius: 18px;
+  border: 1px solid #ffe4e8;
+  box-shadow: 0 6px 18px rgba(255, 107, 129, 0.08);
   transition: all 0.25s ease;
- 
   position: relative;
 }
- 
+
 /* DETALHE LATERAL */
 .row::before {
   content: "";
@@ -82,154 +95,129 @@
   top: 0;
   height: 100%;
   width: 4px;
- 
   background: transparent;
-  border-radius: 16px 0 0 16px;
- 
+  border-radius: 18px 0 0 18px;
   transition: background 0.2s ease;
 }
- 
+
 .row:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(255, 107, 129, 0.15);
 }
- 
+
 .row:hover::before {
-  background: #3b82f6;
+  background: #ff6b81;
 }
- 
-/* INFO USUÁRIO */
+
+/* ===== INFO ===== */
 .userInfo {
   display: flex;
   flex-direction: column;
 }
- 
+
 .userInfo strong {
   font-size: 16px;
   font-weight: 600;
 }
- 
+
 .userInfo p {
   font-size: 14px;
-  color: #6b7280;
+  color: #777;
 }
- 
-/* BADGE ADMIN */
+
+/* ===== BADGE ===== */
 .owner {
   display: inline-block;
   margin-top: 6px;
   padding: 4px 10px;
- 
   font-size: 12px;
   font-weight: 600;
- 
-  color: #7c3aed;
-  background: #f3e8ff;
- 
+  color: #ff6b81;
+  background: #ffe4e8;
   border-radius: 999px;
-  border: 1px solid #e9d5ff;
 }
- 
-/* STATUS */
+
+/* ===== STATUS ===== */
 .active {
   margin-top: 4px;
   font-size: 12px;
   font-weight: 600;
-  color: #16a34a;
+  color: #22c55e;
 }
- 
+
 .inactive {
   margin-top: 4px;
   font-size: 12px;
   font-weight: 600;
-  color: #dc2626;
+  color: #ff6b81;
 }
- 
-/* AÇÕES */
+
+/* ===== AÇÕES ===== */
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
- 
+
 /* BOTÕES */
 .actions button {
   border: none;
   padding: 8px 16px;
- 
   border-radius: 999px;
- 
   font-size: 13px;
   font-weight: 500;
- 
   cursor: pointer;
- 
-  transition: all 0.2s ease;
- 
+  transition: 0.2s;
   display: flex;
   align-items: center;
   gap: 6px;
 }
- 
+
+/* CLICK */
 .actions button:active {
   transform: scale(0.95);
 }
- 
-/* ATIVAR */
+
+/* BOTÃO PRINCIPAL */
 .actions button:first-child {
-  background: #3b82f6;
+  background: #ff6b81;
   color: #fff;
 }
- 
+
 .actions button:first-child:hover {
-  background: #2563eb;
+  background: #e85a70;
 }
- 
-/* DELETAR */
+
+/* BOTÃO DELETAR */
 .actions button:last-child {
-  background: #ef4444;
+  background: transparent;
+  color: #ff6b81;
+  border: 2px solid #ff6b81;
+}
+
+.actions button:last-child:hover {
+  background: #ff6b81;
   color: #fff;
 }
- 
-.actions button:last-child:hover {
-  background: #dc2626;
+
+/* ===== LINHA INATIVA ===== */
+.inactiveRow {
+  opacity: 0.6;
 }
- 
-/* RESPONSIVO */
+
+/* ===== RESPONSIVO ===== */
 @media (max-width: 768px) {
   .main {
     margin-top: 120px;
   }
- 
+
   .row {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
- 
+
   .actions {
     width: 100%;
     justify-content: flex-end;
   }
-}
-.filters {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
- 
-.filters button {
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  cursor: pointer;
-  font-size: 13px;
-}
- 
-.filters button:hover {
-  background: #f1f5f9;
-}
- 
-.inactiveRow {
-  opacity: 0.6;
 }
