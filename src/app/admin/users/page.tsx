@@ -20,7 +20,9 @@ export default function AdminUsers() {
   const { user, token, loading } = useAuth();
   const router = useRouter();
 
-  const isAdmin = user?.email === "admin@pet.com";
+  // ✅ ADMINS (mantendo emails)
+  const ADMINS = ["admin@pet.com", "john4@gmail.com"];
+  const isAdmin = ADMINS.includes(user?.email || "");
 
   const [users, setUsers] = useState<User[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
@@ -30,7 +32,8 @@ export default function AdminUsers() {
   useEffect(() => {
     if (loading || !token) return;
 
-    if (!user || user.email !== "admin@pet.com") {
+    // ✅ CORRIGIDO: agora aceita os dois admins
+    if (!user || !ADMINS.includes(user.email)) {
       router.replace("/");
       return;
     }
@@ -55,7 +58,7 @@ export default function AdminUsers() {
     }
   }
 
-  // 🔥 FUNÇÃO PARA NORMALIZAR STATUS
+  // ✅ NORMALIZA STATUS
   function getStatus(u: User) {
     const value = u.status;
     return value === true || value === 1 || value === "true";
@@ -86,8 +89,9 @@ export default function AdminUsers() {
   }
 
   async function deleteUser(u: User) {
-    if (u.email === "admin@pet.com") {
-      alert("Admin não pode ser deletado");
+    // ✅ BLOQUEIA TODOS ADMINS
+    if (ADMINS.includes(u.email || "")) {
+      alert("Administrador não pode ser deletado");
       return;
     }
 
@@ -132,7 +136,7 @@ export default function AdminUsers() {
       <Header />
 
       <main className={styles.main}>
-        <h1>👥 Gerenciar Usuários</h1>
+        <h1>Gerenciar Usuários</h1>
 
         <input
           className={styles.search}
@@ -153,23 +157,25 @@ export default function AdminUsers() {
           {filteredUsers.map((u) => {
             const nome = u.nome || u.name || "Sem nome";
             const status = getStatus(u);
+            const isAdminUser = ADMINS.includes(u.email || "");
 
             return (
               <div
                 key={u.id}
-                className={`${styles.row} {!status ? styles.inactiveRow : ''}`}
+                className={`${styles.row} ${!status ? styles.inactiveRow : ''}`}
               >
                 <div className={styles.userInfo}>
                   <strong>{nome}</strong>
 
-                  {u.email === "admin@pet.com" && (
-                    <span className={styles.owner}>👑 Dono do sistema</span>
+                  {/* ✅ LABEL ADMIN */}
+                  {isAdminUser && (
+                    <span className={styles.owner}>👑 Administrador</span>
                   )}
 
                   <p>{u.email || "Sem email"}</p>
 
-                  {/* 🔥 ADMIN SEM STATUS */}
-                  {u.email === "admin@pet.com" ? (
+                  {/* ✅ ADMIN SEM STATUS */}
+                  {isAdminUser ? (
                     <span className={styles.owner}>Sempre ativo</span>
                   ) : (
                     <span className={status ? styles.active : styles.inactive}>
@@ -179,7 +185,8 @@ export default function AdminUsers() {
                 </div>
 
                 <div className={styles.actions}>
-                  {u.email !== "admin@pet.com" && (
+                  {/* ✅ NÃO MOSTRA BOTÕES PRA ADMIN */}
+                  {!isAdminUser && (
                     <>
                       <button onClick={() => toggleUserStatus(u)}>
                         {status ? "Desativar" : "Ativar"}

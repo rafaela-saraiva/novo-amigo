@@ -7,19 +7,32 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
-export default function AdminPets() {
-  const { token } = useAuth();
- 
-  const [loading, setLoading] = useState(true);
-
-  type Pet = {
+type Pet = {
   id: number;
   nome: string;
-  foto?: string;
+  foto?: any;
   raca?: string;
+  especie?: string;
+  disponivel?: boolean;
+  ong?: {
+    nome: string;
+  };
 };
 
-const [pets, setPets] = useState<Pet[]>([]);
+export default function AdminPets() {
+  const { token } = useAuth();
+
+  const [loading, setLoading] = useState(true);
+  const [pets, setPets] = useState<Pet[]>([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [petSelecionado, setPetSelecionado] = useState<Pet | null>(null);
+
+  const [form, setForm] = useState({
+    nome: "",
+    raca: "",
+    especie: ""
+  });
 
   async function buscarPets() {
     try {
@@ -36,7 +49,7 @@ const [pets, setPets] = useState<Pet[]>([]);
     }
   }
 
-  async function deletarPet(id) {
+  async function deletarPet(id: number) {
     if (!confirm("Tem certeza que deseja deletar esse pet?")) return;
 
     try {
@@ -51,9 +64,68 @@ const [pets, setPets] = useState<Pet[]>([]);
     }
   }
 
+  // ✅ CORRIGIDO
+  async function toggleStatus(pet: Pet) {
+    try {
+      const novoStatus = !pet.disponivel;
+
+      await api.put(`/animals/${pet.id}`, {
+        nome: pet.nome,
+        especie: pet.especie,
+        raca: pet.raca,
+        disponivel: novoStatus
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setPets((prev: Pet[]) =>
+        prev.map((p) =>
+          p.id === pet.id
+            ? { ...p, disponivel: novoStatus }
+            : p
+        )
+      );
+
+    } catch (err: any) {
+      console.error(err.response?.data || err);
+      alert("Erro ao atualizar status");
+    }
+  }
+
+  function abrirModal(pet: Pet) {
+    setPetSelecionado(pet);
+    setForm({
+      nome: pet.nome || "",
+      raca: pet.raca || "",
+      especie: pet.especie || ""
+    });
+    setIsModalOpen(true);
+  }
+
+  async function atualizarPet() {
+    if (!petSelecionado) return;
+
+    try {
+      await api.put(`/animals/${petSelecionado.id}`, form, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setPets((prev) =>
+        prev.map((p) =>
+          p.id === petSelecionado.id ? { ...p, ...form } : p
+        )
+      );
+
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao atualizar pet");
+    }
+  }
+
   useEffect(() => {
-    buscarPets();
-  }, []);
+    if (token) buscarPets();
+  }, [token]);
 
   return (
     <div className={styles.page}>
@@ -61,45 +133,133 @@ const [pets, setPets] = useState<Pet[]>([]);
 
       <main className={styles.main}>
         <div className={styles.container}>
-          <h1 className={styles.title}>Gerenciar Pets 🐶</h1>
+          <h1 className={styles.title}>Gerenciar Pets </h1>
 
           {loading ? (
             <p>Carregando...</p>
           ) : pets.length === 0 ? (
             <p>Nenhum pet encontrado.</p>
           ) : (
-            <div className={styles.grid}>
-              {pets.map((pet) => (
-                <div key={pet.id} className={styles.card}>
-                  
-                  <img
-                    src={
-                      pet.foto && pet.foto.startsWith("http")
-                        ? pet.foto
-                        : "https://placedog.net/400"
-                    }
-                    alt={pet.nome}
-                    className={styles.image}
-                  />
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>Foto</th>
+                  <th>Nome</th>
+                  <th>Espécie</th>
+                  <th>Raça</th>
+                  <th>Status</th>
+                  <th>ONG</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
 
-                  <h3>{pet.nome}</h3>
-                  <p>{pet.raca || "Sem raça"}</p>
+              <tbody>
+                {pets.map((pet) => (
+                  <tr key={pet.id}>
+                    <td>
+                      <img
+                        src={
+                          pet.foto
+                            ? Array.isArray(pet.foto)
+                              ? pet.foto[0]
+                              : `http://localhost:4000/uploads/${pet.foto}`
+                            : "https://placedog.net/100"
+                        }
+                        alt={pet.nome}
+                        className={styles.image}
+                      />
+                    </td>
 
-                  <div className={styles.actions}>
-                    <button
-                      className={styles.deleteBtn}
-                      onClick={() => deletarPet(pet.id)}
+                    <td>{pet.nome}</td>
+                    <td>{pet.especie || "—"}</td>
+                    <td>{pet.raca || "—"}</td>
+
+                    {/* ✅ CORRIGIDO */}
+                    <td>
+                      {pet.disponivel ? (
+                        <span className={styles.active}>Ativo</span>
+                      ) : (
+                        <span className={styles.inactive}>Inativo</span>
+                      )}
+                    </td>
+
+                    <td>{pet.ong?.nome || "—"}</td>
+
+                    <td className={styles.actions}>
+                      <button
+                      className={styles.toggleBtn}
+                      onClick={() => toggleStatus(pet)}
                     >
-                      Deletar 🗑️
+                      {pet.disponivel ? "Desativar " : "Ativar "}
                     </button>
-                  </div>
 
-                </div>
-              ))}
-            </div>
+                      <button
+                        className={styles.editBtn}
+                        onClick={() => abrirModal(pet)}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        className={styles.deleteBtn}
+                        onClick={() => deletarPet(pet.id)}
+                      >
+                        Deletar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </main>
+
+      {/* MODAL */}
+      {isModalOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2>Editar Pet 🐾</h2>
+
+            <div className={styles.field}>
+              <label>Nome</label>
+              <input
+                value={form.nome}
+                onChange={(e) =>
+                  setForm({ ...form, nome: e.target.value })
+                }
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Espécie</label>
+              <input
+                value={form.especie}
+                onChange={(e) =>
+                  setForm({ ...form, especie: e.target.value })
+                }
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Raça</label>
+              <input
+                value={form.raca}
+                onChange={(e) =>
+                  setForm({ ...form, raca: e.target.value })
+                }
+              />
+            </div>
+
+            <div className={styles.modalActions}>
+              <button onClick={atualizarPet}>Salvar</button>
+              <button onClick={() => setIsModalOpen(false)}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>

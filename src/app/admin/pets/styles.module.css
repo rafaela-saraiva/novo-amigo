@@ -1,8 +1,22 @@
+/* ===== ROOT (CORES) ===== */
+:root {
+  --primary: #ff6b81;
+  --primary-dark: #e85a70;
+  --primary-light: #ffe4e8;
+
+  --bg: #ffffff;
+  
+
+  --text: #333;
+  --text-light: #777;
+}
+
+/* ===== PAGE ===== */
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--surface-secondary);
+  background: var(--bg-soft);
 }
 
 .main {
@@ -20,90 +34,216 @@
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 30px;
-  color: var(--text-primary);
+  color: var(--primary);
 }
 
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 24px;
-}
-
-/* CARD */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px;
-
-  display: flex;
-  flex-direction: column;
-
-  transition: all 0.25s ease;
-  cursor: pointer;
-}
-
-/* HOVER CARD */
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-}
-
-/* IMAGE */
-.image {
+/* ===== TABELA ===== */
+.table {
   width: 100%;
-  height: 180px;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: var(--bg);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(255, 107, 129, 0.15);
+}
+
+.table th {
+  background: var(--primary-light);
+  padding: 14px;
+  text-align: left;
+  font-size: 14px;
+  color: var(--primary-dark);
+}
+
+.table td {
+  padding: 14px;
+  border-bottom: 1px solid #f3f3f3;
+  vertical-align: middle;
+}
+
+.table tr:hover {
+  background: #fff0f3;
+}
+
+/* ===== IMAGEM ===== */
+.image {
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 12px;
-  margin-bottom: 12px;
+  border: 2px solid var(--primary-light);
 }
 
-/* TEXTO */
-.card h3 {
-  font-size: 16px;
+/* ===== STATUS ===== */
+.active {
+  color: #22c55e;
   font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
 }
 
-.card p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
+.inactive {
+  color: var(--primary);
+  font-weight: 600;
 }
 
-/* AÇÕES */
+/* ===== AÇÕES ===== */
 .actions {
-  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* BOTÃO DELETE */
-.deleteBtn {
-  width: 100%;
-  padding: 10px;
+/* ===== BOTÕES ===== */
 
-  border-radius: 8px;
-  border: 1px solid #e74c3c;
-
-  background: transparent;
-  color: #e74c3c;
-
-  font-weight: 500;
-  font-size: 14px;
-
+/* 🔥 BOTÃO ATIVAR (igual editar) */
+.toggleBtn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 13px;
+  transition: 0.2s;
 }
 
-/* HOVER */
+.toggleBtn:hover {
+  background: var(--primary-dark);
+}
+
+/* EDITAR */
+.editBtn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.editBtn:hover {
+  background: var(--primary-dark);
+}
+
+/* DELETAR */
+.deleteBtn {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 7px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
 .deleteBtn:hover {
-  background: #e74c3c;
-  color: #fff;
-  transform: scale(1.02);
+  background: var(--primary);
+  color: white;
 }
 
-/* CLICK */
-.deleteBtn:active {
-  transform: scale(0.97);
+/* ===== MODAL ===== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 107, 129, 0.2);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: var(--bg);
+  padding: 25px;
+  border-radius: 18px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 15px 40px rgba(255, 107, 129, 0.25);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal h2 {
+  text-align: center;
+  color: var(--primary);
+}
+
+/* CAMPOS */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  outline: none;
+  transition: 0.2s;
+}
+
+.modal input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+/* BOTÕES DO MODAL */
+.modalActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modalActions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modalActions button:first-child {
+  background: var(--primary);
+  color: white;
+}
+
+.modalActions button:first-child:hover {
+  background: var(--primary-dark);
+}
+
+.modalActions button:last-child {
+  background: #f1f1f1;
+  color: #555;
+}
+
+.modalActions button:last-child:hover {
+  background: #ddd;
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
