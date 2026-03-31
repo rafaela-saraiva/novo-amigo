@@ -14,6 +14,10 @@ export default function Header() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // ✅ ADMINS
+  const ADMINS = ["admin@pet.com", "john4@gmail.com"];
+  const isAdmin = ADMINS.includes(user?.email || "");
+
   function handleLogout() {
     logout();
     setMenuOpen(false);
@@ -33,42 +37,51 @@ export default function Header() {
             <h2 className={styles.logoText}>Novo Amigo</h2>
           </Link>
 
-          {/* Links de navegação (desktop) */}
+          {/* Links */}
           <div className={styles.links}>
             <Link href="/nossos-animais" className={styles.link}>Adotar</Link>
             <Link href="/#como-funciona" className={styles.link}>Como Funciona</Link>
             <Link href="/#ongs" className={styles.link}>ONGs</Link>
-            
+
+            {/* 🔥 PAINEL ADMIN (DESKTOP) */}
+            {isAdmin && (
+              <Link href="/admin" className={styles.link}>
+                Painel Admin 👑
+              </Link>
+            )}
           </div>
 
-          {/* Botões de ação (desktop) */}
+          {/* AÇÕES */}
           <div className={styles.actions}>
             {user ? (
               <>
                 <Link href="/configuracoes" className={styles.userChip}>
                   <span className="material-symbols-outlined">account_circle</span>
-                  <span className={styles.userName}>{user?.nome?.split(" ")[0] || "Usuário"}</span>
+                  <span className={styles.userName}>
+                    {user?.nome?.split(" ")[0] || "Usuário"}
+                  </span>
                 </Link>
-                <button onClick={handleLogout} className={styles.btnLogout} title="Sair">
+
+                <button onClick={handleLogout} className={styles.btnLogout}>
                   <span className="material-symbols-outlined">logout</span>
                 </button>
               </>
             ) : (
               <>
-                <button onClick={() =>{ setLoginOpen(true); setMenuOpen(false);}} className={styles.btnEntrar}>
+                <button onClick={() => { setLoginOpen(true); setMenuOpen(false); }} className={styles.btnEntrar}>
                   Entrar
                 </button>
+
                 <button onClick={() => router.push("/cadastro")} className={styles.btnCadastrar}>
                   Cadastrar
                 </button>
               </>
             )}
 
-            {/* Hambúrguer (mobile) */}
+            {/* HAMBURGER */}
             <button
               className={styles.hamburger}
               onClick={() => setMenuOpen((v) => !v)}
-              aria-label="Menu"
             >
               <span className="material-symbols-outlined">
                 {menuOpen ? "close" : "menu"}
@@ -78,18 +91,28 @@ export default function Header() {
 
         </div>
 
-        {/* Menu mobile */}
+        {/* MOBILE */}
         {menuOpen && (
           <div className={styles.mobileMenu}>
             <Link href="/nossos-animais" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Adotar</Link>
             <Link href="/#como-funciona" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
             <Link href="/#ongs" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
+
+            {/* 🔥 PAINEL ADMIN MOBILE */}
+            {isAdmin && (
+              <Link href="/admin" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
+                👑 Painel Admin
+              </Link>
+            )}
+
             <div className={styles.mobileDivider} />
+
             {user ? (
               <>
                 <Link href="/configuracoes" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
                   Minha Conta
                 </Link>
+
                 <button className={styles.mobileBtnSair} onClick={handleLogout}>
                   Sair
                 </button>
@@ -99,6 +122,7 @@ export default function Header() {
                 <button className={styles.mobileBtnEntrar} onClick={() => { setLoginOpen(true); setMenuOpen(false); }}>
                   Entrar
                 </button>
+
                 <button className={styles.mobileBtnCadastrar} onClick={() => { router.push("/cadastro"); setMenuOpen(false); }}>
                   Cadastrar
                 </button>
