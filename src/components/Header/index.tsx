@@ -46,7 +46,7 @@ export default function Header() {
             {/* 🔥 PAINEL ADMIN (DESKTOP) */}
             {isAdmin && (
               <Link href="/admin" className={styles.link}>
-                Painel Admin 👑
+                Painel Admin 
               </Link>
             )}
           </div>
