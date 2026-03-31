@@ -1,79 +1,81 @@
+/* ===== CARD PADRÃO ===== */
 .root {
-    position: relative;
-    border: 1px solid transparent;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: flex-start;
-    padding: 12px;
-    width: 100%;
-    height: auto;
-    box-sizing: border-box;
-    background-color: transparent; 
-    transition: all 0.3s ease;
-  }
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: flex-start;
+  padding: 12px;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  background-color: var(--card-bg);
+  transition: all 0.3s ease;
+}
 
- 
+.imageWrapper {
+  width: 240px;
+  height: 240px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  transition: transform 0.4s ease;
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+}
 
-  .imageWrapper {
-    width: 240px;
-    height: 240px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    transition: transform 0.4s ease;
-  }
-  
+.root:hover .imageWrapper {
+  transform: scale(1.1);
+}
 
-  .root:hover .imageWrapper {
-    transform: scale(1.10);
-  }
-  
-  .image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    transition: transform 0.4s ease;
-  }
-  
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.4s ease;
+  background: var(--input-bg);
+}
 
-  .cardButton {
-    background-color: rgba(255, 179, 0, 0.95);
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 30px;
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 40px;
-    transition: background 0.25s ease, transform 0.2s ease;
-  }
-  
+.cardButton {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 30px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 40px;
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease;
+}
 
-  .cardButton:hover {
-    background-color: #ffa000;
-    transform: scale(1.05);
-  }
+.cardButton:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
 
 /* ===== PetCard — novo design ===== */
-
 .petCard {
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  border: 1px solid var(--border);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
 .petCard:hover {
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 20px 40px var(--shadow);
   transform: translateY(-4px);
 }
 
@@ -82,6 +84,7 @@
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
+  background: var(--input-bg);
 }
 
 .petImage {
@@ -90,6 +93,7 @@
   object-fit: cover;
   transition: transform 0.7s ease;
   display: block;
+  background: var(--input-bg);
 }
 
 .petCard:hover .petImage {
@@ -111,7 +115,9 @@
   justify-content: center;
   color: #fff;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   z-index: 2;
 }
 
@@ -199,11 +205,13 @@
   font-weight: 700;
   text-align: center;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   box-sizing: border-box;
 }
 
 .conhecerBtn:hover {
   background: #fb7084;
   color: #0d150f;
-}  
+}

@@ -1,5 +1,5 @@
 // import AdBanner from "@/components/AdBanner";
-'use client';
+"use client";
 
 import Carousel from "@/components/Carousel";
 import Footer from "@/components/Footer";
@@ -28,51 +28,59 @@ interface AnimalAPI {
 
 export default function Home() {
   const [todosAnimais, setTodosAnimais] = useState<AnimalAPI[]>([]);
-  const [busca, setBusca] = useState('');
-  const [especie, setEspecie] = useState('');
-  const [idade, setIdade] = useState('');
-  const [porte, setPorte] = useState('');
+  const [busca, setBusca] = useState("");
+  const [especie, setEspecie] = useState("");
+  const [idade, setIdade] = useState("");
+  const [porte, setPorte] = useState("");
 
   useEffect(() => {
-    api.get('/animals')
+    api
+      .get("/animals")
       .then((res) => {
-        const disponiveis = (res.data as AnimalAPI[]).filter((a) => a.disponivel !== false);
+        const disponiveis = (res.data as AnimalAPI[]).filter(
+          (a) => a.disponivel !== false,
+        );
         setTodosAnimais(disponiveis);
       })
       .catch(() => setTodosAnimais([]));
   }, []);
 
-  const animaisFiltrados = todosAnimais.filter((pet) => {
-    const buscaOk = busca === '' ||
-      pet.nome.toLowerCase().includes(busca.toLowerCase()) ||
-      (pet.raca ?? '').toLowerCase().includes(busca.toLowerCase());
+  const animaisFiltrados = todosAnimais
+    .filter((pet) => {
+      const buscaOk =
+        busca === "" ||
+        pet.nome.toLowerCase().includes(busca.toLowerCase()) ||
+        (pet.raca ?? "").toLowerCase().includes(busca.toLowerCase());
 
-    const especieOk = especie === '' ||
-      (pet.especie ?? '').toLowerCase().includes(especie.toLowerCase());
+      const especieOk =
+        especie === "" ||
+        (pet.especie ?? "").toLowerCase().includes(especie.toLowerCase());
 
-    const idadeNum = Number(pet.idade);
-    const idadeOk = idade === '' ||
-      (idade === 'filhote' && idadeNum <= 1) ||
-      (idade === 'jovem' && idadeNum > 1 && idadeNum <= 3) ||
-      (idade === 'adulto' && idadeNum > 3 && idadeNum <= 8) ||
-      (idade === 'idoso' && idadeNum > 8);
+      const idadeNum = Number(pet.idade);
+      const idadeOk =
+        idade === "" ||
+        (idade === "filhote" && idadeNum <= 1) ||
+        (idade === "jovem" && idadeNum > 1 && idadeNum <= 3) ||
+        (idade === "adulto" && idadeNum > 3 && idadeNum <= 8) ||
+        (idade === "idoso" && idadeNum > 8);
 
-    const porteOk = porte === '' ||
-      (pet.porte ?? '').toLowerCase() === porte.toLowerCase();
+      const porteOk =
+        porte === "" || (pet.porte ?? "").toLowerCase() === porte.toLowerCase();
 
-    return buscaOk && especieOk && idadeOk && porteOk;
-  }).slice(0, 4);
+      return buscaOk && especieOk && idadeOk && porteOk;
+    })
+    .slice(0, 4);
 
   return (
     <>
       <Header />
-      
+
       {/* Banners de anúncio fixos nas laterais */}
       {/* TEMPORARIAMENTE DESATIVADO - AdSense precisa aprovar o site primeiro */}
       {/* <AdBanner position="left" />
       <AdBanner position="right" /> */}
 
-      <main className={styles.content} style={{ paddingTop: '128px' }}>
+      <main className={styles.content} style={{ paddingTop: "128px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 16px" }}>
           <Carousel />
         </div>
@@ -82,7 +90,11 @@ export default function Home() {
           {/* Barra de busca */}
           <div className={styles.searchBar}>
             <div className={styles.searchInputWrapper}>
-              <span className={`material-symbols-outlined ${styles.searchIcon}`}>search</span>
+              <span
+                className={`material-symbols-outlined ${styles.searchIcon}`}
+              >
+                search
+              </span>
               <input
                 className={styles.searchInput}
                 type="text"
@@ -129,7 +141,12 @@ export default function Home() {
             {(busca || especie || idade || porte) && (
               <button
                 className={styles.tuneBtn}
-                onClick={() => { setBusca(''); setEspecie(''); setIdade(''); setPorte(''); }}
+                onClick={() => {
+                  setBusca("");
+                  setEspecie("");
+                  setIdade("");
+                  setPorte("");
+                }}
                 title="Limpar filtros"
               >
                 <span className="material-symbols-outlined">close</span>
@@ -143,26 +160,51 @@ export default function Home() {
               <h2 className={styles.petsTitle}>Pets esperando por você</h2>
               <Link href="/nossos-animais" className={styles.verTodos}>
                 Ver todos
-                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>chevron_right</span>
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: 18 }}
+                >
+                  chevron_right
+                </span>
               </Link>
             </div>
             <div className={styles.petsGrid}>
               {animaisFiltrados.length === 0 ? (
-                <p style={{ color: '#64748b', gridColumn: '1/-1' }}>Nenhum animal encontrado com esses filtros.</p>
+                <p style={{ color: "#64748b", gridColumn: "1/-1" }}>
+                  Nenhum animal encontrado com esses filtros.
+                </p>
               ) : (
                 animaisFiltrados.map((pet) => {
-                  const idadeStr = pet.idade != null ? `${pet.idade} ${Number(pet.idade) === 1 ? 'ano' : 'anos'}` : '';
-                  const badge = pet.vacinado ? 'Vacinado' : pet.castrado ? 'Castrado' : pet.especie ?? '';
-                  const traits = [pet.raca, pet.sexo].filter(Boolean) as string[];
+                  const idadeStr =
+                    pet.idade != null
+                      ? `${pet.idade} ${Number(pet.idade) === 1 ? "ano" : "anos"}`
+                      : "";
+                  const badge = pet.vacinado
+                    ? "Vacinado"
+                    : pet.castrado
+                      ? "Castrado"
+                      : (pet.especie ?? "");
+                  const traits = [pet.raca, pet.sexo].filter(
+                    Boolean,
+                  ) as string[];
+                  // Corrige para sempre pegar a primeira imagem se for array
+                  let imgSrc = "";
+                  if (Array.isArray(pet.foto)) {
+                    imgSrc = pet.foto[0] || "";
+                  } else if (pet.foto) {
+                    imgSrc = pet.foto;
+                  } else if (pet.imagem) {
+                    imgSrc = pet.imagem;
+                  }
                   return (
                     <PetCard
                       key={pet.id}
-                      image={pet.foto || pet.imagem || ''}
+                      image={imgSrc}
                       alt={pet.nome}
                       nome={pet.nome}
                       idade={idadeStr}
                       badge={badge}
-                      porte={pet.porte ?? ''}
+                      porte={pet.porte ?? ""}
                       traits={traits}
                       href={`/nossos-animais`}
                     />
@@ -178,7 +220,8 @@ export default function Home() {
           <div className={styles.howCenter}>
             <h2 className={styles.howTitle}>Como funciona a adoção?</h2>
             <p className={styles.howSubtitle}>
-              Três passos simples para você encontrar seu novo melhor amigo de forma segura e responsável.
+              Três passos simples para você encontrar seu novo melhor amigo de
+              forma segura e responsável.
             </p>
           </div>
 
@@ -190,7 +233,8 @@ export default function Home() {
               </div>
               <h4 className={styles.howCardTitle}>Escolha um pet</h4>
               <p className={styles.howCardText}>
-                Navegue pelos perfis e encontre o pet que mais combina com seu perfil e rotina.
+                Navegue pelos perfis e encontre o pet que mais combina com seu
+                perfil e rotina.
               </p>
             </div>
 
@@ -201,7 +245,8 @@ export default function Home() {
               </div>
               <h4 className={styles.howCardTitle}>Converse com a ONG</h4>
               <p className={styles.howCardText}>
-                Tire suas dúvidas, agende uma visita e conheça a história por trás de cada resgate.
+                Tire suas dúvidas, agende uma visita e conheça a história por
+                trás de cada resgate.
               </p>
             </div>
 
@@ -212,7 +257,8 @@ export default function Home() {
               </div>
               <h4 className={styles.howCardTitle}>Leve para casa</h4>
               <p className={styles.howCardText}>
-                Prepare seu lar para receber seu novo amigo com todo amor e segurança que ele merece.
+                Prepare seu lar para receber seu novo amigo com todo amor e
+                segurança que ele merece.
               </p>
             </div>
           </div>
@@ -224,11 +270,16 @@ export default function Home() {
             <div className={styles.ctaLeft}>
               <h2 className={styles.ctaTitle}>Pronto para dar um novo lar?</h2>
               <p className={styles.ctaText}>
-                Nossa equipe auxilia em todo o processo de adaptação para garantir que você e seu novo amigo sejam felizes.
+                Nossa equipe auxilia em todo o processo de adaptação para
+                garantir que você e seu novo amigo sejam felizes.
               </p>
               <div className={styles.ctaBtns}>
-                <Link href="/nossos-animais" className={styles.ctaBtnPrimary}>Quero começar</Link>
-                <Link href="/faleConosco" className={styles.ctaBtnSecondary}>Falar com consultor</Link>
+                <Link href="/nossos-animais" className={styles.ctaBtnPrimary}>
+                  Quero começar
+                </Link>
+                <Link href="/faleConosco" className={styles.ctaBtnSecondary}>
+                  Falar com consultor
+                </Link>
               </div>
             </div>
 
@@ -241,7 +292,11 @@ export default function Home() {
                       alt="Cães brincando"
                       width={300}
                       height={220}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                   </div>
                   <div className={styles.ctaImgBox}>
@@ -250,7 +305,11 @@ export default function Home() {
                       alt="Retrato de gato"
                       width={300}
                       height={220}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                   </div>
                 </div>
@@ -261,7 +320,11 @@ export default function Home() {
                       alt="Filhote golden"
                       width={300}
                       height={220}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                   </div>
                   <div className={styles.ctaImgBox}>
@@ -270,7 +333,11 @@ export default function Home() {
                       alt="Cão inteligente"
                       width={300}
                       height={220}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                   </div>
                 </div>
@@ -282,8 +349,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      
-      
+
       <Footer />
     </>
   );
