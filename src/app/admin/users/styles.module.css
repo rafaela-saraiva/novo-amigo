@@ -1,12 +1,14 @@
 /* ===== PAGE ===== */
+/* ===== PAGE ===== */
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
- 
-  color: #333;
+  background: var(--surface-secondary);
+  color: var(--text-primary);
 }
 
+/* ===== MAIN ===== */
 /* ===== MAIN ===== */
 .main {
   flex: 1;
@@ -17,14 +19,15 @@
 }
 
 /* ===== TÍTULO ===== */
-.main h1 {
-  font-size: 32px;
-  font-weight: 700;
+/* ===== TÍTULO ===== */
+.title {
+  font-size: 30px;
+  font-weight: 600;
   margin-bottom: 30px;
-  letter-spacing: -0.5px;
-  color: #ff6b81;
+  color: #fb7084;
 }
 
+/* ===== BUSCA ===== */
 /* ===== BUSCA ===== */
 .search {
   width: 100%;
@@ -32,16 +35,17 @@
   padding: 10px 14px;
   margin-bottom: 20px;
   border-radius: 12px;
-  border: 1px solid #eee;
-  background: #fff;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
   font-size: 14px;
   outline: none;
   transition: 0.2s;
 }
 
 .search:focus {
-  border-color: #ff6b81;
-  box-shadow: 0 0 0 3px rgba(255, 107, 129, 0.2);
+  border-color: #fb7084;
+  box-shadow: 0 0 0 3px rgba(251, 112, 132, 0.2);
+  background: var(--input-bg-focus);
 }
 
 /* ===== FILTROS ===== */
@@ -51,14 +55,15 @@
   margin-bottom: 20px;
 }
 
+/* ===== FILTROS ===== */
 .filters button {
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid #ffd1d9;
-  background: #fff;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
   cursor: pointer;
   font-size: 13px;
-  color: #ff6b81;
+  color: #fb7084;
   transition: 0.2s;
 }
 
@@ -67,26 +72,30 @@
 }
 
 /* ===== LISTA ===== */
+/* ===== LISTA ===== */
 .table {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
+/* ===== CARD ===== */
 /* ===== CARD ===== */
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 24px;
-  background: #ffffff;
+  padding: 14px 20px;
+  background: var(--card-bg);
   border-radius: 18px;
-  border: 1px solid #ffe4e8;
-  box-shadow: 0 6px 18px rgba(255, 107, 129, 0.08);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(251, 112, 132, 0.08);
   transition: all 0.25s ease;
   position: relative;
+  overflow: hidden;
 }
 
+/* DETALHE LATERAL */
 /* DETALHE LATERAL */
 .row::before {
   content: "";
@@ -96,8 +105,9 @@
   height: 100%;
   width: 4px;
   background: transparent;
-  border-radius: 18px 0 0 18px;
+  border-radius: 0 18px 18px 0;
   transition: background 0.2s ease;
+  z-index: 1;
 }
 
 .row:hover {
@@ -106,7 +116,7 @@
 }
 
 .row:hover::before {
-  background: #ff6b81;
+  background: #fb7084;
 }
 
 /* ===== INFO ===== */
