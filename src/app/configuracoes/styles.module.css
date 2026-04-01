@@ -333,7 +333,7 @@
   border-radius: 16px;
 
   width: 100%;
-  max-width: 400px;
+  max-width: 550px;
 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 
@@ -342,6 +342,9 @@
   gap: 12px;
 
   animation: fadeIn 0.25s ease;
+
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 /* TÍTULO */
@@ -414,5 +417,229 @@
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* ======= MEUS ANIMAIS — GRID ======= */
+.animaisGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.animalCard {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e0e0e0);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.animalCard:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.animalCardImage {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+  background: var(--surface-tertiary, #f0f0f0);
+}
+
+.animalCardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.animalCardPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.animalBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.badgeDisponivel {
+  background: #d4edda;
+  color: #155724;
+}
+
+.badgeAdotado {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.animalCardBody {
+  padding: 14px 16px 16px;
+}
+
+.animalCardNome {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: var(--text-primary, #222);
+  text-transform: capitalize;
+}
+
+.animalCardInfo {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted, #888);
+  text-transform: capitalize;
+}
+
+.animalCardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.tagVacinado,
+.tagCastrado,
+.tagPorte {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.tagVacinado {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.tagCastrado {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.tagPorte {
+  background: #fff3e0;
+  color: #e65100;
+  text-transform: capitalize;
+}
+
+.animalCardActions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btnEditar,
+.btnAdotado,
+.btnDisponivel,
+.btnVer {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border, #ddd);
+  background: var(--surface-tertiary, #f5f5f5);
+  color: var(--text-secondary, #555);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.btnEditar:hover {
+  background: #e8f0fe;
+  border-color: #4285f4;
+  color: #1a73e8;
+}
+
+.btnAdotado {
+  background: #fff3e0;
+  border-color: #ffb74d;
+  color: #e65100;
+}
+
+.btnAdotado:hover {
+  background: #ffe0b2;
+}
+
+.btnDisponivel {
+  background: #e8f5e9;
+  border-color: #66bb6a;
+  color: #2e7d32;
+}
+
+.btnDisponivel:hover {
+  background: #c8e6c9;
+}
+
+.btnVer:hover {
+  background: #fce4ec;
+  border-color: #ff7aa2;
+  color: #c2185b;
+}
+
+.verTodosLink {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: var(--primary, #ff7aa2);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.verTodosLink:hover {
+  background: #ff5c8a;
+}
+
+/* ======= MODAL EDITAR ANIMAL ======= */
+.editAnimalGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.editLabel {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted, #888);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.editAnimalGrid .input,
+.editAnimalGrid select {
+  width: 100%;
+  height: 38px;
+}
+
+@media (max-width: 600px) {
+  .animaisGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .editAnimalGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .animalCardActions {
+    flex-direction: column;
   }
 }
