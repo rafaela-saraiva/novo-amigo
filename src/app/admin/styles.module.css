@@ -37,7 +37,7 @@
 }
 
 .title span {
-  color: var(--primary);
+  color:  #f43f5e;
 }
 
 .subtitle {
@@ -52,7 +52,7 @@
 }
 
 .primaryBtn {
-  background: var(--primary);
+  background:  #f43f5e;
   color: white;
   padding: 12px 20px;
   border-radius: 12px;
@@ -61,7 +61,7 @@
 }
 
 .primaryBtn:hover {
-  background: var(--primary-dark);
+  background: #e11d48;
 }
 
 .secondaryBtn {
@@ -107,7 +107,7 @@
 .statCard p {
   font-size: 24px;
   font-weight: bold;
-  color: var(--primary);
+  color: #f43f5e;
   margin-top: 5px;
 }
 
@@ -118,7 +118,7 @@
 }
 
 .cardsSection h2 {
-  color: var(--primary);
+  color: #f43f5e;
   margin-bottom: 20px;
 }
 
@@ -162,6 +162,6 @@
 .card span {
   display: block;
   margin-top: 10px;
-  color: var(--primary);
+  color: #f43f5e;
   font-weight: 500;
 }

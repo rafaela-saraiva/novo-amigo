@@ -1,15 +1,16 @@
-'use client';
+"use client";
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import LoginModal from "@/components/LoginModal";
 import TextField from "@/components/TextField";
 import api from "@/services/api";
-import { useState } from "react";
-import styles from './styles.module.css';
+import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+import styles from "./styles.module.css";
 
 export default function Cadastrar() {
-  const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
+  const [tipo, setTipo] = useState<"usuario" | "ong">("usuario");
   const [nomeInteiro, setNomeInteiro] = useState("");
   const [email, setEmail] = useState("");
   const [cnpj, setCnpj] = useState("");
@@ -34,6 +35,22 @@ export default function Cadastrar() {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [openLoginModal, setOpenLoginModal] = useState(false);
+
+  const closeFeedbackModals = useCallback(() => {
+    setShowSuccessModal(false);
+    setShowErrorModal(false);
+  }, []);
+
+  useEffect(() => {
+    if (!showSuccessModal && !showErrorModal) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeFeedbackModals();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [closeFeedbackModals, showSuccessModal, showErrorModal]);
 
   async function botaoCadastrarOnClick(e: React.FormEvent) {
     e.preventDefault();
@@ -69,8 +86,9 @@ export default function Cadastrar() {
 
       setShowSuccessModal(true);
 
-    } catch (error: any) {
-      setErrorMessage(error.response?.data?.error || "Erro ao cadastrar");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { error?: string } } };
+      setErrorMessage(err.response?.data?.error || "Erro ao cadastrar");
       setShowErrorModal(true);
     }
   }
@@ -79,136 +97,170 @@ export default function Cadastrar() {
     <>
       <Header />
 
-      <div className={styles.pageContainer}>
-        <div className={styles.sideLeft}>
-          <img
-            src="https://i.postimg.cc/PfCv1nfx/AQNdkv-Jru-Ftg-mr8-Wjeo-SCDw-YCyn3-FA3kr-Yjaa9n-BBSplt-T-14-Qc-Sk-IZL1jv-Fs-2q-w-Pd-LJ9m-Be-Uexk1l-KW3whxkc-Pen-Rqdf45-M.jpg"
-            alt="Logo"
-            className={styles.sideLeft}
-          />
-        </div>
-
-        <div className={styles.formContainer}>
-          <h1 className={styles.titulo}>Crie sua conta</h1>
-          <p className={styles.subtitulo}>Preencha os campos abaixo</p>
-
-          <div className={styles.toggleContainer}>
-            <button
-              type="button"
-              onClick={() => setTipo("usuario")}
-              className={`${styles.toggleButton} ${tipo === 'usuario' ? styles.active : ''}`}
-            >
-              Usuário
-            </button>
-            <button
-              type="button"
-              onClick={() => setTipo("ong")}
-              className={`${styles.toggleButton} ${tipo === 'ong' ? styles.active : ''}`}
-            >
-              ONG
-            </button>
-          </div>
-
-          <form className={styles.formCadastrar} onSubmit={botaoCadastrarOnClick}>
-
-            <TextField
-              label={tipo === 'usuario' ? 'Nome completo' : 'Nome da ONG'}
-              type="text"
-              text={nomeInteiro}
-              onChange={setNomeInteiro}
-              required
-            />
-
-            <TextField
-              label="Email"
-              type="email"
-              text={email}
-              onChange={setEmail}
-              required
-            />
-
-            {tipo === 'ong' && (
-              <>
-                <TextField
-                  label="Telefone"
-                  type="text"
-                  text={telefone}
-                  onChange={(valor) => {
-                    const numeros = valor.replace(/[^0-9]/g, '');
-                    if (numeros.length <= 11) setTelefone(numeros);
-                  }}
-                  required
-                />
-
-                <TextField
-                  label="CNPJ"
-                  type="text"
-                  text={cnpj}
-                  onChange={(valor) => {
-                    const numeros = valor.replace(/[^0-9]/g, '');
-                    if (numeros.length <= 14) setCnpj(numeros);
-                  }}
-                  required
-                />
-
-                
-              </>
-            )}
-
-            <TextField
-              label="Senha"
-              type="password"
-              text={senha}
-              onChange={setSenha}
-              required
-            />
-
-            <div className={styles.senhaContainer}>
-              <div className={`${styles.barra} ${styles[forcaSenha]}`}></div>
-              <span className={styles.textoSenha}>
-                Senha {forcaSenha}
-              </span>
+      <main className={styles.mainContainer}>
+        {/* Left Column: Visual/Emotional */}
+        <section className={styles.leftSection}>
+          <div className={styles.leftContent}>
+            <div className={styles.branding}>
+              <span className={styles.logoText}>Novo Amigo</span>
             </div>
+            <div className={styles.badge}>
+              <span>Cada cadastro é um passo para uma adoção ❤️</span>
+            </div>
+            <h1 className={styles.headline}>
+              Crie sua conta e comece a <span className={styles.highlight}>mudar vidas.</span>
+            </h1>
+            <p className={styles.subtext}>
+              Junte-se a nós para ajudar milhares de animais a encontrar um novo lar e uma família cheia de amor.
+            </p>
+            <div className={styles.imageContainer}>
+              <Image
+                alt="Friendly golden retriever"
+                className={styles.heroImage}
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQKo2XO4NuljtkSLKwgYYCYTTmCaLQClk1-1Fh4Yr-CCiVhE3IloWDf5DGFsAKuSOp_9C4DsvcRKqngmNABzwsn6Fdz_NxriEsBkCW9cmRnIVrInsifQq_CmKFB17ZpY6EBT6FH7s-zYqpR6DU2HeOJpF_Hsr_aUn1ccvm_Vx4GN4JGYi4EbGI9R6hhZ_afNIh1L9nlZlPdski-KHHfRahwKGsih7j4c2KNfJWGm5hDMaJoDCrVTblQ5xO0IFPL36Eqo8VEO14q19d%22"
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+          </div>
+          <div className={styles.texture}></div>
+        </section>
 
-            <TextField
-              label="Confirmar senha"
-              type="password"
-              text={confirmarSenha}
-              onChange={setConfirmarSenha}
-              required
+        {/* Right Column: Form */}
+        <section className={styles.rightSection}>
+          <div className={styles.rightBackground} aria-hidden="true">
+            <Image
+              alt=""
+              src="https://i.postimg.cc/PfCv1nfx/AQNdkv-Jru-Ftg-mr8-Wjeo-SCDw-YCyn3-FA3kr-Yjaa9n-BBSplt-T-14-Qc-Sk-IZL1jv-Fs-2q-w-Pd-LJ9m-Be-Uexk1l-KW3whxkc-Pen-Rqdf45-M.jpg"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ objectFit: "cover" }}
             />
+          </div>
+          <div className={styles.formWrapper}>
+            <header className={styles.formHeader}>
+              <h2 className={styles.formTitle}>Junte-se ao Novo Amigo</h2>
+              <p className={styles.formSubtitle}>Preencha os dados abaixo para começar</p>
+            </header>
 
-            <button type="submit" className={styles.botaoCadastrar}>
-              Cadastrar
-            </button>
-
-            <p className={styles.voltarLogin}>
+            <div className={styles.toggleContainer}>
               <button
                 type="button"
-                onClick={() => setOpenLoginModal(true)}
-                className={styles.voltarLoginButton}
+                onClick={() => setTipo("usuario")}
+                className={`${styles.toggleButton} ${tipo === 'usuario' ? styles.active : ''}`}
               >
-                ← Voltar ao login
+                Usuário
               </button>
-            </p>
+              <button
+                type="button"
+                onClick={() => setTipo("ong")}
+                className={`${styles.toggleButton} ${tipo === 'ong' ? styles.active : ''}`}
+              >
+                ONG
+              </button>
+            </div>
 
-            <p className={styles.termos}>
-              Ao se cadastrar, você concorda com nossos{" "}
-              <a href="#">Termos de Uso</a> e{" "}
-              <a href="#">Política de Privacidade</a>.
-            </p>
+            <form className={styles.form} onSubmit={botaoCadastrarOnClick}>
+              <TextField
+                label={tipo === 'usuario' ? 'Nome completo' : 'Nome da ONG'}
+                type="text"
+                text={nomeInteiro}
+                onChange={setNomeInteiro}
+                required
+              />
 
-          </form>
-        </div>
-      </div>
+              <TextField
+                label="Email"
+                type="email"
+                text={email}
+                onChange={setEmail}
+                required
+              />
+
+              {tipo === 'ong' && (
+                <>
+                  <TextField
+                    label="Telefone"
+                    type="text"
+                    text={telefone}
+                    onChange={(valor) => {
+                      const numeros = valor.replace(/[^0-9]/g, '');
+                      if (numeros.length <= 11) setTelefone(numeros);
+                    }}
+                    required
+                  />
+
+                  <TextField
+                    label="CNPJ"
+                    type="text"
+                    text={cnpj}
+                    onChange={(valor) => {
+                      const numeros = valor.replace(/[^0-9]/g, '');
+                      if (numeros.length <= 14) setCnpj(numeros);
+                    }}
+                    required
+                  />
+                </>
+              )}
+
+              <TextField
+                label="Senha"
+                type="password"
+                text={senha}
+                onChange={setSenha}
+                required
+              />
+
+              <div className={styles.passwordStrength}>
+                <div className={`${styles.strengthBar} ${styles[forcaSenha]}`}></div>
+                <span className={styles.strengthText}>Senha {forcaSenha}</span>
+              </div>
+
+              <TextField
+                label="Confirmar senha"
+                type="password"
+                text={confirmarSenha}
+                onChange={setConfirmarSenha}
+                required
+              />
+
+              <button type="submit" className={styles.submitButton}>
+                Criar minha conta
+              </button>
+            </form>
+
+            <footer className={styles.formFooter}>
+              <p>
+                Já tem uma conta? 
+                <button
+                  onClick={() => setOpenLoginModal(true)}
+                  className={styles.loginLink}
+                >
+                  Entrar
+                </button>
+              </p>
+            </footer>
+          </div>
+        </section>
+      </main>
 
       {showSuccessModal && (
-        <div className={styles.modalOverlay}>
+        <div
+          className={styles.modalOverlay}
+          role="dialog"
+          aria-modal="true"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) closeFeedbackModals();
+          }}
+        >
           <div className={`${styles.modalContainer} ${styles.modalSuccess}`}>
             <h3>Cadastro realizado com sucesso!</h3>
             <p>Sua conta foi criada com sucesso. Faça login para continuar.</p>
             <button
-              onClick={() => setOpenLoginModal(true)}
+              onClick={() => {
+                closeFeedbackModals();
+                setOpenLoginModal(true);
+              }}
               className={styles.modalButton}
             >
               Ir para o Login
@@ -218,12 +270,19 @@ export default function Cadastrar() {
       )}
 
       {showErrorModal && (
-        <div className={styles.modalOverlay}>
+        <div
+          className={styles.modalOverlay}
+          role="dialog"
+          aria-modal="true"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) closeFeedbackModals();
+          }}
+        >
           <div className={`${styles.modalContainer} ${styles.modalError}`}>
             <h3>Erro ao cadastrar!</h3>
             <p>{errorMessage}</p>
             <button
-              onClick={() => setShowErrorModal(false)}
+              onClick={closeFeedbackModals}
               className={styles.modalButton}
             >
               Fechar

@@ -1,195 +1,332 @@
-.pageContainer {
+/* Main Container */
+.mainContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  background-color: #cde0f0;;
-  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--surface-secondary);
+  font-family: 'Lexend', sans-serif;
+  color: var(--text-primary);
 }
 
-
-/* LOGO ESQUERDO */
-.sideLeft {
-  background: linear-gradient(180deg, #b3e3e5, #a8d8da);
-  color: #2d5a60;
-  padding: 0;
-  width: 500px;
-  height: 890px;
-  border-radius: 12px 0 0 12px;
+/* Left Section */
+.leftSection {
+  position: relative;
+  width: 50%;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 4rem 4rem 4rem;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--brand-primary-rgb), 0.14),
+    transparent
+  );
+}
+
+.leftContent {
+  position: relative;
+  z-index: 10;
+  max-width: 32rem;
+}
+
+.branding {
+  margin-bottom: 3rem;
+}
+
+.logoText {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--brand-primary-dark);
+  font-style: italic;
+  letter-spacing: -0.025em;
+}
+
+.badge {
+  display: inline-flex;
   align-items: center;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  margin-bottom: 2rem;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 1px 10px var(--shadow);
+}
+
+.badge span {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-primary-dark);
+}
+
+.headline {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+}
+
+.headline .highlight {
+  color: var(--brand-primary);
+  font-style: italic;
+}
+
+.subtext {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.imageContainer {
+  position: relative;
+  margin-top: 2rem;
+  transition: transform 0.5s ease;
+}
+
+.imageContainer:hover {
+  transform: rotate(0deg);
+}
+
+.heroImage {
+  width: 100%;
+  max-width: 24rem;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px var(--shadow-strong);
+  transform: rotate(-3deg);
+  transition: transform 0.5s ease;
+}
+
+.texture {
+  position: absolute;
+  bottom: -6rem;
+  left: -6rem;
+  width: 24rem;
+  height: 24rem;
+  background: radial-gradient(
+    circle,
+    rgba(var(--brand-primary-rgb), 0.1),
+    transparent
+  );
+  border-radius: 50%;
+  filter: blur(3rem);
+}
+
+/* Right Section */
+.rightSection {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 4rem;
+  background-color: var(--surface);
+  position: relative;
   overflow: hidden;
 }
-  
-.sideLeft h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 10px;
+
+.rightBackground {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 
-.sideLeft p {
-  font-size: 15px;
-  color: #3d666d;
+.rightBackground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
 }
 
-/* LOGO CENTRALIZADA */
-.logo {
-  width: 1000%;               /* Ajusta para ocupar boa parte da largura */
-  max-width: 300px;         /* Define um limite para não estourar */
-  margin: 0 auto;           /* Centraliza */
-  display: block;           /* Garante centralização */
-}
-.formContainer {
-  background: #ffffff;
-  padding: 40px 50px;
-  border-radius: 0 12px 12px 0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  width: 500px;
-  height: 890px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* centraliza o conteúdo verticalmente */
-  box-sizing: border-box;
+:global([data-theme="dark"]) .rightBackground::after {
+  background: rgba(0, 0, 0, 0.55);
 }
 
-/* TÍTULOS */
-.titulo {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 600;
-  color: #4a707a;
-  margin-bottom: 0px;
-}
-
-.subtitulo {
-  text-align: center;
-  color: #888;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-/* FORMULÁRIO DE CADASTRO */
-.formCadastrar {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex: 1;
-  justify-content: center;
-}
-
-/* CAMPOS DE TEXTO */
-.formCadastrar input {
+.formWrapper {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #d8d8d8;
-  border-radius: 6px;
-  font-size: 15px;
-  color: #333;
-  background-color: #fff;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 18px 55px var(--shadow-strong);
+  position: relative;
+  z-index: 1;
 }
 
-.formCadastrar input::placeholder {
-  color: #aaa;
+.formHeader {
+  text-align: center;
 }
 
-.formCadastrar input:focus {
-  outline: none;
-  border-color: #4a707a;
-  box-shadow: 0 0 5px rgba(74, 112, 122, 0.3);
+.formTitle {
+  font-size: 1.875rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
 }
 
-/* BOTÃO CADASTRAR */
-.botaoCadastrar {
-  margin-top: 10px;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  background-color: #f9b84b;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.formSubtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
-.botaoCadastrar:hover {
-  background-color: #f7a930;
-  transform: scale(1.02);
-}
-
-.botaoCadastrar:active {
-  transform: scale(0.98);
-}
-
-/* BOTÃO DE TROCA (LOGIN/CADASTRAR) */
+/* Toggle Buttons */
 .toggleContainer {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 0.5rem;
 }
 
 .toggleButton {
   flex: 1;
-  padding: 10px;
+  padding: 0.75rem 1.5rem;
   font-weight: 600;
   border: none;
-  border-radius: 6px;
-  background-color: #ddd;
-  color: #333;
+  border-radius: 9999px;
+  background-color: var(--surface-tertiary);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .toggleButton:hover {
-  background-color: #ccc;
+  background-color: var(--surface-secondary);
 }
 
-.active {
-  background-color: #f7a930;
-  color: white;
+.toggleButton.active {
+  background-color: var(--brand-primary);
+  color: var(--brand-on-primary);
 }
 
-/* LINKS E TEXTOS SECUNDÁRIOS */
-.voltarLogin {
-  text-align: center;
-  font-size: 14px;
-  margin-top: 10px;
-  color: #4a707a;
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Password Strength */
+.passwordStrength {
+  margin-top: 0.5rem;
+}
+
+.strengthBar {
+  height: 0.375rem;
+  border-radius: 0.375rem;
+  background: var(--border);
+  transition: all 0.3s ease;
+}
+
+.strengthBar.fraca {
+  width: 33%;
+  background: var(--danger);
+}
+
+.strengthBar.media {
+  width: 66%;
+  background: var(--warning);
+}
+
+.strengthBar.forte {
+  width: 100%;
+  background: var(--success);
+}
+
+.strengthText {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Submit Button */
+.submitButton {
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #f4845f, #f7a930);
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 900;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(244, 132, 95, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.voltarLogin:hover {
-  text-decoration: underline;
+.submitButton:hover {
+  box-shadow: 0 6px 20px rgba(244, 132, 95, 0.4);
+  transform: scale(1.02);
 }
 
-.termos {
+.submitButton:active {
+  transform: scale(0.98);
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.submitButton:hover::before {
+  left: 100%;
+}
+
+/* Form Footer */
+.formFooter {
   text-align: center;
-  font-size: 12px;
-  color: #999;
-  margin-top: 10px;
+  padding-top: 2rem;
 }
 
-.termos a {
-  color: #f9b84b;
-  text-decoration: none;
+.formFooter p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
-.termos a:hover {
+.loginLink {
+  background: none;
+  border: none;
+  color: var(--brand-primary);
+  font-weight: 900;
+  cursor: pointer;
   text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: all 0.3s ease;
 }
 
+.loginLink:hover {
+  color: var(--brand-primary-dark);
+}
 
-/* 🌸 MODAIS GERAIS */
+/* Modals */
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--overlay);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -198,33 +335,32 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* 🌼 Container do modal */
 .modalContainer {
-  background: #ffffff;
-  border-radius: 28px;
-  padding: 2.8rem 2.2rem;
+  background: var(--card-bg);
+  border-radius: 1.75rem;
+  padding: 2.5rem 2rem;
   width: 90%;
-  max-width: 420px;
+  max-width: 26rem;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px var(--shadow-strong);
   animation: slideUp 0.4s ease-out;
   position: relative;
 }
 
-/* ✅ Ícone superior decorativo */
 .modalContainer::before {
   content: "🐾";
   font-size: 2rem;
   position: absolute;
-  top: 1.2rem;
+  top: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
   opacity: 0.9;
+  animation: pulse 2s infinite ease-in-out;
 }
 
-/* ✅ Modal de sucesso */
 .modalSuccess h3 {
-  color: #3ba1a8; /* tom que combina com o header */
+  color: var(--success);
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 1.5rem;
@@ -232,15 +368,14 @@
 }
 
 .modalSuccess p {
-  color: #4b5563;
+  color: var(--text-secondary);
   font-size: 1rem;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.5rem;
   line-height: 1.5;
 }
 
-/* ❌ Modal de erro */
 .modalError h3 {
-  color: #dc2626;
+  color: var(--danger);
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 1.5rem;
@@ -248,32 +383,30 @@
 }
 
 .modalError p {
-  color: #4b5563;
+  color: var(--text-secondary);
   font-size: 1rem;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.5rem;
   line-height: 1.5;
 }
 
-/* 💛 Botões dos modais */
 .modalButton {
-  background: #fbbf24;
-  color: #1f2937;
+  background: var(--brand-primary);
+  color: var(--brand-on-primary);
   border: none;
-  border-radius: 14px;
-  padding: 0.8rem 1.6rem;
+  border-radius: 0.875rem;
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.35);
+  box-shadow: 0 4px 10px rgba(var(--brand-primary-rgb), 0.35);
 }
 
 .modalButton:hover {
-  background: #f59e0b;
+  background: var(--brand-primary-dark);
   transform: scale(1.05);
 }
 
-/* ✨ Efeito de sucesso animado */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -285,7 +418,7 @@
 
 @keyframes slideUp {
   from {
-    transform: translateY(40px);
+    transform: translateY(2.5rem);
     opacity: 0;
   }
   to {
@@ -294,63 +427,40 @@
   }
 }
 
-/* 💫 Microanimação de pulsar no ícone */
 @keyframes pulse {
   0%, 100% {
-    transform: scale(1);
+    transform: translateX(-50%) scale(1);
   }
   50% {
-    transform: scale(1.08);
+    transform: translateX(-50%) scale(1.08);
   }
 }
 
-.modalContainer::before {
-  animation: pulse 2s infinite ease-in-out;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  .mainContainer {
+    flex-direction: column;
+  }
 
-.voltarLoginButton {
-  background: none;
-  border: none;
-  color: #4a707a;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 14px;
-  padding: 0;
-}
+  .leftSection,
+  .rightSection {
+    width: 100%;
+    min-height: 50vh;
+  }
 
+  .leftSection {
+    padding: 2rem;
+  }
 
+  .rightSection {
+    padding: 2rem;
+  }
 
+  .headline {
+    font-size: 2.5rem;
+  }
 
-/* 🔲 BARRA BASE */
-.barra {
-  height: 6px;
-  width: 100%;
-  border-radius: 6px;
-  background: #ddd;
-  transition: all 0.3s ease;
-}
-
-/* ❌ FRACA */
-.fraca {
-  width: 33%;
-  background: #e74c3c;
-}
-
-/* ⚠️ MÉDIA */
-.media {
-  width: 66%;
-  background: #f39c12;
-}
-
-/* ✅ FORTE */
-.forte {
-  width: 100%;
-  background: #27ae60;
-}
-
-/* TEXTO */
-.textoSenha {
-  font-size: 12px;
-  font-weight: 600;
-  color: #555;
+  .heroImage {
+    max-width: 18rem;
+  }
 }
