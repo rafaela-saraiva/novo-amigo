@@ -24,7 +24,7 @@
 
 ---
 
-## 3. Página Sobre  **João**
+## 3. Página Sobre  **João ( Concluído ✔ )**
 
 - 🟡 **Conteúdo** — A página **não foi atualizada há mais de 5 meses**. Revisar e completar o conteúdo institucional
 - 🔴 **Layout** — Header e Footer estão **ausentes** na página. Adicionar os componentes de navegação
@@ -112,7 +112,7 @@
 
 ---
 
-## 12. Modal de Login
+## 12. Modal de Login **João ( Concluido ✔ )**
 
 - 🟡 **UI** — Melhorar o design do modal de login. Está simples e fora do padrão visual do site
 - 🟢 **Considerar criar página dedicada** — Avaliar transformar o modal em uma página completa de login (`/login`) em vez de pop-up
