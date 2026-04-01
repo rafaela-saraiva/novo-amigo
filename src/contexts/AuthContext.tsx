@@ -9,6 +9,7 @@ interface User {
   email: string;
   groups?: string[];
   role?: "ADMIN" | "USER";
+  tipo?: "usuario" | "shelter";
 
   // opcionais (usados pela ONG)
   telefone?: string;
@@ -21,6 +22,7 @@ interface AuthContextType {
   token: string | null;
   loading: boolean;
   login: (email: string, senha: string) => Promise<void>;
+  loginONG: (email: string, senha: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -35,14 +37,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function loadUser() {
       const savedToken = localStorage.getItem("token");
+      const savedTipo = localStorage.getItem("tipo");
 
       if (savedToken) {
         try {
           setToken(savedToken);
           api.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
 
-          const res = await api.get("/users/me");
-          setUser(res.data);
+          if (savedTipo === "shelter") {
+            const res = await api.get("/shelters/me");
+            setUser({ ...res.data, tipo: "shelter" });
+          } else {
+            const res = await api.get("/users/me");
+            setUser({ ...res.data, tipo: "usuario" });
+          }
         } catch (error) {
           logout();
         }
@@ -60,24 +68,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const tk = res.data.token;
 
     localStorage.setItem("token", tk);
+    localStorage.setItem("tipo", "usuario");
     api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
 
     setToken(tk);
 
     // Busca o usuário completo (com grupos) após o login
     const meRes = await api.get("/users/me");
-    setUser(meRes.data);
+    setUser({ ...meRes.data, tipo: "usuario" });
+  }
+
+  async function loginONG(email: string, senha: string) {
+    const res = await api.post("/shelters/login", { email, senha });
+
+    const tk = res.data.token;
+    const shelter = res.data.shelter;
+
+    localStorage.setItem("token", tk);
+    localStorage.setItem("tipo", "shelter");
+    api.defaults.headers.common["Authorization"] = `Bearer ${tk}`;
+
+    setToken(tk);
+    setUser({
+      id: String(shelter.id),
+      nome: shelter.nome,
+      email: shelter.email,
+      cnpj: shelter.cnpj,
+      telefone: shelter.telefone,
+      endereco: shelter.endereco,
+      tipo: "shelter"
+    });
   }
 
   function logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("tipo");
     setToken(null);
     setUser(null);
     delete api.defaults.headers.common["Authorization"];
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, token, login, loginONG, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

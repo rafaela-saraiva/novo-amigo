@@ -5,9 +5,18 @@ import Header from "@/components/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import api from "@/services/api";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
+
+interface AnimalItem {
+  id: number;
+  nome: string;
+  especie: string;
+  foto: string[];
+  disponivel: boolean;
+}
 
 export default function Configuracoes() {
   const { user, token, loading, logout } = useAuth();
@@ -15,6 +24,7 @@ export default function Configuracoes() {
   const router = useRouter();
 
   const isAdmin = user?.email === 'admin@pet.com';
+  const isONG = user?.tipo === 'shelter';
 
   const [modalAberto, setModalAberto] = useState(false);
   const [modalDesativar, setModalDesativar] = useState(false);
@@ -29,6 +39,9 @@ export default function Configuracoes() {
   const [salvando, setSalvando] = useState(false);
   const [acaoExecutando, setAcaoExecutando] = useState(false);
 
+  const [meusAnimais, setMeusAnimais] = useState<AnimalItem[]>([]);
+  const [loadingAnimais, setLoadingAnimais] = useState(false);
+
   useEffect(() => {
     if (!loading && !user) {
       router.push("/");
@@ -38,7 +51,23 @@ export default function Configuracoes() {
       setNome(user.nome);
       setEmail(user.email);
     }
+
+    if (user?.tipo === 'shelter') {
+      carregarMeusAnimais();
+    }
   }, [user, loading, router]);
+
+  async function carregarMeusAnimais() {
+    try {
+      setLoadingAnimais(true);
+      const res = await api.get(`/animals?shelterId=${user?.id}`);
+      setMeusAnimais(res.data);
+    } catch {
+      // silencioso
+    } finally {
+      setLoadingAnimais(false);
+    }
+  }
 
   async function atualizarDados() {
     if (pass && pass !== confirmarPass) {
@@ -144,6 +173,59 @@ export default function Configuracoes() {
               </button>
             </div>
           </div>
+
+          {/* MEUS ANIMAIS — só para ONG */}
+          {isONG && (
+            <div className={styles.actionSection}>
+              <h2>Meus Animais Cadastrados</h2>
+
+              {loadingAnimais && <p>Carregando...</p>}
+
+              {!loadingAnimais && meusAnimais.length === 0 && (
+                <p style={{ opacity: 0.6 }}>Nenhum animal cadastrado ainda.</p>
+              )}
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '12px' }}>
+                {meusAnimais.map((a) => (
+                  <Link
+                    key={a.id}
+                    href={`/animal/${a.id}`}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      border: '1px solid var(--border, #ddd)',
+                      background: 'var(--card-bg, #f9f9f9)',
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      minWidth: '180px'
+                    }}
+                  >
+                    {a.foto?.[0] && (
+                      <img
+                        src={a.foto[0]}
+                        alt={a.nome}
+                        style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
+                      />
+                    )}
+                    <div>
+                      <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9rem' }}>{a.nome}</p>
+                      <p style={{ margin: 0, fontSize: '0.75rem', opacity: 0.6 }}>{a.especie} • {a.disponivel ? 'Disponível' : 'Adotado'}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                href="/nossos-animais"
+                style={{ display: 'inline-block', marginTop: '16px', fontSize: '0.85rem', opacity: 0.7 }}
+              >
+                Ver todos os animais →
+              </Link>
+            </div>
+          )}
 
           {/* AÇÕES */}
           <div className={styles.actionSection}>
