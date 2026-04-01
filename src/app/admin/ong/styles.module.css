@@ -1,121 +1,221 @@
+/* ===== PAGE ===== */
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
-  background: #f8fafc;
-  color: #0f172a;
+  background: var(--surface-secondary);
+  color: var(--text-primary);
 }
 
-/* 🔥 MESMO PADRÃO DA HOME (centralizado e respirado) */
+/* ===== MAIN ===== */
 .main {
   flex: 1;
-
   width: 100%;
   max-width: 1100px;
-
-  margin: 140px auto 60px; /* alinhado com o header grande */
+  margin: 140px auto 60px;
   padding: 0 20px;
 }
 
-/* TÍTULO */
-.main h1 {
-  font-size: 32px;
-  font-weight: 700;
-
-  margin-bottom: 30px;
-
-  letter-spacing: -0.5px;
+/* ===== TOPO ===== */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
-/* LISTA CENTRALIZADA (igual o estilo clean do site) */
+.top h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #fb7084;
+}
+
+/* BOTÃO NOVA ONG */
+.createBtn {
+  background: #fb7084;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.createBtn:hover {
+  background: #e85a70;
+}
+
+/* ===== FILTROS ===== */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* INPUT BUSCA */
+.filters input {
+  flex: 1;
+  max-width: 300px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.filters input:focus {
+  border-color: #fb7084;
+  box-shadow: 0 0 0 3px rgba(251, 112, 132, 0.2);
+  background: var(--input-bg-focus);
+}
+
+/* SELECT */
+.filters select {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ===== LISTA ===== */
 .table {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
-/* CARD ESTILO “SUA HOME” */
+/* ===== CARD ===== */
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 18px 24px;
-
-  background: #ffffff;
-
-  border-radius: 16px;
-
-  border: 1px solid #e5e7eb;
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-
+  padding: 16px 20px;
+  background: var(--card-bg);
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(251, 112, 132, 0.08);
   transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-/* HOVER SUAVE (igual UX da home) */
+/* LINHA LATERAL */
+.row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: transparent;
+  border-radius: 0 18px 18px 0;
+  transition: background 0.2s ease;
+}
+
 .row:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(255, 107, 129, 0.15);
 }
 
-/* TEXTO */
-.row strong {
+.row:hover::before {
+  background: #fb7084;
+}
+
+/* ===== INFO ===== */
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info strong {
   font-size: 16px;
   font-weight: 600;
 }
 
-.row p {
+.info p {
   font-size: 14px;
-  color: #6b7280;
+  color: #777;
 }
 
-/* AÇÕES */
+/* ===== STATUS ===== */
+.active {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #22c55e;
+}
+
+.inactive {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ff6b81;
+}
+
+/* ===== AÇÕES ===== */
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* BOTÕES MAIS SUAVES (igual UI moderna da sua home) */
+/* BOTÕES */
 .actions button {
   border: none;
   padding: 8px 16px;
-
-  border-radius: 999px; /* estilo pill */
-
+  border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
-
   cursor: pointer;
-
-  transition: all 0.2s ease;
+  transition: 0.2s;
 }
 
-/* BOTÃO ATIVAR */
-.actions button:first-child {
-  background: #3b82f6;
+/* CLICK */
+.actions button:active {
+  transform: scale(0.95);
+}
+
+/* BOTÃO ATIVAR/DESATIVAR */
+.toggle {
+  background: #ff6b81;
   color: #fff;
 }
 
-.actions button:first-child:hover {
-  background: #2563eb;
+.toggle:hover {
+  background: #e85a70;
 }
 
 /* BOTÃO DELETAR */
-.actions button:last-child {
-  background: #ef4444;
+.delete {
+  background: transparent;
+  color: #ff6b81;
+  border: 2px solid #ff6b81;
+}
+
+.delete:hover {
+  background: #ff6b81;
   color: #fff;
 }
 
-.actions button:last-child:hover {
-  background: #dc2626;
+/* ===== LINHA INATIVA ===== */
+.inactiveRow {
+  opacity: 0.6;
 }
 
-/* RESPONSIVO */
+/* ===== RESPONSIVO ===== */
 @media (max-width: 768px) {
   .main {
     margin-top: 120px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 
   .row {

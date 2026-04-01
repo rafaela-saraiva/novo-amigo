@@ -19,7 +19,8 @@ export default function NossosAnimais() {
 
   const podeAdicionarAnimal =
     user?.groups?.includes('Administrador') ||
-    user?.groups?.includes('ONG');
+    user?.groups?.includes('ONG') ||
+    user?.tipo === 'shelter';
   const [animais, setAnimais] = useState<Pet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

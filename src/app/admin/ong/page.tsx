@@ -22,35 +22,52 @@ export default function AdminShelters() {
   const isAdmin = user?.email === "admin@pet.com";
 
   const [shelters, setShelters] = useState<Shelter[]>([]);
+  const [filteredShelters, setFilteredShelters] = useState<Shelter[]>([]);
   const [loadingShelters, setLoadingShelters] = useState(false);
 
+  // filtros
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("all");
+
   useEffect(() => {
-    if (!loading && !user) {
-      router.push("/");
-    }
+    if (!loading && !user) router.push("/");
+    if (!loading && user && !isAdmin) router.push("/");
 
-    if (!loading && user && !isAdmin) {
-      router.push("/");
-    }
-
-    if (user && isAdmin) {
-      fetchShelters();
-    }
+    if (user && isAdmin) fetchShelters();
   }, [user, loading]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [search, status, shelters]);
+
+  function applyFilters() {
+    let data = [...shelters];
+
+    if (search) {
+      data = data.filter((s) =>
+        s.nome.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    if (status !== "all") {
+      data = data.filter((s) =>
+        status === "active" ? s.isActive : !s.isActive
+      );
+    }
+
+    setFilteredShelters(data);
+  }
 
   async function fetchShelters() {
     try {
       setLoadingShelters(true);
 
       const res = await api.get("/shelters", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setShelters(res.data);
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("Erro ao carregar ONGs.");
     } finally {
       setLoadingShelters(false);
@@ -58,29 +75,24 @@ export default function AdminShelters() {
   }
 
   async function toggleShelterStatus(id: number, isActive?: boolean) {
-    try {
-      await api.put(`/shelters/${id}/status`, {
-        isActive: !isActive,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  try {
+    await api.put(`/shelters/${id}`, {
+  isActive: !isActive
+});
 
-      fetchShelters();
-    } catch {
-      alert("Erro ao atualizar status.");
-    }
+    fetchShelters();
+  } catch (err: any) {
+    console.error(err);
+    alert(err?.response?.data?.error || "Erro ao atualizar status.");
   }
+}
 
   async function deleteShelter(id: number) {
     if (!confirm("Deseja realmente deletar esta ONG?")) return;
 
     try {
       await api.delete(`/shelters/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       fetchShelters();
@@ -96,26 +108,67 @@ export default function AdminShelters() {
       <Header />
 
       <main className={styles.main}>
-        <h1>🏠 Gerenciar ONGs</h1>
+        <div className={styles.top}>
+          <h1> Gerenciar ONGs</h1>
+
+          <button
+            className={styles.createBtn}
+            onClick={() => router.push("/admin/shelters/create")}
+          >
+            + Nova ONG
+          </button>
+        </div>
+
+        {/* 🔎 FILTROS */}
+        <div className={styles.filters}>
+          <input
+            type="text"
+            placeholder="Buscar por nome..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="all">Todos</option>
+            <option value="active">Ativos</option>
+            <option value="inactive">Inativos</option>
+          </select>
+        </div>
 
         {loadingShelters && <p>Carregando...</p>}
 
+        {/* 📋 LISTA */}
         <div className={styles.table}>
-          {shelters.map((s) => (
+          {filteredShelters.map((s) => (
             <div key={s.id} className={styles.row}>
-              <div>
+              <div className={styles.info}>
                 <strong>{s.nome}</strong>
                 <p>{s.email || "Sem email"}</p>
+
+                <span
+                  className={
+                    s.isActive ? styles.active : styles.inactive
+                  }
+                >
+                  {s.isActive ? "Ativa" : "Inativa"}
+                </span>
               </div>
 
               <div className={styles.actions}>
                 <button
+                  className={styles.toggle}
                   onClick={() => toggleShelterStatus(s.id, s.isActive)}
                 >
                   {s.isActive ? "Desativar" : "Ativar"}
                 </button>
 
-                <button onClick={() => deleteShelter(s.id)}>
+                <button
+                  className={styles.delete}
+                  onClick={() => deleteShelter(s.id)}
+                >
                   Deletar
                 </button>
               </div>
