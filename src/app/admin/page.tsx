@@ -25,7 +25,7 @@ export default function AdminPanel() {
   const cards = [
     { title: "Usuários", desc: "Gerencie contas", route: "/admin/users" },
     { title: "Pets", desc: "Controle os pets", route: "/admin/pets" },
-    { title: "ONGs", desc: "Gerencie ONGs", route: "/admin/ongs" },
+    { title: "ONGs", desc: "Gerencie ONGs", route: "/admin/ong" },
     { title: "Auditoria", desc: "Logs do sistema", route: "/admin/audit" },
     { title: "Mensagens", desc: "Central de mensagens", route: "/admin/messages" },
   ];
