@@ -1,8 +1,8 @@
 ﻿'use client';
 
-import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import TextField from '@/components/TextField';
+import { useAuth } from '@/contexts/AuthContext';
+import { useState } from 'react';
 import styles from './styles.module.css';
 
 export default function LoginModal({ open, onClose }: any) {
@@ -45,8 +45,8 @@ export default function LoginModal({ open, onClose }: any) {
       <div className={styles.overlay}>
         <div className={styles.modal}>
           <div style={{ textAlign: 'center', padding: '40px' }}>
-            <div style={{ fontSize: '55px', marginBottom: '15px' }}>*</div>
-            <h2 style={{ color: '#4CAF50' }}>Login realizado!</h2>
+            <div style={{ fontSize: '55px', marginBottom: '15px' }}>🍆</div>
+            <h2 style={{ color: '#fb7084' }}>Login realizado!</h2>
             <p style={{ opacity: 0.7 }}>Bem-vindo de volta</p>
           </div>
         </div>
@@ -69,8 +69,8 @@ export default function LoginModal({ open, onClose }: any) {
               flex: 1,
               padding: '10px',
               borderRadius: '8px',
-              border: tipo === 'usuario' ? '2px solid var(--primary, #4CAF50)' : '2px solid #ccc',
-              background: tipo === 'usuario' ? 'var(--primary, #4CAF50)' : 'transparent',
+              border: tipo === 'usuario' ? '2px solid var(--primary, #fb7084)' : '2px solid #ccc',
+              background: tipo === 'usuario' ? 'var(--primary, #fb7084)' : 'transparent',
               color: tipo === 'usuario' ? '#fff' : 'inherit',
               cursor: 'pointer',
               fontWeight: 600
@@ -85,8 +85,8 @@ export default function LoginModal({ open, onClose }: any) {
               flex: 1,
               padding: '10px',
               borderRadius: '8px',
-              border: tipo === 'ong' ? '2px solid var(--primary, #4CAF50)' : '2px solid #ccc',
-              background: tipo === 'ong' ? 'var(--primary, #4CAF50)' : 'transparent',
+              border: tipo === 'ong' ? '2px solid var(--primary, #fb7084)' : '2px solid #ccc',
+              background: tipo === 'ong' ? 'var(--primary, #fb7084)' : 'transparent',
               color: tipo === 'ong' ? '#fff' : 'inherit',
               cursor: 'pointer',
               fontWeight: 600
