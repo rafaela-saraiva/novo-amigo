@@ -85,12 +85,14 @@ export default function AnimaisFavoritos() {
 
                     <img
                       src={
-                        animal.foto ||
-                        animal.imagem ||
-                        "/placeholder.svg"
-                      }
-                      alt={animal.nome}
-                      className={styles.cardImage}
+                      Array.isArray(animal.foto)
+                      ? animal.foto[0]
+                      : Array.isArray(animal.imagem)
+                      ? animal.imagem[0]
+                      : animal.foto || animal.imagem || "/placeholder.svg"
+                    }
+                     alt={animal.nome}
+                    className={styles.cardImage}
                     />
 
                     <div className={styles.cardContent}>
