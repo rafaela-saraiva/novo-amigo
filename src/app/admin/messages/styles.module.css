@@ -3,8 +3,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f7f7f8;
-  color: #333;
+  background: var(--surface-secondary);
+  color: var(--text-primary);
 }
 
 /* ===== MAIN ===== */
@@ -19,7 +19,7 @@
 .title {
   font-size: 28px;
   font-weight: 600;
-  color: #fb7084;
+  color: var(--brand-primary);
   text-align: left; /* 🔥 muda de center pra left */
   margin-bottom: 30px;
 }
@@ -36,11 +36,11 @@
   width: 300px; /* 🔥 ESSENCIAL */
   flex: 0 0 auto;
 
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 18px;
   padding: 18px;
-  border: 1px solid #eee;
-  box-shadow: 0 6px 18px rgba(251, 112, 132, 0.08);
+  border: none;
+  box-shadow: 0 6px 18px rgb(var(--brand-primary-rgb) / 0.08);
 
   display: flex;
   flex-direction: column;
@@ -65,11 +65,11 @@
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 25px rgba(255, 107, 129, 0.15);
+  box-shadow: 0 12px 25px rgb(var(--brand-primary-rgb) / 0.15);
 }
 
 .card:hover::before {
-  background: #fb7084;
+  background: var(--brand-primary);
 }
 
 /* ===== TEXTO ===== */
@@ -80,16 +80,16 @@
 
 .email {
   font-size: 13px;
-  color: #777;
+  color: var(--text-muted);
 }
 
 /* ===== MENSAGEM ===== */
 .message {
-  background: #f9f9f9;
+  background: var(--surface-tertiary);
   padding: 10px;
   border-radius: 10px;
   font-size: 13px;
-  color: #444;
+  color: var(--text-secondary);
 }
 
 /* ===== BOTÃO DELETE ===== */
@@ -97,8 +97,8 @@
   margin-top: 5px;
 
   background: transparent;
-  color: #ff6b81;
-  border: 2px solid #ff6b81;
+  color: var(--brand-primary);
+  border: 2px solid var(--brand-primary);
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
@@ -107,14 +107,14 @@
 }
 
 .deleteBtn:hover {
-  background: #ff6b81;
-  color: #fff;
+  background: var(--brand-primary);
+  color: var(--brand-on-primary);
 }
 
 /* ===== DATA ===== */
 .date {
   font-size: 11px;
-  color: #aaa;
+  color: var(--text-faint);
   margin-top: auto;
   text-align: right;
 }
