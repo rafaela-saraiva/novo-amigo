@@ -1,57 +1,62 @@
-/* styles.module.css */
-
 /* LAYOUT GERAL */
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #fdfdfd;
+  background-color: #fdfdfd;
   font-family: 'Inter', sans-serif;
   color: #333;
 }
 
 .main {
   flex: 1;
-  max-width: 1100px;
-  margin: 140px auto 60px;
-  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 140px 20px 60px;
 }
 
+/* TÍTULO */
 .top h1 {
-  color: #fb7084;
   font-size: 2rem;
   font-weight: 600;
+  color: #fb7084;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
-/* LISTA DE MENSAGENS */
+/* GRID → FLEX HORIZONTAL */
 .table {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  display: flex;           /* flex para alinhar cards lado a lado */
+  flex-wrap: wrap;         /* quebra para nova linha se não couber */
+  gap: 20px;               /* espaço entre os cards */
+  justify-content: flex-start; /* ou center, se quiser centralizado */
 }
 
+/* CARD DE MENSAGEM - HORIZONTAL */
 .row {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   display: flex;
+  flex-direction: row;      /* horizontal */
   justify-content: space-between;
   align-items: center;
-  padding: 18px 20px;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
+
+  width: 300px;             /* largura fixa do card */
 }
 
 .row:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
+/* INFO DO CARD */
 .info {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  /* nome e email empilhados */
   gap: 4px;
 }
 
@@ -66,6 +71,7 @@
   margin: 0;
 }
 
+/* STATUS */
 .pending {
   color: #ff6b81;
   font-weight: 600;
@@ -76,7 +82,10 @@
   font-weight: 600;
 }
 
+/* DATA */
 .date {
+  display: block;
+  text-align: right;
   font-size: 0.8rem;
   color: #aaa;
 }
@@ -164,4 +173,17 @@
 
 .modalActions button:nth-child(2):hover {
   background: #ddd;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+  .row {
+    width: 45%; /* dois cards por linha aproximadamente */
+  }
+}
+
+@media (max-width: 600px) {
+  .row {
+    width: 100%; /* um card por linha */
+  }
 }
