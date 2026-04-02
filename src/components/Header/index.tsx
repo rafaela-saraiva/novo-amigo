@@ -18,8 +18,7 @@ export default function Header() {
   const ADMINS = ["admin@pet.com", "john4@gmail.com"];
   const isAdmin = ADMINS.includes(user?.email || "");
 
-  // ✅ USUÁRIO COMUM
-  const isUser = user && !isAdmin;
+  
 
   function handleLogout() {
     logout();
@@ -46,12 +45,7 @@ export default function Header() {
             <Link href="/#como-funciona" className={styles.link}>Como Funciona</Link>
             <Link href="/#ongs" className={styles.link}>ONGs</Link>
 
-            {/* 💬 USUÁRIO COMUM */}
-            {isUser && (
-              <Link href="/minhas-mensagens" className={styles.link}>
-                Minhas Mensagens 
-              </Link>
-            )}
+            
 
             {/* 👑 ADMIN */}
             {isAdmin && (
@@ -109,15 +103,7 @@ export default function Header() {
             <Link href="/#ongs" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
 
             {/* 💬 USUÁRIO COMUM */}
-            {isUser && (
-              <Link
-                href="/minhas-mensagens"
-                className={styles.mobileLink}
-                onClick={() => setMenuOpen(false)}
-              >
-                💬 Minhas Mensagens
-              </Link>
-            )}
+            
 
             {/* 👑 ADMIN */}
             {isAdmin && (

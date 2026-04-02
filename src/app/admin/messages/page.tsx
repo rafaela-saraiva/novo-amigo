@@ -12,7 +12,6 @@ interface Message {
   nome: string;
   email: string;
   mensagem: string;
-  resposta?: string;
   createdAt: string;
 }
 
@@ -20,9 +19,6 @@ export default function AdminMessages() {
   const { token } = useAuth();
 
   const [messages, setMessages] = useState<Message[]>([]);
-  const [selected, setSelected] = useState<Message | null>(null);
-  const [reply, setReply] = useState("");
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (token) fetchMessages();
@@ -40,28 +36,20 @@ export default function AdminMessages() {
     }
   }
 
-  async function sendReply() {
-    if (!selected) return;
+  async function deleteMessage(id: number) {
+    const confirmDelete = confirm("Tem certeza que deseja excluir?");
+    if (!confirmDelete) return;
 
     try {
-      setLoading(true);
+      await api.delete(`/messages/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-      await api.put(
-        `/messages/${selected.id}/reply`,
-        { resposta: reply },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      alert("Resposta enviada 💬");
-
-      setSelected(null);
-      setReply("");
+      alert("Mensagem deletada ");
       fetchMessages();
 
     } catch {
-      alert("Erro ao responder");
-    } finally {
-      setLoading(false);
+      alert("Erro ao deletar");
     }
   }
 
@@ -70,62 +58,32 @@ export default function AdminMessages() {
       <Header />
 
       <main className={styles.main}>
-        <div className={styles.top}>
-          <h1>Mensagens</h1>
-        </div>
+        <h1 className={styles.title}>Mensagens</h1>
 
         <div className={styles.table}>
           {messages.map((m) => (
-            <div
-              key={m.id}
-              className={styles.row}
-              onClick={() => setSelected(m)}
-            >
-              <div className={styles.info}>
-                <strong>{m.nome}</strong>
-                <p>{m.email}</p>
+            <div key={m.id} className={styles.card}>
 
-                <span className={m.resposta ? styles.answered : styles.pending}>
-                  {m.resposta ? "Respondido" : "Pendente"}
-                </span>
-              </div>
+              <strong className={styles.name}>{m.nome}</strong>
+              <p className={styles.email}>{m.email}</p>
+
+              <p className={styles.message}>{m.mensagem}</p>
+
+              <button
+                className={styles.deleteBtn}
+                onClick={() => deleteMessage(m.id)}
+              >
+                Deletar
+              </button>
 
               <span className={styles.date}>
                 {new Date(m.createdAt).toLocaleString()}
               </span>
+
             </div>
           ))}
         </div>
       </main>
-
-      {/* MODAL */}
-      {selected && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2>{selected.nome}</h2>
-
-            <p className={styles.message}>
-              {selected.mensagem}
-            </p>
-
-            <textarea
-              placeholder="Digite sua resposta..."
-              value={reply}
-              onChange={(e) => setReply(e.target.value)}
-            />
-
-            <div className={styles.modalActions}>
-              <button onClick={sendReply} disabled={loading}>
-                {loading ? "Enviando..." : "Responder"}
-              </button>
-
-              <button onClick={() => setSelected(null)}>
-                Fechar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </div>
