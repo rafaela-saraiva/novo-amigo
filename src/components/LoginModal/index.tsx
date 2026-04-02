@@ -5,7 +5,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 import styles from './styles.module.css';
 
-export default function LoginModal({ open, onClose }: any) {
+type Props = {
+  open: boolean;
+  onClose: () => void;
+};
+
+export default function LoginModal({ open, onClose }: Props) {
   const { login, loginONG } = useAuth();
 
   const [tipo, setTipo] = useState<'usuario' | 'ong'>('usuario');
@@ -44,10 +49,10 @@ export default function LoginModal({ open, onClose }: any) {
     return (
       <div className={styles.overlay}>
         <div className={styles.modal}>
-          <div style={{ textAlign: 'center', padding: '40px' }}>
-            <div style={{ fontSize: '55px', marginBottom: '15px' }}>🍆</div>
-            <h2 style={{ color: '#fb7084' }}>Login realizado!</h2>
-            <p style={{ opacity: 0.7 }}>Bem-vindo de volta</p>
+          <div className={styles.successBox}>
+            <div className={styles.emoji}>🍆</div>
+            <h2 className={styles.successTitle}>Login realizado!</h2>
+            <p className={styles.successText}>Bem-vindo de volta</p>
           </div>
         </div>
       </div>
@@ -61,36 +66,18 @@ export default function LoginModal({ open, onClose }: any) {
 
         <h1 className={styles.titulo}>Login</h1>
 
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+        <div className={styles.tipoSwitch}>
           <button
             type='button'
             onClick={() => setTipo('usuario')}
-            style={{
-              flex: 1,
-              padding: '10px',
-              borderRadius: '8px',
-              border: tipo === 'usuario' ? '2px solid var(--primary, #fb7084)' : '2px solid #ccc',
-              background: tipo === 'usuario' ? 'var(--primary, #fb7084)' : 'transparent',
-              color: tipo === 'usuario' ? '#fff' : 'inherit',
-              cursor: 'pointer',
-              fontWeight: 600
-            }}
+            className={`${styles.tipoBtn} ${tipo === 'usuario' ? styles.tipoBtnActive : ''}`}
           >
             Sou Usuario
           </button>
           <button
             type='button'
             onClick={() => setTipo('ong')}
-            style={{
-              flex: 1,
-              padding: '10px',
-              borderRadius: '8px',
-              border: tipo === 'ong' ? '2px solid var(--primary, #fb7084)' : '2px solid #ccc',
-              background: tipo === 'ong' ? 'var(--primary, #fb7084)' : 'transparent',
-              color: tipo === 'ong' ? '#fff' : 'inherit',
-              cursor: 'pointer',
-              fontWeight: 600
-            }}
+            className={`${styles.tipoBtn} ${tipo === 'ong' ? styles.tipoBtnActive : ''}`}
           >
             Sou ONG
           </button>
