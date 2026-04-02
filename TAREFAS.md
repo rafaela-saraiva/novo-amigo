@@ -87,9 +87,9 @@
 - 🟡 **Aba: Gerenciar Usuários** — Criar nova UI com filtros (nome, email, status, role), tabela de usuários, ações de ativar/desativar/deletar (feito)
 - 🟡 **Aba: Gerenciar Pets** — Criar nova UI com filtros (espécie, status, ONG), tabela/cards de animais, opções de editar e deletar (feito)
 - 🟡 **Aba: Gerenciar ONGs** — Criar nova UI com filtros, listagem de ONGs, ações de ativar/desativar/deletar (feito)
-- 🟡 **Aba: Auditoria** — Criar aba de auditoria para registrar e visualizar ações importantes realizadas no sistema (quem deletou, quem criou, etc.)
-- 🟡 **Aba: Mensagens** — Painel para visualizar e responder mensagens enviadas pelo Fale Conosco
-- 🔴 **Autenticação de admin hardcoded** — A verificação de admin está feita como `email === 'admin@pet.com'` no frontend. Corrigir para usar o sistema de roles/groups já implementado no backend
+- 🟡 **Aba: Auditoria** — Criar aba de auditoria para registrar e visualizar ações importantes realizadas no sistema (quem deletou, quem criou, etc.) (feito)
+- 🟡 **Aba: Mensagens** — Painel para visualizar e responder mensagens enviadas pelo Fale Conosco (feito)
+- 🔴 **Autenticação de admin hardcoded** — A verificação de admin está feita como `email === 'admin@pet.com'` no frontend. Corrigir para usar o sistema de roles/groups já implementado no backend 
 
 ---
 

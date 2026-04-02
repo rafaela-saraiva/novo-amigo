@@ -15,14 +15,14 @@ type Props = {
 export default function TextField({
   label,
   type = 'text',
-  text = '',
+  text,
   required = false,
   autoComplete,
   multiline = false,
   onChange,
 }: Props) {
-  // Permite uso controlado (com prop text) ou não controlado (interno)
-  const [valor, setValor] = useState(text);
+
+  const [valor, setValor] = useState(text || "");
 
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const novoTexto = e.target.value;
@@ -30,12 +30,14 @@ export default function TextField({
     if (onChange) onChange(novoTexto);
   }
 
-  const value = onChange ? text : valor;
+  // 🔥 CORREÇÃO AQUI
+  const value = text !== undefined ? text : valor;
 
   return (
     <span className={styles.root}>
       <label>
         <span className={styles.label}>{label}:</span>
+
         {multiline ? (
           <textarea
             placeholder={label}
@@ -54,6 +56,7 @@ export default function TextField({
             autoComplete={autoComplete}
           />
         )}
+
       </label>
     </span>
   );
