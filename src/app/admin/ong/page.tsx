@@ -111,12 +111,7 @@ export default function AdminShelters() {
         <div className={styles.top}>
           <h1> Gerenciar ONGs</h1>
 
-          <button
-            className={styles.createBtn}
-            onClick={() => router.push("/admin/shelters/create")}
-          >
-            + Nova ONG
-          </button>
+          
         </div>
 
         {/* 🔎 FILTROS */}
