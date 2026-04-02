@@ -50,7 +50,7 @@ export default function LoginModal({ open, onClose }: Props) {
       <div className={styles.overlay}>
         <div className={styles.modal}>
           <div className={styles.successBox}>
-            <div className={styles.emoji}>🖕</div>
+            <div className={styles.emoji}>😺</div>
             <h2 className={styles.successTitle}>Login realizado!</h2>
             <p className={styles.successText}>Bem-vindo de volta</p>
           </div>
