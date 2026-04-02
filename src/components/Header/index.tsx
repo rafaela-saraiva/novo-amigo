@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import LoginModal from "@/components/LoginModal";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,6 +17,9 @@ export default function Header() {
   // ✅ ADMINS
   const ADMINS = ["admin@pet.com", "john4@gmail.com"];
   const isAdmin = ADMINS.includes(user?.email || "");
+
+  // ✅ USUÁRIO COMUM
+  const isUser = user && !isAdmin;
 
   function handleLogout() {
     logout();
@@ -43,10 +46,17 @@ export default function Header() {
             <Link href="/#como-funciona" className={styles.link}>Como Funciona</Link>
             <Link href="/#ongs" className={styles.link}>ONGs</Link>
 
-            {/* 🔥 PAINEL ADMIN (DESKTOP) */}
+            {/* 💬 USUÁRIO COMUM */}
+            {isUser && (
+              <Link href="/minhas-mensagens" className={styles.link}>
+                Minhas Mensagens 
+              </Link>
+            )}
+
+            {/* 👑 ADMIN */}
             {isAdmin && (
               <Link href="/admin" className={styles.link}>
-                Painel Admin 
+                Painel Admin
               </Link>
             )}
           </div>
@@ -98,9 +108,24 @@ export default function Header() {
             <Link href="/#como-funciona" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
             <Link href="/#ongs" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
 
-            {/* 🔥 PAINEL ADMIN MOBILE */}
+            {/* 💬 USUÁRIO COMUM */}
+            {isUser && (
+              <Link
+                href="/minhas-mensagens"
+                className={styles.mobileLink}
+                onClick={() => setMenuOpen(false)}
+              >
+                💬 Minhas Mensagens
+              </Link>
+            )}
+
+            {/* 👑 ADMIN */}
             {isAdmin && (
-              <Link href="/admin" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
+              <Link
+                href="/admin"
+                className={styles.mobileLink}
+                onClick={() => setMenuOpen(false)}
+              >
                 👑 Painel Admin
               </Link>
             )}

@@ -1,54 +1,81 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import Header from "@/components/Header";
 import TextField from "@/components/TextField";
 import styles from './styles.module.css';
 import Footer from "@/components/Footer";
- 
+import api from "@/services/api";
+import { useAuth } from "@/contexts/AuthContext";
+
 export default function FaleConosco() {
 
   const [nomeInteiro, setNomeInteiro] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [comentario, setComentario] = useState("");
- 
-  function botaoCadastrarOnClick(e: React.FormEvent) {
-    e.preventDefault();
 
-    alert(`${nomeInteiro}\n${email}\n${telefone}\n${comentario}`);
+  const [loading, setLoading] = useState(false);
 
-    // limpa os campos depois de enviar
+  // 🔥 HANDLERS (FALTAVAM)
+  function handleNomeChange(valor: string) {
+    setNomeInteiro(valor);
+  }
+
+  function handleEmailChange(valor: string) {
+    setEmail(valor);
+  }
+
+  function handleTelefoneChange(valor: string) {
+    setTelefone(valor);
+  }
+
+  function handleComentarioChange(valor: string) {
+    setComentario(valor);
+  }
+
+ const { token } = useAuth();
+
+async function botaoCadastrarOnClick(e: React.FormEvent) {
+  e.preventDefault();
+
+  try {
+    setLoading(true);
+
+    await api.post(
+      "/messages",
+      {
+        nome: nomeInteiro,
+        email,
+        mensagem: comentario
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}` // 🔥 ESSENCIAL
+        }
+      }
+    );
+
+    alert("Mensagem enviada com sucesso 💖");
+
     setNomeInteiro("");
     setEmail("");
     setTelefone("");
     setComentario("");
-  }
- 
-  function handleNomeChange(texto: string) {
-    setNomeInteiro(texto);
-  }
- 
-  function handleEmailChange(texto: string) {
-    setEmail(texto);
-  }
- 
-  function handleTelefoneChange(texto: string) {
-    setTelefone(texto);
-  }
- 
-  function handleComentarioChange(texto: string){
-    setComentario(texto);
-  }
 
- 
+  } catch (err: any) {
+    console.error(err);
+    alert(err?.response?.data?.error || "Erro ao enviar mensagem");
+  } finally {
+    setLoading(false);
+  }
+}
+
   return (
     <>
       <Header />
 
       <div className={styles.container}>
-
-        {/* TEXTO + FORM */}
         <div className={styles.content}>
           <span className={styles.badge}>💌 CONTATO</span>
 
@@ -74,12 +101,11 @@ export default function FaleConosco() {
               className={styles.textarea}
             />
 
-            <button type="submit">Enviar mensagem →</button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Enviando..." : "Enviar mensagem →"}
+            </button>
           </form>
         </div>
-
-        
-
       </div>
 
       <Footer />

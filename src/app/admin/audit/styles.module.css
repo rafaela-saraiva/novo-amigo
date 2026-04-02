@@ -1,0 +1,202 @@
+/* ===== PAGE ===== */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+}
+
+/* ===== MAIN ===== */
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 140px auto 60px;
+  padding: 0 20px;
+}
+
+/* ===== TOPO ===== */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.top h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #fb7084;
+}
+
+/* ===== FILTROS ===== */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input {
+  flex: 1;
+  max-width: 300px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  font-size: 14px;
+  outline: none;
+}
+
+.filters input:focus {
+  border-color: #fb7084;
+  box-shadow: 0 0 0 3px rgba(251, 112, 132, 0.2);
+}
+
+.filters select {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ===== LISTA ===== */
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===== CARD ===== */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--card-bg);
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(251, 112, 132, 0.08);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* LINHA LATERAL */
+.row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: transparent;
+  border-radius: 0 18px 18px 0;
+  transition: background 0.2s ease;
+}
+
+.row:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(255, 107, 129, 0.15);
+}
+
+.row:hover::before {
+  background: #fb7084;
+}
+
+/* ===== INFO ===== */
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ação */
+.action {
+  font-size: 14px;
+  color: #444;
+}
+
+/* entidade */
+.entity {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ===== BADGE AÇÃO ===== */
+.badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+/* cores por ação */
+.create {
+  background: #e0f7ec;
+  color: #22c55e;
+}
+
+.delete {
+  background: #ffe4e8;
+  color: #ff6b81;
+}
+
+.update {
+  background: #e6f0ff;
+  color: #3b82f6;
+}
+
+.activate {
+  background: #e0f7ec;
+  color: #22c55e;
+}
+
+.deactivate {
+  background: #fff3cd;
+  color: #f59e0b;
+}
+
+/* ===== DATA ===== */
+.date {
+  font-size: 12px;
+  color: #999;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .main {
+    margin-top: 120px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+.description {
+  font-size: 14px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.date {
+  font-size: 13px;
+  color: #999;
+}

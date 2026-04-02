@@ -1,0 +1,167 @@
+/* styles.module.css */
+
+/* LAYOUT GERAL */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fdfdfd;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+}
+
+.main {
+  flex: 1;
+  max-width: 1100px;
+  margin: 140px auto 60px;
+  padding: 0 20px;
+}
+
+.top h1 {
+  color: #fb7084;
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* LISTA DE MENSAGENS */
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info strong {
+  font-size: 1rem;
+  color: #333;
+}
+
+.info p {
+  color: #777;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.pending {
+  color: #ff6b81;
+  font-weight: 600;
+}
+
+.answered {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 25px;
+  border-radius: 16px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalContent h2 {
+  color: #fb7084;
+  margin-bottom: 10px;
+}
+
+.modalContent .message {
+  padding: 10px;
+  background: #f9f9f9;
+  border-left: 4px solid #fb7084;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.modalContent textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  resize: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modalActions button {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.modalActions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modalActions button:nth-child(1) { /* Responder */
+  background: #fb7084;
+  color: #fff;
+}
+
+.modalActions button:nth-child(1):hover {
+  background: #e55a70;
+}
+
+.modalActions button:nth-child(2) { /* Fechar */
+  background: #eee;
+  color: #333;
+}
+
+.modalActions button:nth-child(2):hover {
+  background: #ddd;
+}
