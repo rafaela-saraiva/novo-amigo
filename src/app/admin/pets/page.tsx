@@ -185,27 +185,29 @@ export default function AdminPets() {
 
                     <td>{pet.ong?.nome || "—"}</td>
 
-                    <td className={styles.actions}>
-                      <button
-                      className={styles.toggleBtn}
-                      onClick={() => toggleStatus(pet)}
-                    >
-                      {pet.disponivel ? "Desativar " : "Ativar "}
-                    </button>
+                    <td className={styles.actionsCell}>
+                      <div className={styles.actions}>
+                        <button
+                          className={styles.toggleBtn}
+                          onClick={() => toggleStatus(pet)}
+                        >
+                          {pet.disponivel ? "Desativar" : "Ativar"}
+                        </button>
 
-                      <button
-                        className={styles.editBtn}
-                        onClick={() => abrirModal(pet)}
-                      >
-                        Editar
-                      </button>
+                        <button
+                          className={styles.editBtn}
+                          onClick={() => abrirModal(pet)}
+                        >
+                          Editar
+                        </button>
 
-                      <button
-                        className={styles.deleteBtn}
-                        onClick={() => deletarPet(pet.id)}
-                      >
-                        Deletar
-                      </button>
+                        <button
+                          className={styles.deleteBtn}
+                          onClick={() => deletarPet(pet.id)}
+                        >
+                          Deletar
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

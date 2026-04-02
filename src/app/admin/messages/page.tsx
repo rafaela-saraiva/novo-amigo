@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
 interface Message {
@@ -20,11 +20,9 @@ export default function AdminMessages() {
 
   const [messages, setMessages] = useState<Message[]>([]);
 
-  useEffect(() => {
-    if (token) fetchMessages();
-  }, [token]);
+  const fetchMessages = useCallback(async () => {
+    if (!token) return;
 
-  async function fetchMessages() {
     try {
       const res = await api.get("/messages", {
         headers: { Authorization: `Bearer ${token}` }
@@ -34,7 +32,11 @@ export default function AdminMessages() {
     } catch {
       alert("Erro ao carregar mensagens");
     }
-  }
+  }, [token]);
+
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
 
   async function deleteMessage(id: number) {
     const confirmDelete = confirm("Tem certeza que deseja excluir?");
