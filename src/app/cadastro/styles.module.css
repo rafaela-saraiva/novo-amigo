@@ -14,12 +14,15 @@
   position: relative;
   width: 50%;
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 4rem 4rem 4rem;
+  align-items: flex-end; /* 🔥 alinhado com o form */
+
+  padding: 2rem 6rem 2rem 2rem;
   overflow: hidden;
+
   background: linear-gradient(
     135deg,
     rgba(var(--brand-primary-rgb), 0.14),
@@ -27,63 +30,78 @@
   );
 }
 
+
 .leftContent {
   position: relative;
   z-index: 10;
-  max-width: 32rem;
-}
 
+  width: 100%;
+  max-width: 30rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  text-align: left;
+}
 .branding {
-  margin-bottom: 3rem;
+  margin-bottom: 0; /* 🔥 deixa o gap controlar tudo */
 }
 
 .logoText {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-weight: 900;
   color: var(--brand-primary-dark);
   font-style: italic;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+
+  padding: 0.4rem 0.9rem;
   border-radius: 9999px;
+
   background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+
   border: 1px solid var(--glass-border);
-  box-shadow: 0 1px 10px var(--shadow);
+  box-shadow: 0 2px 12px var(--shadow);
+
+  width: fit-content;
 }
 
 .badge span {
-  font-size: 0.625rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-primary-dark);
 }
 
 .headline {
-  font-size: 3.5rem;
+  font-size: 3.2rem;
   font-weight: 900;
   color: var(--text-primary);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  margin-bottom: 1.5rem;
+
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .headline .highlight {
-  color: var(--brand-primary);
-  font-style: italic;
+  background: linear-gradient(135deg, #ff4d6d, #ff8fa3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
 }
 
 .subtext {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
+
   line-height: 1.6;
-  margin-bottom: 2rem;
+  max-width: 26rem;
 }
 
 .imageContainer {
@@ -126,18 +144,24 @@
 .rightSection {
   width: 50%;
   display: flex;
-  align-items: center;
+
+  align-items: flex-start; /* 🔥 corrige o problema do header */
   justify-content: center;
-  padding: 2rem 4rem;
+
+  padding: 6rem 4rem 2rem; /* 🔥 espaço do topo */
   background-color: var(--surface);
+
   position: relative;
   overflow: hidden;
 }
-
 .rightBackground {
   position: absolute;
   inset: 0;
   z-index: 0;
+
+  background-size: cover;
+  background-position: center; /* 🔥 mantém central */
+  background-repeat: no-repeat;
 }
 
 .rightBackground::after {
@@ -164,6 +188,7 @@
   box-shadow: 0 18px 55px var(--shadow-strong);
   position: relative;
   z-index: 1;
+  margin-top: 1rem; /* 🔥 ajuste fino */
 }
 
 .formHeader {
@@ -463,4 +488,8 @@
   .heroImage {
     max-width: 18rem;
   }
+}
+
+.formWrapper {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
 }
