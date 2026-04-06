@@ -40,6 +40,8 @@
               <li><Link href="/#como-funciona">Como Funciona</Link></li>
               <li><Link href="/nossos-animais">ONGs Parceiras</Link></li>
               <li><Link href="/nosso-time">Nosso Time</Link></li>
+              <li><Link href="/doacao">Faça uma doação</Link></li>
+
             </ul>
           </div>
 

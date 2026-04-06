@@ -239,7 +239,7 @@ export default function AnimalProfilePage() {
 
               {/* CTA */}
               <div className={styles.ctaSection}>
-                <button className={styles.ctaBtn} onClick={() => router.push('/doacao')}>
+                <button className={styles.ctaBtn} onClick={() => router.push('/fale-conosco')}>
                   💚 Quero dar um lar ao {animal.nome}
                 </button>
                 <button

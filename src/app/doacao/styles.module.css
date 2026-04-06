@@ -20,8 +20,9 @@
 
 /* 🌺 Container geral */
 .doacaoContainer {
-  min-height: 100vh;
-  background: var(--bg-gradient);
+  flex: 5;
+  background: #ffffff;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
