@@ -72,7 +72,7 @@ export function ProductCardTeste({ nome, img, tipo }: ProductCardProps) {
 // ===== PetCard — novo design de card individual =====
 
 type PetCardProps = {
-  image: string;
+  image?: string;
   alt: string;
   nome: string;
   idade: string;
@@ -95,7 +95,7 @@ export function PetCard({
   return (
     <div className={styles.petCard}>
       <div className={styles.petImageWrapper}>
-        <img src={image} alt={alt} className={styles.petImage} />
+        <img src={image || null} alt={alt} className={styles.petImage} />
         <button className={styles.heartBtn} aria-label="Favoritar">
           <span className="material-symbols-outlined">favorite</span>
         </button>
