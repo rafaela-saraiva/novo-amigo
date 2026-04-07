@@ -43,7 +43,12 @@ export default function CadastrarAnimalModal({
   const [urlInput, setUrlInput] = useState("");
 
   const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    const nextValue =
+      field === "idade" && typeof value === "string"
+        ? value.replace(/[^\d]/g, "")
+        : value;
+
+    setFormData((prev) => ({ ...prev, [field]: nextValue }));
   };
 
   const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +92,15 @@ export default function CadastrarAnimalModal({
       return;
     }
 
-    const imagemUrl = fotos[0] || "/placeholder.svg";
+    const urlDigitada = urlInput.trim();
+    const fotosFinal = fotos.length > 0 ? fotos : (urlDigitada ? [urlDigitada] : []);
+
+    if (fotosFinal.length === 0) {
+      alert("Adicione pelo menos 1 foto (upload ou URL) para cadastrar o pet.");
+      return;
+    }
+
+    const imagemUrl = fotosFinal[0] || "/placeholder.svg";
 
     const novoAnimal: Pet = {
       id: crypto.randomUUID(),
@@ -99,7 +112,7 @@ export default function CadastrarAnimalModal({
       porte: formData.porte,
       descricao: formData.descricao,
       imagem: imagemUrl,
-      imagens: fotos,
+      imagens: fotosFinal,
       disponivel: true,
       donoId: "1",
       donoNome: "Nome da ONG Exemplo",
@@ -125,6 +138,7 @@ export default function CadastrarAnimalModal({
     });
     setSelectedTags([]);
     setFotos([]);
+    setUrlInput("");
     onClose();
   };
 
@@ -196,7 +210,9 @@ export default function CadastrarAnimalModal({
                       <input
                         className={styles.input}
                         type="text"
-                        placeholder="Ex: 2 anos"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        placeholder="Ex: 2"
                         value={formData.idade}
                         onChange={(e) =>
                           handleInputChange("idade", e.target.value)

@@ -2,10 +2,12 @@
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import { useAuth } from '@/contexts/AuthContext';
+import LoginModal from '@/components/LoginModal';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles.module.css';
 
 const ESP_LABEL: Record<string, string> = {
@@ -31,6 +33,7 @@ export default function AnimalProfilePage() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string | undefined;
+  const { user, loading: authLoading } = useAuth();
 
   const [animal, setAnimal] = useState<Pet | null>(null);
   const [related, setRelated] = useState<Pet[]>([]);
@@ -38,6 +41,40 @@ export default function AnimalProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [favorited, setFavorited] = useState(false);
+
+  const comoAdotarSectionRef = useRef<HTMLElement | null>(null);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [scrollDepoisDoLogin, setScrollDepoisDoLogin] = useState(false);
+
+  const podeVerComoAdotar = useMemo(() => !!user && !authLoading, [user, authLoading]);
+
+  const scrollParaComoAdotar = () => {
+    const target = comoAdotarSectionRef.current || document.getElementById('como-adotar');
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleQueroDarLar = () => {
+    scrollParaComoAdotar();
+
+    if (authLoading) return;
+    if (!user) {
+      setScrollDepoisDoLogin(true);
+      setLoginOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (loginOpen) return;
+    if (!user) return;
+    if (!scrollDepoisDoLogin) return;
+
+    const t = setTimeout(() => {
+      scrollParaComoAdotar();
+      setScrollDepoisDoLogin(false);
+    }, 50);
+
+    return () => clearTimeout(t);
+  }, [loginOpen, user, scrollDepoisDoLogin]);
 
   useEffect(() => {
     if (!id) return;
@@ -111,6 +148,9 @@ export default function AnimalProfilePage() {
   const images = getAllImages(animal);
   const displayImage = selectedImage || images[0];
   const espLabel = ESP_LABEL[animal.especie] || animal.especie;
+  const comoAdotarTexto =
+    animal.comoAdotar ||
+    'As instruções de adoção ainda não foram cadastradas para este animal.';
 
   return (
     <>
@@ -136,7 +176,7 @@ export default function AnimalProfilePage() {
                 <img src={displayImage} alt={animal.nome} className={styles.heroImg} />
                 <div className={styles.heroOverlay}>
                   <h2 className={styles.heroName}>{animal.nome}</h2>
-                  <p className={styles.heroTagline}>Esperando por um lar ❤️</p>
+                  <p className={styles.heroTagline}>Esperando por um lar</p>
                 </div>
               </div>
 
@@ -239,8 +279,11 @@ export default function AnimalProfilePage() {
 
               {/* CTA */}
               <div className={styles.ctaSection}>
-                <button className={styles.ctaBtn} onClick={() => router.push('/fale-conosco')}>
-                  💚 Quero dar um lar ao {animal.nome}
+                <button
+                  className={styles.ctaBtn}
+                  onClick={handleQueroDarLar}
+                >
+                  Quero dar um lar ao {animal.nome}
                 </button>
                 <button
                   className={`${styles.favBtn} ${favorited ? styles.favBtnActive : ''}`}
@@ -256,44 +299,53 @@ export default function AnimalProfilePage() {
             </div>
           </div>
 
-          {/* Storytelling */}
-          {animal.descricao && (
-            <section className={styles.storySection}>
-              <h3 className={styles.storyTitle}>
-                A História do {animal.nome}
-                <span className={styles.storyDivider} />
-              </h3>
-              <div className={styles.storyCard}>
-                <span
-                  className="material-symbols-outlined"
-                  style={{
-                    position: 'absolute', top: '-20px', right: '-10px',
-                    fontSize: '180px', opacity: 0.04, transform: 'rotate(12deg)',
-                    pointerEvents: 'none',
-                  }}
-                >format_quote</span>
-                <p className={styles.storyText}>{animal.descricao}</p>
-              </div>
-            </section>
-          )}
-
           {/* Como Adotar */}
-          {animal.comoAdotar && (
-            <section className={styles.adoptSection}>
-              <h3 className={styles.adoptTitle}>
-                Como Adotar o {animal.nome}
-                <span className={styles.storyDivider} />
-              </h3>
-              <div className={styles.adoptCard}>
-                <div className={styles.adoptIcon}>
-                  <span className="material-symbols-outlined">volunteer_activism</span>
-                </div>
-                <p className={styles.adoptText}>
-                  {animal.comoAdotar}
-                </p>
+          <section
+            ref={(el) => {
+              comoAdotarSectionRef.current = el;
+            }}
+            id="como-adotar"
+            className={styles.adoptSection}
+          >
+            <h3 className={styles.adoptTitle}>
+              Como Adotar o {animal.nome}
+              <span className={styles.storyDivider} />
+            </h3>
+            <div className={styles.adoptCard}>
+              <div className={styles.adoptIcon}>
+                <span className="material-symbols-outlined">
+                  {podeVerComoAdotar ? 'volunteer_activism' : 'lock'}
+                </span>
               </div>
-            </section>
-          )}
+              <div className={styles.adoptContent}>
+                <p className={styles.adoptText}>
+                  {podeVerComoAdotar
+                    ? comoAdotarTexto
+                    : 'Para ver o passo a passo e adotar este animal, faça login.'}
+                </p>
+                {!podeVerComoAdotar && (
+                  <div className={styles.adoptActions}>
+                    <button
+                      className={styles.adoptLoginBtn}
+                      onClick={() => {
+                        if (authLoading) return;
+                        setScrollDepoisDoLogin(true);
+                        setLoginOpen(true);
+                      }}
+                    >
+                      Fazer login
+                    </button>
+                    <button
+                      className={styles.adoptCadastroBtn}
+                      onClick={() => router.push('/cadastro')}
+                    >
+                      Criar conta
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
 
           {/* Animais relacionados */}
           {related.length > 0 && (
@@ -337,6 +389,14 @@ export default function AnimalProfilePage() {
         </div>
       </main>
       <Footer />
+
+      <LoginModal
+        open={loginOpen}
+        onClose={() => {
+          setLoginOpen(false);
+          if (!user) setScrollDepoisDoLogin(false);
+        }}
+      />
     </>
   );
 }

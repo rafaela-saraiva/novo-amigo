@@ -141,22 +141,38 @@ export default function NossosAnimais() {
         return;
       }
 
+      const idadeNumero = Number(novoAnimal.idade);
+      if (!Number.isFinite(idadeNumero) || idadeNumero <= 0) {
+        alert('Informe uma idade válida (apenas números).');
+        return;
+      }
+
+      const fotos =
+        novoAnimal.imagens && novoAnimal.imagens.length > 0
+          ? novoAnimal.imagens
+          : novoAnimal.imagem && novoAnimal.imagem !== '/placeholder.svg'
+            ? [novoAnimal.imagem]
+            : [];
+
+      if (fotos.length === 0) {
+        alert('Adicione pelo menos 1 foto do animal para cadastrar.');
+        return;
+      }
+
       const payload = {
         nome: novoAnimal.nome,
         especie: novoAnimal.especie,
-        raca: novoAnimal.raca,
-        idade: novoAnimal.idade ? Number(novoAnimal.idade) : null,
+        raca: novoAnimal.raca || null,
+        idade: idadeNumero,
         sexo: novoAnimal.sexo,
         porte: novoAnimal.porte,
-        descricao: novoAnimal.descricao,
-        foto: novoAnimal.imagens && novoAnimal.imagens.length > 0
-          ? novoAnimal.imagens
-          : (novoAnimal.imagem && novoAnimal.imagem !== '/placeholder.svg' ? [novoAnimal.imagem] : []),
+        descricao: novoAnimal.descricao?.trim() ? novoAnimal.descricao.trim() : null,
+        foto: fotos,
         vacinado: novoAnimal.vacinado ?? false,
         castrado: novoAnimal.castrado ?? false,
         disponivel: novoAnimal.disponivel ?? true,
         tags: novoAnimal.tags ?? [],
-        comoAdotar: novoAnimal.comoAdotar ?? null,
+        comoAdotar: novoAnimal.comoAdotar?.trim() ? novoAnimal.comoAdotar.trim() : null,
       };
 
       const res = await api.post('/animals', payload, {
@@ -168,8 +184,13 @@ export default function NossosAnimais() {
       setAnimais((prev) => [...prev, normalizarAnimal(res.data)]);
       setModalAberto(false);
     } catch (err: any) {
-      console.error('❌ Erro ao salvar animal:', err);
-      alert('Erro ao salvar o animal. Verifique se você está logado.');
+      console.error('❌ Erro ao salvar animal:', err?.response?.data || err);
+      const msg =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.response?.data ||
+        'Erro ao salvar o animal.';
+      alert(String(msg));
     }
   };
 
