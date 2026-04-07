@@ -1,9 +1,9 @@
 "use client";
+import { useAuth } from "@/contexts/AuthContext";
 import { Pet } from "@/Models/Pet";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import styles from "./styles.module.css";
-import { useAuth } from "@/contexts/AuthContext";
 interface CadastrarAnimalModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -634,6 +634,7 @@ export default function CadastrarAnimalModal({
                     className={styles.textarea}
                     placeholder="Conte-nos sobre a personalidade, cuidados especiais ou a história do animal..."
                     rows={6}
+                    maxLength={1000}
                     value={formData.descricao}
                     onChange={(e) =>
                       handleInputChange("descricao", e.target.value)
