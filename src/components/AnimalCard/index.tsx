@@ -43,6 +43,47 @@ export default function AnimalCard({ animal, priority = false }: AnimalCardProps
     animal.idade ? `${animal.idade} ${Number(animal.idade) === 1 ? 'ano' : 'anos'}` : '',
   ].filter(Boolean).join(' • ');
 
+  type CreatorSource = Pet & Partial<{
+    shelterId: number;
+    shelter: { nome?: string };
+    userId: number;
+    user: { nome?: string; role?: string; groups?: string[] };
+    donoRole: string;
+    donoGroups: string[];
+    creator: { nome?: string };
+    createdBy: { nome?: string };
+  }>;
+
+  const resolveCreator = () => {
+    const src = animal as unknown as CreatorSource;
+
+    const name =
+      animal.donoNome ||
+      src.shelter?.nome ||
+      src.user?.nome ||
+      src.creator?.nome ||
+      src.createdBy?.nome ||
+      '';
+
+    const isOng =
+      animal.donoTipo === 'ong' ||
+      Boolean(src.shelter) ||
+      Boolean(src.shelterId);
+
+    const isAdmin =
+      src.donoRole === 'ADMIN' ||
+      src.user?.role === 'ADMIN' ||
+      (Array.isArray(src.donoGroups) && src.donoGroups.includes('Administrador')) ||
+      (Array.isArray(src.user?.groups) && src.user.groups.includes('Administrador'));
+
+    const label = isOng ? 'ONG' : isAdmin ? 'Administrador' : 'Usuário';
+
+    return { label, name };
+  };
+
+  const creator = resolveCreator();
+  const creatorLabel = creator.label === 'Usuário' ? 'Criado por' : creator.label;
+
   return (
     <div className={styles.card}>
       {/* Imagem */}
@@ -81,6 +122,13 @@ export default function AnimalCard({ animal, priority = false }: AnimalCardProps
           <h3 className={styles.nome}>{animal.nome}</h3>
           {sexoIdade && <span className={styles.sexoIdade}>{sexoIdade}</span>}
         </div>
+
+        {creator.name && (
+          <div className={styles.creatorRow}>
+            <span className={styles.creatorLabel}>{creatorLabel}:</span>
+            <span className={styles.creatorName}>{creator.name}</span>
+          </div>
+        )}
 
         {chips.length > 0 && (
           <div className={styles.chips}>

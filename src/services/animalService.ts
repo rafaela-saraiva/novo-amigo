@@ -50,7 +50,15 @@ export const animalService = {
 
   async create(animal: Pet): Promise<Pet> {
     try {
-      const res = await api.post('/animals', animal);
+      const pessoaId = Number(animal.donoId);
+      const ownerFk =
+        Number.isFinite(pessoaId) && pessoaId > 0
+          ? animal.donoTipo === 'ong'
+            ? { shelterId: pessoaId }
+            : { userId: pessoaId }
+          : {};
+
+      const res = await api.post('/animals', { ...animal, ...ownerFk });
       console.log('✅ Animal criado no backend');
       return res.data;
     } catch (error: any) {

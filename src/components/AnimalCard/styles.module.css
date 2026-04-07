@@ -122,6 +122,25 @@
   padding-top: 4px;
 }
 
+/* Criador (função: nome) */
+.creatorRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--text-faint);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.creatorLabel {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.creatorName {
+  font-weight: 500;
+}
+
 /* Chips */
 .chips {
   display: flex;

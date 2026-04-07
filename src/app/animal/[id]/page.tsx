@@ -19,6 +19,41 @@ const ESP_LABEL: Record<string, string> = {
   fazenda: 'Fazenda',
 };
 
+type CreatorSource = Pet & Partial<{
+  shelterId: number;
+  shelter: { nome?: string };
+  userId: number;
+  user: { nome?: string; role?: string; groups?: string[] };
+  donoRole: string;
+  donoGroups: string[];
+  creator: { nome?: string };
+  createdBy: { nome?: string };
+}>;
+
+function resolveCreator(pet: Pet) {
+  const src = pet as unknown as CreatorSource;
+
+  const name =
+    pet.donoNome ||
+    src.shelter?.nome ||
+    src.user?.nome ||
+    src.creator?.nome ||
+    src.createdBy?.nome ||
+    '';
+
+  const isOng = pet.donoTipo === 'ong' || Boolean(src.shelter) || Boolean(src.shelterId);
+
+  const isAdmin =
+    src.donoRole === 'ADMIN' ||
+    src.user?.role === 'ADMIN' ||
+    (Array.isArray(src.donoGroups) && src.donoGroups.includes('Administrador')) ||
+    (Array.isArray(src.user?.groups) && src.user.groups.includes('Administrador'));
+
+  const label = isOng ? 'ONG' : isAdmin ? 'Administrador' : 'Usuário';
+
+  return { label, name };
+}
+
 function getAllImages(pet: Pet): string[] {
   if (pet.imagens?.length) return pet.imagens;
   if (pet.foto) {
@@ -148,6 +183,7 @@ export default function AnimalProfilePage() {
   const images = getAllImages(animal);
   const displayImage = selectedImage || images[0];
   const espLabel = ESP_LABEL[animal.especie] || animal.especie;
+  const creator = resolveCreator(animal);
   const comoAdotarTexto =
     animal.comoAdotar ||
     'As instruções de adoção ainda não foram cadastradas para este animal.';
@@ -194,6 +230,20 @@ export default function AnimalProfilePage() {
                       )}
                     </button>
                   ))}
+                </div>
+              )}
+
+              {creator.name && (
+                <div className={styles.creatorCard}>
+                  <div className={styles.creatorIcon}>
+                    <span className="material-symbols-outlined">account_circle</span>
+                  </div>
+                  <div className={styles.creatorText}>
+                    <span className={styles.creatorTitle}>Cadastrado por</span>
+                    <span className={styles.creatorValue}>
+                      {creator.label}: {creator.name}
+                    </span>
+                  </div>
                 </div>
               )}
             </div>

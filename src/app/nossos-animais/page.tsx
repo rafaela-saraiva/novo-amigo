@@ -141,6 +141,17 @@ export default function NossosAnimais() {
         return;
       }
 
+      if (!user?.id) {
+        alert('Não foi possível identificar o usuário/ONG logado para vincular o cadastro do pet.');
+        return;
+      }
+
+      const pessoaId = Number(user.id);
+      if (!Number.isFinite(pessoaId) || pessoaId <= 0) {
+        alert('ID do usuário/ONG inválido. Faça login novamente.');
+        return;
+      }
+
       const idadeNumero = Number(novoAnimal.idade);
       if (!Number.isFinite(idadeNumero) || idadeNumero <= 0) {
         alert('Informe uma idade válida (apenas números).');
@@ -173,6 +184,7 @@ export default function NossosAnimais() {
         disponivel: novoAnimal.disponivel ?? true,
         tags: novoAnimal.tags ?? [],
         comoAdotar: novoAnimal.comoAdotar?.trim() ? novoAnimal.comoAdotar.trim() : null,
+        ...(user.tipo === 'shelter' ? { shelterId: pessoaId } : { userId: pessoaId }),
       };
 
       const res = await api.post('/animals', payload, {

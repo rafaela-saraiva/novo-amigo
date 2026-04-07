@@ -92,6 +92,11 @@ export default function CadastrarAnimalModal({
       return;
     }
 
+    if (!user?.id) {
+      alert("Você precisa estar logado para cadastrar um animal.");
+      return;
+    }
+
     const urlDigitada = urlInput.trim();
     const fotosFinal = fotos.length > 0 ? fotos : (urlDigitada ? [urlDigitada] : []);
 
@@ -101,6 +106,7 @@ export default function CadastrarAnimalModal({
     }
 
     const imagemUrl = fotosFinal[0] || "/placeholder.svg";
+    const donoTipo: Pet["donoTipo"] = user.tipo === "shelter" ? "ong" : "usuario";
 
     const novoAnimal: Pet = {
       id: crypto.randomUUID(),
@@ -114,10 +120,10 @@ export default function CadastrarAnimalModal({
       imagem: imagemUrl,
       imagens: fotosFinal,
       disponivel: true,
-      donoId: "1",
-      donoNome: "Nome da ONG Exemplo",
-      donoTipo: "ong",
-      donoEndereco: "Endereço da ONG",
+      donoId: String(user.id),
+      donoNome: user.nome || (donoTipo === "ong" ? "ONG" : "Usuário"),
+      donoTipo,
+      donoEndereco: user.endereco,
       tags: selectedTags,
       comoAdotar: formData.comoAdotar,
     };
@@ -262,6 +268,7 @@ export default function CadastrarAnimalModal({
                       { value: "coelho", label: "Coelho" },
                       { value: "hamster", label: "Hamster" },
                       { value: "fazenda", label: "Animais de Fazenda" },
+                      { value: "exotico", label: "Animais Exóticos" },
                     ].map(({ value, label }) => (
                       <button
                         key={value}
