@@ -1,4 +1,4 @@
-import  Pet from "@/Models/Pet";
+import { Pet } from "@/Models/Pet";
 import ProductCard from "../ProductCard";
 
 
