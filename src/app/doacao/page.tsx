@@ -5,12 +5,10 @@ import { Card, CardContent } from "@/components/Card";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import TextField from "@/components/TextField";
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styles from './styles.module.css';
 
 export default function Doacao() {
-  const router = useRouter();
 
   const [valor, setValor] = useState<string | number>('');
   const [nome, setNome] = useState('');
@@ -40,7 +38,7 @@ export default function Doacao() {
       setValor('');
       setNome('');
       setMensagem('');
-    } catch (err) {
+    } catch {
       alert('Ocorreu um erro. Tente novamente.');
     } finally {
       setCarregando(false);
@@ -53,7 +51,7 @@ export default function Doacao() {
       await navigator.clipboard.writeText(pixChave);
       setCopiado(true);
       setTimeout(() => setCopiado(false), 2000); // reseta após 2s
-    } catch (err) {
+    } catch {
       alert('Não foi possível copiar a chave Pix.');
     }
   };

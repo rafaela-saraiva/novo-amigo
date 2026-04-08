@@ -5,8 +5,8 @@ import Header from "@/components/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
 import { toWhatsAppLink } from "@/utils/whatsapp";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
 
 type AdoptionRequest = {
@@ -179,7 +179,7 @@ export default function OngMessages() {
               const disabled = busyId === r.id;
 
               return (
-                <div key={`${r.source}:${r.id}`} className={styles.card}>
+                <div key={r.id} className={styles.card}>
                   <div className={styles.rowTop}>
                     <div>
                       <strong className={styles.name}>{r.userNome || "Solicitante"}</strong>
