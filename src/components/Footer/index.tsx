@@ -50,7 +50,7 @@
             <h4 className={styles.colTitle}>Institucional</h4>
             <ul className={styles.links}>
               <li><Link href="/sobre">Sobre Nós</Link></li>
-              <li><Link href="/fale-conosco">Trabalhe Conosco</Link></li>
+              <li><Link href="/fale-conosco">Fale Conosco</Link></li>
             </ul>
           </div>
 
