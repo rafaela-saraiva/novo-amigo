@@ -30,7 +30,7 @@ export const animalService = {
       const res = await api.get('/animals');
       console.log('✅ Dados carregados do backend');
       return res.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Em desenvolvimento, retorna mock data se backend estiver offline
       if (IS_DEV && this.isConnectionError(error)) {
         console.warn('📋 Backend offline - usando dados mock');
@@ -61,7 +61,7 @@ export const animalService = {
       const res = await api.post('/animals', { ...animal, ...ownerFk });
       console.log('✅ Animal criado no backend');
       return res.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Em desenvolvimento, simula sucesso se backend estiver offline
       if (IS_DEV && this.isConnectionError(error)) {
         console.warn('📋 Backend offline - simulando criação local');

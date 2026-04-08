@@ -643,3 +643,219 @@
     flex-direction: column;
   }
 }
+
+/* ======= PERFIL ONG ======= */
+.ongSection {
+  margin-top: 34px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.05), rgba(244, 63, 94, 0) 60%), var(--card-bg);
+  box-shadow: 0 14px 36px var(--shadow);
+  padding: 18px;
+}
+
+.sectionHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.sectionSubtitle {
+  margin-top: 6px;
+  margin-bottom: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  max-width: 680px;
+  line-height: 1.35;
+}
+
+.ongFormGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ongCard {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface-secondary);
+  padding: 14px;
+}
+
+.ongCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ongCardTitle {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  color: var(--text-primary);
+}
+
+.ongCardHint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.ongTextarea {
+  width: 100%;
+  min-height: 160px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 12px 12px;
+  resize: vertical;
+  outline: none;
+  line-height: 1.4;
+}
+
+.ongTextarea:focus {
+  border-color: rgba(244, 63, 94, 0.55);
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12);
+}
+
+.ongUploadRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.ongUploadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  background: rgba(244, 63, 94, 0.08);
+  color: #f43f5e;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ongUploadBtn:hover {
+  background: rgba(244, 63, 94, 0.12);
+}
+
+.ongUploadInput {
+  display: none;
+}
+
+.ongUploadHint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.ongEmptyPhotos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+  background: var(--card-bg);
+}
+
+.ongEmptyPhotos .material-symbols-outlined {
+  font-size: 22px;
+  color: #f43f5e;
+}
+
+.ongPhotosGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ongPhotoItem {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--border, #ddd);
+  background: var(--surface-tertiary, #f6f6f6);
+}
+
+.ongPhotoItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ongPhotoRemove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  cursor: pointer;
+  line-height: 28px;
+  font-size: 18px;
+}
+
+.ongActionsRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.ongSaveBtn {
+  background: #f43f5e;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(244, 63, 94, 0.22);
+}
+
+.ongSaveBtn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.ongViewBtn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .ongFormGrid {
+    grid-template-columns: 1fr;
+  }
+}

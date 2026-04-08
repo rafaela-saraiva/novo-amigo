@@ -10,11 +10,14 @@ interface User {
   groups?: string[];
   role?: "ADMIN" | "USER";
   tipo?: "usuario" | "shelter";
+  phone?: string;
 
   // opcionais (usados pela ONG)
   telefone?: string;
   endereco?: string;
   cnpj?: string;
+  descricao?: string;
+  fotos?: string[];
 }
 
 interface AuthContextType {
@@ -46,7 +49,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           if (savedTipo === "shelter") {
             const res = await api.get("/shelters/me");
-            setUser({ ...res.data, tipo: "shelter" });
+            setUser({
+              ...res.data,
+              tipo: "shelter",
+              descricao: res.data?.descricao ?? res.data?.responsavel,
+              fotos: res.data?.fotos ?? res.data?.urlImage,
+            });
           } else {
             const res = await api.get("/users/me");
             setUser({ ...res.data, tipo: "usuario" });
@@ -96,6 +104,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       cnpj: shelter.cnpj,
       telefone: shelter.telefone,
       endereco: shelter.endereco,
+      descricao: shelter.descricao ?? shelter.responsavel,
+      fotos: shelter.fotos ?? shelter.urlImage,
       tipo: "shelter"
     });
   }

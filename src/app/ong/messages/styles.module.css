@@ -1,0 +1,136 @@
+.page {
+  min-height: 100vh;
+  padding-top: 100px;
+  background: var(--surface-secondary);
+}
+
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 18px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rowTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.name {
+  color: var(--text-primary);
+}
+
+.email {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.petBadge {
+  background: var(--surface-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.infoRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.infoLabel {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.waLink {
+  color: #22c55e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.waLink:hover {
+  text-decoration: underline;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.actionsRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.acceptBtn {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.acceptBtn:hover {
+  background: #16a34a;
+}
+
+.rejectBtn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.rejectBtn:hover {
+  background: #dc2626;
+}
+
+.acceptBtn:disabled,
+.rejectBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.date {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-size: 14px;
+}

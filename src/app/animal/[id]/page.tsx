@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import LoginModal from '@/components/LoginModal';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles.module.css';
 
@@ -67,6 +67,7 @@ function getAllImages(pet: Pet): string[] {
 export default function AnimalProfilePage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const id = params?.id as string | undefined;
   const { user, loading: authLoading } = useAuth();
 
@@ -76,12 +77,20 @@ export default function AnimalProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [favorited, setFavorited] = useState(false);
+  const [shelterProfile, setShelterProfile] = useState<{ id: number; nome: string; fotos?: string[] | null } | null>(null);
+  const [phoneRequired, setPhoneRequired] = useState(false);
 
   const comoAdotarSectionRef = useRef<HTMLElement | null>(null);
   const [loginOpen, setLoginOpen] = useState(false);
   const [scrollDepoisDoLogin, setScrollDepoisDoLogin] = useState(false);
+  const [habilitarSolicitar, setHabilitarSolicitar] = useState(false);
+  const [habilitarSolicitarDepoisDoLogin, setHabilitarSolicitarDepoisDoLogin] = useState(false);
+  const [enviandoSolicitacao, setEnviandoSolicitacao] = useState(false);
+  const [solicitacaoEnviada, setSolicitacaoEnviada] = useState(false);
 
   const podeVerComoAdotar = useMemo(() => !!user && !authLoading, [user, authLoading]);
+  const isUser = user?.tipo !== 'shelter';
+  const autoSolicitar = searchParams?.get('solicitar') === '1';
 
   const scrollParaComoAdotar = () => {
     const target = comoAdotarSectionRef.current || document.getElementById('como-adotar');
@@ -94,7 +103,13 @@ export default function AnimalProfilePage() {
     if (authLoading) return;
     if (!user) {
       setScrollDepoisDoLogin(true);
+      setHabilitarSolicitarDepoisDoLogin(true);
       setLoginOpen(true);
+      return;
+    }
+
+    if (animal?.disponivel && isUser && !solicitacaoEnviada) {
+      setHabilitarSolicitar(true);
     }
   };
 
@@ -106,10 +121,15 @@ export default function AnimalProfilePage() {
     const t = setTimeout(() => {
       scrollParaComoAdotar();
       setScrollDepoisDoLogin(false);
+
+      if (habilitarSolicitarDepoisDoLogin && isUser && animal?.disponivel && !solicitacaoEnviada) {
+        setHabilitarSolicitar(true);
+      }
+      setHabilitarSolicitarDepoisDoLogin(false);
     }, 50);
 
     return () => clearTimeout(t);
-  }, [loginOpen, user, scrollDepoisDoLogin]);
+  }, [loginOpen, user, scrollDepoisDoLogin, habilitarSolicitarDepoisDoLogin, isUser, animal?.disponivel, solicitacaoEnviada]);
 
   useEffect(() => {
     if (!id) return;
@@ -136,6 +156,103 @@ export default function AnimalProfilePage() {
   }, [id]);
 
   useEffect(() => {
+    if (!autoSolicitar) return;
+    if (authLoading) return;
+    if (!animal?.id) return;
+    setHabilitarSolicitar(true);
+    const t = setTimeout(() => scrollParaComoAdotar(), 50);
+    return () => clearTimeout(t);
+  }, [autoSolicitar, authLoading, animal?.id]);
+
+  useEffect(() => {
+    if (!animal) return;
+
+    const shelterId = getShelterIdFromPet(animal);
+    if (!shelterId) {
+      setShelterProfile(null);
+      return;
+    }
+
+    async function loadShelter() {
+      try {
+        // Preferir dados já embutidos no payload do animal (evita 401 quando /shelters é protegido)
+        const embedded = (() => {
+          const src = animal as unknown as Partial<{
+            shelter?: { nome?: string; urlImage?: string[]; fotos?: string[] };
+            ong?: { nome?: string; urlImage?: string[]; fotos?: string[] };
+          }>;
+
+          const nome = src.shelter?.nome || src.ong?.nome;
+          const fotos = src.shelter?.urlImage || src.shelter?.fotos || src.ong?.urlImage || src.ong?.fotos;
+
+          if (nome || (Array.isArray(fotos) && fotos.length > 0)) {
+            return { nome: nome || animal.donoNome || 'ONG', fotos: fotos || null };
+          }
+          return null;
+        })();
+
+        if (embedded) {
+          setShelterProfile({
+            id: shelterId,
+            nome: embedded.nome,
+            fotos: embedded.fotos ?? null,
+          });
+          return;
+        }
+
+        let data: unknown = null;
+        try {
+          const res = await api.get(`/shelters/${shelterId}`);
+          data = res.data as unknown;
+        } catch (err: unknown) {
+          const axiosLike = err as { response?: { status?: number } };
+          if (axiosLike?.response?.status === 401) {
+            // endpoint protegido: mantém só o nome (sem foto)
+            setShelterProfile({
+              id: shelterId,
+              nome: animal.donoNome || 'ONG',
+              fotos: null,
+            });
+            return;
+          }
+          if (axiosLike?.response?.status !== 404) throw err;
+
+          const list = await api.get("/shelters");
+          const found = (Array.isArray(list.data) ? list.data : []).find((s: unknown) => {
+            const rec = s as Partial<{ id: unknown }>;
+            return Number(rec?.id) === shelterId;
+          });
+          data = found ?? null;
+        }
+
+        const rec = (data && typeof data === 'object') ? (data as Partial<{ id: unknown; nome: unknown; fotos: unknown; urlImage: unknown }>) : null;
+        if (!rec) {
+          setShelterProfile(null);
+          return;
+        }
+
+        setShelterProfile({
+          id: Number(rec.id),
+          nome: String(rec.nome || ''),
+          fotos: (rec.fotos ?? rec.urlImage) as string[] | null | undefined,
+        });
+      } catch (err) {
+        console.error(err);
+        setShelterProfile(null);
+      }
+    }
+
+    loadShelter();
+  }, [animal]);
+
+  useEffect(() => {
+    setSolicitacaoEnviada(false);
+    setHabilitarSolicitar(false);
+    setHabilitarSolicitarDepoisDoLogin(false);
+    setPhoneRequired(false);
+  }, [id]);
+
+  useEffect(() => {
     if (!animal) return;
     const favoritos: Pet[] = JSON.parse(localStorage.getItem('favoritos') || '[]');
     setFavorited(favoritos.some((a) => a.id === animal.id));
@@ -157,6 +274,85 @@ export default function AnimalProfilePage() {
       setFavorited(true);
     }
   };
+
+  const getShelterIdFromPet = (pet: Pet): number | null => {
+    const src = pet as unknown as Partial<{ shelterId: number }>;
+    if (typeof src.shelterId === 'number') return src.shelterId;
+
+    if (pet.donoTipo === 'ong') {
+      const n = Number(pet.donoId);
+      if (Number.isFinite(n) && n > 0) return n;
+    }
+
+    return null;
+  };
+
+  async function solicitarContato() {
+    if (!animal) return;
+    if (authLoading) return;
+    if (!user) {
+      setScrollDepoisDoLogin(true);
+      setHabilitarSolicitarDepoisDoLogin(true);
+      setLoginOpen(true);
+      return;
+    }
+
+    if (!isUser) {
+      alert('Somente usuários podem solicitar contato para adoção.');
+      return;
+    }
+
+    if (!animal.disponivel) {
+      alert('Este pet já está indisponível.');
+      return;
+    }
+
+    if (!habilitarSolicitar) {
+      scrollParaComoAdotar();
+      setHabilitarSolicitar(true);
+      return;
+    }
+
+    if (solicitacaoEnviada) return;
+
+    const shelterId = getShelterIdFromPet(animal);
+    if (!shelterId) {
+      alert('Não foi possível identificar a ONG responsável por este pet.');
+      return;
+    }
+
+    const userPhoneRaw =
+      (user as unknown as { phone?: string }).phone ||
+      (user as unknown as { telefone?: string }).telefone ||
+      '';
+
+    if (!userPhoneRaw.trim()) {
+      setPhoneRequired(true);
+      alert('Você precisa ter um número de telefone cadastrado na sua conta para facilitar o contato.');
+    }
+
+    const payload = {
+      petId: animal.id,
+      shelterId,
+      userId: user.id,
+      userTelefone: userPhoneRaw.trim(),
+      status: 'PENDING',
+    };
+
+    try {
+      setEnviandoSolicitacao(true);
+
+      await api.post('/adoption-requests', payload);
+
+      setSolicitacaoEnviada(true);
+      alert('Solicitação enviada! Aguarde a resposta da ONG.');
+    } catch (err) {
+      console.error(err);
+      alert('Erro ao enviar solicitação. (Verifique se o backend possui /adoption-requests)');
+    } finally {
+      setEnviandoSolicitacao(false);
+    }
+  }
 
   if (loading) return (
     <>
@@ -184,6 +380,11 @@ export default function AnimalProfilePage() {
   const displayImage = selectedImage || images[0];
   const espLabel = ESP_LABEL[animal.especie] || animal.especie;
   const creator = resolveCreator(animal);
+  const shelterIdForLink = getShelterIdFromPet(animal);
+  const shelterLink = shelterIdForLink ? `/ongs/${shelterIdForLink}` : null;
+  const shelterPhoto =
+    Array.isArray(shelterProfile?.fotos) ? shelterProfile!.fotos!.find(Boolean) || null : null;
+  const creatorDisplayName = shelterProfile?.nome || creator.name;
   const comoAdotarTexto =
     animal.comoAdotar ||
     'As instruções de adoção ainda não foram cadastradas para este animal.';
@@ -233,15 +434,27 @@ export default function AnimalProfilePage() {
                 </div>
               )}
 
-              {creator.name && (
-                <div className={styles.creatorCard}>
+              {(creatorDisplayName || creator.name) && (
+                <div
+                  className={`${styles.creatorCard} ${shelterLink ? styles.creatorCardClickable : ''}`}
+                  onClick={() => {
+                    if (shelterLink) router.push(shelterLink);
+                  }}
+                  role={shelterLink ? 'button' : undefined}
+                  tabIndex={shelterLink ? 0 : undefined}
+                >
                   <div className={styles.creatorIcon}>
-                    <span className="material-symbols-outlined">account_circle</span>
+                    {shelterPhoto ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={shelterPhoto} alt={creator.name} className={styles.creatorAvatar} />
+                    ) : (
+                      <span className="material-symbols-outlined">account_circle</span>
+                    )}
                   </div>
                   <div className={styles.creatorText}>
                     <span className={styles.creatorTitle}>Cadastrado por</span>
                     <span className={styles.creatorValue}>
-                      {creator.label}: {creator.name}
+                      {creator.label}: {creatorDisplayName}
                     </span>
                   </div>
                 </div>
@@ -331,9 +544,34 @@ export default function AnimalProfilePage() {
               <div className={styles.ctaSection}>
                 <button
                   className={styles.ctaBtn}
-                  onClick={handleQueroDarLar}
+                  onClick={() => {
+                    if (!animal.disponivel) return;
+
+                    const podeSolicitar =
+                      Boolean(user) &&
+                      isUser &&
+                      podeVerComoAdotar &&
+                      habilitarSolicitar &&
+                      !solicitacaoEnviada;
+
+                    if (podeSolicitar) {
+                      solicitarContato();
+                      return;
+                    }
+
+                    handleQueroDarLar();
+                  }}
+                  disabled={
+                    !animal.disponivel ||
+                    enviandoSolicitacao ||
+                    (Boolean(user) && isUser && podeVerComoAdotar && habilitarSolicitar && solicitacaoEnviada)
+                  }
                 >
-                  Quero dar um lar ao {animal.nome}
+                  {!animal.disponivel
+                    ? 'Indisponível'
+                    : Boolean(user) && isUser && podeVerComoAdotar && habilitarSolicitar
+                      ? (solicitacaoEnviada ? 'Solicitação enviada' : (enviandoSolicitacao ? 'Enviando...' : 'Solicitar contato'))
+                      : `Quero dar um lar ao ${animal.nome}`}
                 </button>
                 <button
                   className={`${styles.favBtn} ${favorited ? styles.favBtnActive : ''}`}
@@ -343,6 +581,18 @@ export default function AnimalProfilePage() {
                   <span className="material-symbols-outlined">favorite</span>
                 </button>
               </div>
+              {phoneRequired && (
+                <div className={styles.phoneWarn}>
+                  <span className="material-symbols-outlined">warning</span>
+                  <span>
+                    Para solicitar contato, cadastre seu telefone em{" "}
+                    <button className={styles.phoneWarnLink} onClick={() => router.push("/configuracoes")}>
+                      Configurações
+                    </button>
+                    .
+                  </span>
+                </div>
+              )}
               <p className={styles.ctaNote}>
                 Processo sujeito a entrevista para garantir o bem-estar do pet e da nova família.
               </p>

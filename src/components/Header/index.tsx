@@ -17,6 +17,7 @@ export default function Header() {
   // ✅ ADMINS
   const ADMINS = ["admin@pet.com", "john4@gmail.com"];
   const isAdmin = ADMINS.includes(user?.email || "");
+  const isONG = user?.tipo === "shelter";
 
   
 
@@ -43,11 +44,17 @@ export default function Header() {
           <div className={styles.links}>
             <Link href="/nossos-animais" className={styles.link}>Adotar</Link>
             <Link href="/#como-funciona" className={styles.link}>Como Funciona</Link>
-            <Link href="/#ongs" className={styles.link}>ONGs</Link>
+            <Link href="/ongs" className={styles.link}>ONGs</Link>
 
             
 
             {/* 👑 ADMIN */}
+            {isONG && (
+              <Link href="/ong" className={styles.link}>
+                Painel ONG
+              </Link>
+            )}
+
             {isAdmin && (
               <Link href="/admin" className={styles.link}>
                 Painel Admin
@@ -100,12 +107,22 @@ export default function Header() {
           <div className={styles.mobileMenu}>
             <Link href="/nossos-animais" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Adotar</Link>
             <Link href="/#como-funciona" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Como Funciona</Link>
-            <Link href="/#ongs" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
+            <Link href="/ongs" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>ONGs</Link>
 
             {/* 💬 USUÁRIO COMUM */}
             
 
             {/* 👑 ADMIN */}
+            {isONG && (
+              <Link
+                href="/ong"
+                className={styles.mobileLink}
+                onClick={() => setMenuOpen(false)}
+              >
+                Painel ONG
+              </Link>
+            )}
+
             {isAdmin && (
               <Link
                 href="/admin"

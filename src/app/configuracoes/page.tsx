@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import api from "@/services/api";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
@@ -31,6 +31,7 @@ export default function Configuracoes() {
   const { user, token, loading, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const isAdmin = user?.email === 'admin@pet.com';
   const isONG = user?.tipo === 'shelter';
@@ -41,6 +42,7 @@ export default function Configuracoes() {
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [telefoneUser, setTelefoneUser] = useState("");
 
   const [pass, setPass] = useState("");
   const [confirmarPass, setConfirmarPass] = useState("");
@@ -57,6 +59,13 @@ export default function Configuracoes() {
   });
   const [salvandoAnimal, setSalvandoAnimal] = useState(false);
 
+  const [ongDescricao, setOngDescricao] = useState("");
+  const [ongFotos, setOngFotos] = useState<string[]>([]);
+  const [salvandoPerfilOng, setSalvandoPerfilOng] = useState(false);
+
+  const requirePhone = searchParams?.get("requirePhone") === "1";
+  const nextPath = searchParams?.get("next") || "";
+
   useEffect(() => {
     if (!loading && !user) {
       router.push("/");
@@ -65,12 +74,80 @@ export default function Configuracoes() {
     if (user) {
       setNome(user.nome);
       setEmail(user.email);
+      const phone =
+        (user as unknown as { phone?: string }).phone ||
+        (user as unknown as { telefone?: string }).telefone ||
+        "";
+      setTelefoneUser(phone);
     }
 
     if (user?.tipo === 'shelter') {
+      const shelterUser = user as unknown as { descricao?: string; fotos?: string[] };
+      setOngDescricao(shelterUser.descricao || "");
+      setOngFotos(Array.isArray(shelterUser.fotos) ? shelterUser.fotos.slice(0, 5) : []);
       carregarMeusAnimais();
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    if (!user) return;
+    if (user.tipo === "shelter") return;
+    if (!requirePhone) return;
+    if (telefoneUser && telefoneUser.trim()) return;
+    setModalAberto(true);
+  }, [user, requirePhone, telefoneUser]);
+
+  async function handleAddOngFotos(files: FileList | null) {
+    if (!files) return;
+    const remaining = 5 - ongFotos.length;
+    if (remaining <= 0) return;
+
+    const picked = Array.from(files).slice(0, remaining);
+
+    const readAsDataUrl = (file: File) =>
+      new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = () => reject(new Error("Falha ao ler arquivo"));
+        reader.readAsDataURL(file);
+      });
+
+    try {
+      const urls = await Promise.all(picked.map(readAsDataUrl));
+      const filtered = urls.filter((u) => u && u.startsWith("data:image/"));
+      setOngFotos((prev) => [...prev, ...filtered].slice(0, 5));
+    } catch {
+      alert("Erro ao carregar fotos.");
+    }
+  }
+
+  function removerOngFoto(index: number) {
+    setOngFotos((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function salvarPerfilOng() {
+    if (!user?.id) return;
+
+    try {
+      setSalvandoPerfilOng(true);
+
+      const payload = {
+        responsavel: ongDescricao,
+        urlImage: ongFotos.slice(0, 5),
+      };
+
+      // tenta persistir no backend
+      await api.put(`/shelters/${user.id}`, payload, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).catch(() => null);
+
+      alert("Perfil da ONG atualizado!");
+    } catch {
+      alert("Erro ao salvar perfil da ONG.");
+    } finally {
+      setSalvandoPerfilOng(false);
+    }
+  }
 
   async function carregarMeusAnimais() {
     try {
@@ -148,17 +225,28 @@ export default function Configuracoes() {
       return;
     }
 
+    if (requirePhone && user?.tipo !== 'shelter' && !telefoneUser.trim()) {
+      alert("Adicione seu telefone para solicitar contato.");
+      return;
+    }
+
     try {
       setSalvando(true);
 
       await api.put(`/users/${user?.id}`, {
         name: nome,
         email: email,
-        pass: pass || undefined
+        pass: pass || undefined,
+        phone: telefoneUser.trim() || undefined,
       });
 
       setModalAberto(false);
       alert("Dados atualizados com sucesso!");
+
+      const safeNext = nextPath && nextPath.startsWith("/animal/") ? nextPath : "";
+      if (requirePhone && safeNext) {
+        router.push(safeNext);
+      }
     } catch {
       alert("Erro ao atualizar.");
     } finally {
@@ -247,10 +335,110 @@ export default function Configuracoes() {
             </div>
           </div>
 
+          {/* PERFIL ONG — só para ONG */}
+          {isONG && (
+            <section className={styles.ongSection}>
+              <div className={styles.sectionHeaderRow}>
+                <div>
+                  <h2 className={styles.sectionTitle}>Perfil da ONG</h2>
+                  <p className={styles.sectionSubtitle}>
+                    Essas informações aparecem no seu perfil público e ajudam adotantes a confiar no processo.
+                  </p>
+                </div>
+
+                <button
+                  className={styles.ongViewBtn}
+                  onClick={() => router.push(`/ongs/${user?.id}`)}
+                  type="button"
+                >
+                  Ver perfil público →
+                </button>
+              </div>
+
+              <div className={styles.ongFormGrid}>
+                <div className={styles.ongCard}>
+                  <div className={styles.ongCardHeader}>
+                    <span className={styles.ongCardTitle}>Descrição</span>
+                    <span className={styles.ongCardHint}>{ongDescricao.length}/600</span>
+                  </div>
+                  <textarea
+                    className={styles.ongTextarea}
+                    value={ongDescricao}
+                    maxLength={600}
+                    onChange={(e) => setOngDescricao(e.target.value)}
+                    placeholder="Conte um pouco sobre a ONG, a missão e como funcionam as adoções..."
+                  />
+                </div>
+
+                <div className={styles.ongCard}>
+                  <div className={styles.ongCardHeader}>
+                    <span className={styles.ongCardTitle}>Fotos</span>
+                    <span className={styles.ongCardHint}>{ongFotos.length}/5</span>
+                  </div>
+
+                  <div className={styles.ongUploadRow}>
+                    <label className={styles.ongUploadBtn}>
+                      Adicionar fotos
+                      <input
+                        className={styles.ongUploadInput}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={(e) => handleAddOngFotos(e.target.files)}
+                        disabled={ongFotos.length >= 5}
+                      />
+                    </label>
+                    <span className={styles.ongUploadHint}>PNG/JPG • até 5 imagens</span>
+                  </div>
+
+                  {ongFotos.length > 0 ? (
+                    <div className={styles.ongPhotosGrid}>
+                      {ongFotos.map((src, idx) => (
+                        <div key={`${src}-${idx}`} className={styles.ongPhotoItem}>
+                          <img src={src} alt={`foto ${idx + 1}`} />
+                          <button
+                            type="button"
+                            className={styles.ongPhotoRemove}
+                            onClick={() => removerOngFoto(idx)}
+                            aria-label="Remover foto"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className={styles.ongEmptyPhotos}>
+                      <span className="material-symbols-outlined">imagesmode</span>
+                      <span>Adicione fotos para deixar sua ONG mais confiável.</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles.ongActionsRow}>
+                <button
+                  className={styles.ongSaveBtn}
+                  onClick={salvarPerfilOng}
+                  disabled={salvandoPerfilOng}
+                >
+                  {salvandoPerfilOng ? "Salvando..." : "Salvar alterações"}
+                </button>
+              </div>
+            </section>
+          )}
+
           {/* MEUS ANIMAIS — só para ONG */}
           {isONG && (
-            <div className={styles.actionSection} style={{ textAlign: 'left' }}>
-              <h2 style={{ textAlign: 'center' }}>Meus Animais Cadastrados</h2>
+            <section className={styles.ongSection}>
+              <div className={styles.sectionHeaderRow}>
+                <div>
+                  <h2 className={styles.sectionTitle}>Meus Animais Cadastrados</h2>
+                  <p className={styles.sectionSubtitle}>
+                    Edite informações, marque como adotado e acompanhe os pets da sua ONG.
+                  </p>
+                </div>
+              </div>
 
               {loadingAnimais && <p style={{ textAlign: 'center' }}>Carregando...</p>}
 
@@ -313,7 +501,7 @@ export default function Configuracoes() {
                   </Link>
                 </div>
               )}
-            </div>
+            </section>
           )}
 
           {/* AÇÕES */}
@@ -363,6 +551,15 @@ export default function Configuracoes() {
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
             />
+
+            {!isONG && (
+              <input
+                type="tel"
+                placeholder={requirePhone ? "Telefone (obrigatório)" : "Telefone"}
+                value={telefoneUser}
+                onChange={(e) => setTelefoneUser(e.target.value)}
+              />
+            )}
 
             <input 
               type="password" 
