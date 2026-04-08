@@ -89,22 +89,22 @@ async function botaoCadastrarOnClick(e: React.FormEvent) {
             faça parte dessa rede de amor pelos animais 🐾
           </p>
 
-          <form onSubmit={botaoCadastrarOnClick}>
-            <TextField label="Nome Completo" type="text" onChange={handleNomeChange} />
-            <TextField label="E-mail" type="email" onChange={handleEmailChange} />
-            <TextField label="Telefone" type="text" onChange={handleTelefoneChange} />
+          <form onSubmit={botaoCadastrarOnClick} className={styles.form}>
+  <TextField label="Nome Completo" type="text" onChange={handleNomeChange} />
+  <TextField label="E-mail" type="email" onChange={handleEmailChange} />
+  <TextField label="Telefone" type="text" onChange={handleTelefoneChange} />
 
-            <textarea
-              placeholder="Comentário"
-              value={comentario}
-              onChange={(e) => handleComentarioChange(e.target.value)}
-              className={styles.textarea}
-            />
+  <textarea
+    placeholder="Comentário"
+    value={comentario}
+    onChange={(e) => handleComentarioChange(e.target.value)}
+    className={styles.textarea}
+  />
 
-            <button type="submit" disabled={loading}>
-              {loading ? "Enviando..." : "Enviar mensagem →"}
-            </button>
-          </form>
+  <button type="submit" disabled={loading} className={styles.button}>
+    {loading ? "Enviando..." : "Enviar mensagem →"}
+  </button>
+</form>
         </div>
       </div>
 
