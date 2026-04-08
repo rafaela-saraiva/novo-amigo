@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Button from "@/components/Button";
 import { Card, CardContent } from "@/components/Card";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import TextField from "@/components/TextField";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import styles from './styles.module.css';
-import Footer from "@/components/Footer";
 
 export default function Doacao() {
   const router = useRouter();
@@ -72,7 +72,7 @@ export default function Doacao() {
           <form onSubmit={handleDoar} className={styles.form}>
             <TextField
               label="Valor da doação (R$)"
-              type="number"
+              type="text"
               text={String(valor)}
               onChange={(v) => setValor(v)}
               required
