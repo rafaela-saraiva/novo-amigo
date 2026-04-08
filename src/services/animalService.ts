@@ -1,6 +1,6 @@
 // src/services/animalService.ts
-import api from './api'; // ✅ Usa sua instância configurada
 import { Pet } from '@/Models/Pet';
+import api from './api'; // ✅ Usa sua instância configurada
 
 const IS_DEV = process.env.NODE_ENV === 'development';
 
@@ -38,12 +38,13 @@ export const animalService = {
       }
       
       // Em produção ou outros erros, verifica se é 401 (não autorizado)
-      if (error.response?.status === 401) {
+      const axiosErr = error as { response?: { status?: number }; message?: string };
+      if (axiosErr.response?.status === 401) {
         console.error('🔐 Não autorizado - redirecionando para login');
         // Seu interceptor já cuida do redirecionamento
       }
       
-      console.error('Erro ao buscar animais:', error.message);
+      console.error('Erro ao buscar animais:', axiosErr.message);
       throw error;
     }
   },
@@ -68,11 +69,12 @@ export const animalService = {
         return { ...animal, id: Date.now().toString() };
       }
       
-      if (error.response?.status === 401) {
+      const axiosErr2 = error as { response?: { status?: number }; message?: string };
+      if (axiosErr2.response?.status === 401) {
         console.error('🔐 Não autorizado para criar animal');
       }
       
-      console.error('Erro ao criar animal:', error.message);
+      console.error('Erro ao criar animal:', axiosErr2.message);
       throw error;
     }
   },
@@ -81,12 +83,13 @@ export const animalService = {
     try {
       await api.delete('/animals');
       console.log('✅ Todos os animais removidos do backend');
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const axiosErr = error as { message?: string };
       if (IS_DEV && this.isConnectionError(error)) {
         console.warn('📋 Backend offline - simulando limpeza local');
         return;
       }
-      console.error('Erro ao deletar animais:', error.message);
+      console.error('Erro ao deletar animais:', axiosErr.message);
       throw error;
     }
   },
@@ -105,7 +108,8 @@ export const animalService = {
         success: true,
         message: `✅ Conexão estabelecida (${responseTime}ms)`
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const axiosErr = error as { response?: { status?: number }; message?: string };
       if (this.isConnectionError(error)) {
         return {
           success: false,
@@ -116,19 +120,20 @@ export const animalService = {
       // Outros erros (como 401) não são problemas de conexão
       return {
         success: false,
-        message: `⚠️ Backend respondeu com erro: ${error.response?.status || error.message}`
+        message: `⚠️ Backend respondeu com erro: ${axiosErr.response?.status || axiosErr.message}`
       };
     }
   },
 
   // Verifica se o erro é de conexão (não resposta do servidor)
-  isConnectionError(error: any): boolean {
+  isConnectionError(error: unknown): boolean {
+    const e = error as { code?: string; message?: string; response?: unknown };
     return (
-      error.code === 'NETWORK_ERROR' ||
-      error.code === 'ECONNREFUSED' ||
-      error.message?.includes('Network Error') ||
-      error.message?.includes('timeout') ||
-      !error.response // Sem resposta do servidor
+      e.code === 'NETWORK_ERROR' ||
+      e.code === 'ECONNREFUSED' ||
+      e.message?.includes('Network Error') ||
+      e.message?.includes('timeout') ||
+      !e.response // Sem resposta do servidor
     );
   }
 };
