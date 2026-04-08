@@ -2,8 +2,8 @@
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import { useAuth } from '@/contexts/AuthContext';
 import LoginModal from '@/components/LoginModal';
+import { useAuth } from '@/contexts/AuthContext';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -186,14 +186,14 @@ export default function AnimalProfilePage() {
           const fotos = src.shelter?.urlImage || src.shelter?.fotos || src.ong?.urlImage || src.ong?.fotos;
 
           if (nome || (Array.isArray(fotos) && fotos.length > 0)) {
-            return { nome: nome || animal.donoNome || 'ONG', fotos: fotos || null };
+            return { nome: nome || animal?.donoNome || 'ONG', fotos: fotos || null };
           }
           return null;
         })();
 
         if (embedded) {
           setShelterProfile({
-            id: shelterId,
+            id: shelterId!,
             nome: embedded.nome,
             fotos: embedded.fotos ?? null,
           });
@@ -209,8 +209,8 @@ export default function AnimalProfilePage() {
           if (axiosLike?.response?.status === 401) {
             // endpoint protegido: mantém só o nome (sem foto)
             setShelterProfile({
-              id: shelterId,
-              nome: animal.donoNome || 'ONG',
+              id: shelterId!,
+              nome: animal?.donoNome || 'ONG',
               fotos: null,
             });
             return;
