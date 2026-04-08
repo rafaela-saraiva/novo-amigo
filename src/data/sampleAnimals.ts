@@ -1,6 +1,12 @@
-import { Pet } from '@/Models/Pet';
+type SampleAnimal = {
+  id: number;
+  nome: string;
+  img: string;
+  desc: string;
+  tipo: string;
+};
 
-export const cachorros: Pet[] = [
+export const cachorros: SampleAnimal[] = [
   {
     id: 1001,
     nome: "Rex",
@@ -38,7 +44,7 @@ export const cachorros: Pet[] = [
   }
 ];
 
-export const gatos: Pet[] = [
+export const gatos: SampleAnimal[] = [
   {
     id: 2001,
     nome: "Mia",
