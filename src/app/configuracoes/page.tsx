@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import api from "@/services/api";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
 interface AnimalItem {
@@ -28,6 +28,14 @@ interface AnimalItem {
 }
 
 export default function Configuracoes() {
+  return (
+    <Suspense fallback={null}>
+      <ConfiguracoesInner />
+    </Suspense>
+  );
+}
+
+function ConfiguracoesInner() {
   const { user, token, loading, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
