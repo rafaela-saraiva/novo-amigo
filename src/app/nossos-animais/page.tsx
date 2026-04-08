@@ -9,10 +9,18 @@ import { useAuth } from '@/hooks/useAuth';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
 export default function NossosAnimais() {
+  return (
+    <Suspense fallback={null}>
+      <NossosAnimaisInner />
+    </Suspense>
+  );
+}
+
+function NossosAnimaisInner() {
   const searchParams = useSearchParams();
   const especieParam = searchParams?.get('especie') as string | undefined;
   const { user } = useAuth();
