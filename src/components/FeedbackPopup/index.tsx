@@ -33,20 +33,21 @@ const iconByVariant: Record<FeedbackPopupVariant, string> = {
 export default function FeedbackPopup({ popup, onClose }: FeedbackPopupProps) {
   if (!popup) return null;
 
-  const variant = popup.variant ?? "info";
-  const mode = popup.mode ?? "alert";
+  const safePopup = popup;
+  const variant = safePopup.variant ?? "info";
+  const mode = safePopup.mode ?? "alert";
 
   function handleClose() {
     if (mode === "confirm") {
-      popup.onCancel?.();
+      safePopup.onCancel?.();
     } else {
-      popup.onClose?.();
+      safePopup.onClose?.();
     }
     onClose();
   }
 
   function handleConfirm() {
-    popup.onConfirm?.();
+    safePopup.onConfirm?.();
     onClose();
   }
 
