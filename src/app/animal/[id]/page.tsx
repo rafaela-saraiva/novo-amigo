@@ -1,10 +1,11 @@
 'use client';
 
-import Footer from '@/components/Footer';
 import FeedbackPopup, { type FeedbackPopupState } from '@/components/FeedbackPopup';
+import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import LoginModal from '@/components/LoginModal';
 import { useAuth } from '@/contexts/AuthContext';
+import { useFavorites } from '@/contexts/FavoritesContext';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -85,7 +86,7 @@ function AnimalProfilePageInner() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>('');
-  const [favorited, setFavorited] = useState(false);
+  const { isFavorited, toggleFavorite } = useFavorites();
   const [shelterProfile, setShelterProfile] = useState<{ id: number; nome: string; fotos?: string[] | null } | null>(null);
   const [phoneRequired, setPhoneRequired] = useState(false);
 
@@ -272,15 +273,10 @@ function AnimalProfilePageInner() {
     setPhoneRequired(false);
   }, [id]);
 
-  useEffect(() => {
-    if (!animal) return;
-    const favoritos: Pet[] = JSON.parse(localStorage.getItem('favoritos') || '[]');
-    setFavorited(favoritos.some((a) => a.id === animal.id));
-  }, [animal]);
+  const favorited = animal ? isFavorited(Number(animal.id)) : false;
 
-  const toggleFavorito = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+  const toggleFavorito = async () => {
+    if (!user) {
       openFeedback({
         title: 'Login necessario',
         message: 'Voce precisa estar logado para favoritar este animal.',
@@ -288,15 +284,8 @@ function AnimalProfilePageInner() {
       });
       return;
     }
-    const favoritos: Pet[] = JSON.parse(localStorage.getItem('favoritos') || '[]');
-    if (favorited) {
-      localStorage.setItem('favoritos', JSON.stringify(favoritos.filter((a) => a.id !== animal!.id)));
-      setFavorited(false);
-    } else {
-      favoritos.push(animal!);
-      localStorage.setItem('favoritos', JSON.stringify(favoritos));
-      setFavorited(true);
-    }
+    if (!animal) return;
+    await toggleFavorite(Number(animal.id));
   };
 
   const getShelterIdFromPet = (pet: Pet): number | null => {

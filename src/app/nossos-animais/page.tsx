@@ -5,6 +5,7 @@ import AnimalCard from '@/components/AnimalCard';
 import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import { useFavorites } from '@/contexts/FavoritesContext';
 import { useAuth } from '@/hooks/useAuth';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
@@ -24,6 +25,7 @@ function NossosAnimaisInner() {
   const searchParams = useSearchParams();
   const especieParam = searchParams?.get('especie') as string | undefined;
   const { user } = useAuth();
+  const { favoritedIds, isFavorited } = useFavorites();
 
   const podeAdicionarAnimal =
     user?.groups?.includes('Administrador') ||
@@ -41,6 +43,7 @@ function NossosAnimaisInner() {
     disponibilidade: 'somente_disponiveis',
     busca: '',
     idade: 'todas',
+    favoritos: false,
   });
 
   const [outrosAberto, setOutrosAberto] = useState(false);
@@ -131,12 +134,15 @@ function NossosAnimaisInner() {
       a.cidade?.includes(filtros.busca.toLowerCase()) ||
       a.descricao?.includes(filtros.busca.toLowerCase());
 
+    const matchFavoritos = !filtros.favoritos || isFavorited(Number(a.id));
+
     return (
       matchEspecie &&
       matchSexo &&
       matchPorte &&
       matchDisponibilidade &&
-      matchBusca
+      matchBusca &&
+      matchFavoritos
     );
   });
 
@@ -253,6 +259,7 @@ function NossosAnimaisInner() {
       disponibilidade: 'somente_disponiveis',
       busca: '',
       idade: 'todas',
+      favoritos: false,
     });
     setOutrosAberto(false);
   };
@@ -441,6 +448,18 @@ function NossosAnimaisInner() {
                 >
                   + cadastrar animal
                 </button>
+              )}
+
+              {user && favoritedIds.size > 0 && (
+                <div className={styles.filterGroup}>
+                  <button
+                    className={`${styles.favFilterBtn} ${filtros.favoritos ? styles.favFilterBtnActive : ''}`}
+                    onClick={() => setFiltros((prev) => ({ ...prev, favoritos: !prev.favoritos }))}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>favorite</span>
+                    Meus Favoritos ({favoritedIds.size})
+                  </button>
+                </div>
               )}
 
               <button className={styles.limparBtn} onClick={limparFiltros}>

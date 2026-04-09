@@ -1,5 +1,7 @@
 ﻿'use client';
 
+import { useFavorites } from '@/contexts/FavoritesContext';
+import { useAuth } from '@/hooks/useAuth';
 import { Pet } from '@/Models/Pet';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +22,15 @@ export default function AnimalCard({ animal, priority = false }: AnimalCardProps
     resolvedFoto || animal.imagem || '/placeholder.svg'
   );
   const [imageError, setImageError] = useState(false);
-  const [favorito, setFavorito] = useState(false);
+  const { user } = useAuth();
+  const { isFavorited, toggleFavorite } = useFavorites();
+
+  const favorito = isFavorited(Number(animal.id));
+
+  const handleFavoritar = async () => {
+    if (!user) return;
+    await toggleFavorite(Number(animal.id));
+  };
 
   const handleImageError = () => {
     if (!imageError) {
@@ -108,7 +118,7 @@ export default function AnimalCard({ animal, priority = false }: AnimalCardProps
         <button
           className={`${styles.heartBtn} ${favorito ? styles.heartActive : ''}`}
           aria-label="Favoritar"
-          onClick={() => setFavorito((f) => !f)}
+          onClick={handleFavoritar}
         >
           <span className="material-symbols-outlined">
             {favorito ? 'favorite' : 'favorite'}

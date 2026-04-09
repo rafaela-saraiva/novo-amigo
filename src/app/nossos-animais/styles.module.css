@@ -276,6 +276,40 @@
   color: var(--text-faint);
 }
 
+/* Botão filtro favoritos */
+.favFilterBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 0;
+  background: rgba(251, 112, 132, 0.08);
+  border: 2px solid rgba(251, 112, 132, 0.3);
+  border-radius: 14px;
+  color: #fb7084;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.favFilterBtn:hover {
+  background: rgba(251, 112, 132, 0.18);
+  border-color: #fb7084;
+}
+
+.favFilterBtnActive {
+  background: #fb7084;
+  border-color: #fb7084;
+  color: #fff;
+}
+
+.favFilterBtnActive:hover {
+  background: #c9384d;
+  border-color: #c9384d;
+}
+
 /* Botão limpar filtros */
 .limparBtn {
   width: 100%;

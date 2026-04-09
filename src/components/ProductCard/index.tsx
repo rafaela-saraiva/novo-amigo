@@ -1,3 +1,5 @@
+import { useFavorites } from "@/contexts/FavoritesContext";
+import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import styles from "./styles.module.css";
 
@@ -80,6 +82,7 @@ type PetCardProps = {
   porte: string;
   traits: string[];
   href?: string;
+  animalId?: number | string;
 };
 
 export function PetCard({
@@ -91,12 +94,29 @@ export function PetCard({
   porte,
   traits,
   href = "/nossos-animais",
+  animalId,
 }: PetCardProps) {
+  const { user } = useAuth();
+  const { isFavorited, toggleFavorite } = useFavorites();
+  const numId = Number(animalId);
+  const favorito = animalId ? isFavorited(numId) : false;
+
+  const handleFavoritar = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user || !animalId) return;
+    await toggleFavorite(numId);
+  };
+
   return (
     <div className={styles.petCard}>
       <div className={styles.petImageWrapper}>
         <img src={image || undefined} alt={alt} className={styles.petImage} />
-        <button className={styles.heartBtn} aria-label="Favoritar">
+        <button
+          className={`${styles.heartBtn} ${favorito ? styles.heartActive : ''}`}
+          aria-label="Favoritar"
+          onClick={handleFavoritar}
+        >
           <span className="material-symbols-outlined">favorite</span>
         </button>
         <div className={styles.petBadges}>

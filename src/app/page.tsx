@@ -207,6 +207,7 @@ export default function Home() {
                       porte={pet.porte ?? ""}
                       traits={traits}
                       href={`/nossos-animais`}
+                      animalId={pet.id}
                     />
                   );
                 })

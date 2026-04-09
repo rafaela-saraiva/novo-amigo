@@ -126,6 +126,11 @@
   color: #0d150f;
 }
 
+.heartActive {
+  background: #fb7084;
+  color: #fff;
+}
+
 .petBadges {
   position: absolute;
   bottom: 16px;

@@ -2,22 +2,55 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { useFavorites } from "@/contexts/FavoritesContext";
+import { useAuth } from "@/hooks/useAuth";
 import { Pet } from "@/Models/Pet";
-import { useEffect, useState } from "react";
+import api from "@/services/api";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
 export default function AnimaisFavoritos() {
   const router = useRouter();
+  const { user } = useAuth();
+  const { favoritedIds, toggleFavorite, refreshFavorites } = useFavorites();
 
   const [favoritos, setFavoritos] = useState<Pet[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selecionados, setSelecionados] = useState<number[]>([]);
   const [modoRemover, setModoRemover] = useState(false);
 
   useEffect(() => {
-    const dados = JSON.parse(localStorage.getItem("favoritos") || "[]");
-    setFavoritos(dados);
-  }, []);
+    async function carregarFavoritos() {
+      if (!user) {
+        setFavoritos([]);
+        setLoading(false);
+        return;
+      }
+      try {
+        const res = await api.get('/favorites');
+        const animais = (res.data as { animal: Pet }[]).map((f) => f.animal);
+        setFavoritos(animais);
+      } catch {
+        setFavoritos([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    carregarFavoritos();
+  }, [user, favoritedIds]);
+
+  async function confirmarRemocao() {
+    const idsParaRemover = selecionados.map((idx) => Number(favoritos[idx]?.id)).filter(Boolean);
+
+    for (const animalId of idsParaRemover) {
+      await toggleFavorite(animalId);
+    }
+
+    await refreshFavorites();
+    setSelecionados([]);
+    setModoRemover(false);
+  }
 
   function selecionarAnimal(index: number) {
     setSelecionados((prev) =>
@@ -25,17 +58,6 @@ export default function AnimaisFavoritos() {
         ? prev.filter((i) => i !== index)
         : [...prev, index]
     );
-  }
-
-  function confirmarRemocao() {
-    const novaLista = favoritos.filter(
-      (_, index) => !selecionados.includes(index)
-    );
-
-    setFavoritos(novaLista);
-    localStorage.setItem("favoritos", JSON.stringify(novaLista));
-    setSelecionados([]);
-    setModoRemover(false);
   }
 
   return (
@@ -47,7 +69,15 @@ export default function AnimaisFavoritos() {
           
           <h1>Meus Favoritos</h1>
 
-          {favoritos.length === 0 && (
+          {!user && (
+            <p>Faça login para ver seus animais favoritos.</p>
+          )}
+
+          {user && loading && (
+            <p>Carregando favoritos...</p>
+          )}
+
+          {user && !loading && favoritos.length === 0 && (
             <p>Você ainda não tem animais favoritos.</p>
           )}
 
