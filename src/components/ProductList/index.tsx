@@ -1,4 +1,4 @@
-import  Pet from "@/Models/Pet";
+import { Pet } from "@/Models/Pet";
 import ProductCard from "../ProductCard";
 
 
@@ -14,9 +14,9 @@ export default function ProductList({ pets }: PetProps) {
         <ProductCard
           key={Pet.id}
           nome={Pet.nome}
-          img={Pet.img}
-          desc={Pet.desc}
-          tipo={Pet.tipo}
+          img={typeof Pet.foto === 'string' ? Pet.foto : (Array.isArray(Pet.foto) ? Pet.foto[0] : Pet.imagem || '')}
+          desc={Pet.descricao}
+          tipo={Pet.especie as "gato" | "cachorro" | "passaro" | "coelho" | "hamster" | "fazenda" | "teste"}
         />
       ))}
     </section>

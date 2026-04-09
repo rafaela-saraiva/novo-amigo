@@ -2,12 +2,12 @@
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import { useAuth } from '@/contexts/AuthContext';
 import LoginModal from '@/components/LoginModal';
+import { useAuth } from '@/contexts/AuthContext';
 import { Pet } from '@/Models/Pet';
 import api from '@/services/api';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles.module.css';
 
 const ESP_LABEL: Record<string, string> = {
@@ -65,6 +65,14 @@ function getAllImages(pet: Pet): string[] {
 }
 
 export default function AnimalProfilePage() {
+  return (
+    <Suspense fallback={null}>
+      <AnimalProfilePageInner />
+    </Suspense>
+  );
+}
+
+function AnimalProfilePageInner() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();

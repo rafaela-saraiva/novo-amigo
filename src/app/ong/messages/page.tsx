@@ -5,8 +5,8 @@ import Header from "@/components/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
 import { toWhatsAppLink } from "@/utils/whatsapp";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
 
 type AdoptionRequest = {

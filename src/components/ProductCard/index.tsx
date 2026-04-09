@@ -95,7 +95,7 @@ export function PetCard({
   return (
     <div className={styles.petCard}>
       <div className={styles.petImageWrapper}>
-        <img src={image || null} alt={alt} className={styles.petImage} />
+        <img src={image || undefined} alt={alt} className={styles.petImage} />
         <button className={styles.heartBtn} aria-label="Favoritar">
           <span className="material-symbols-outlined">favorite</span>
         </button>
