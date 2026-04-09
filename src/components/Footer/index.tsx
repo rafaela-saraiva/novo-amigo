@@ -20,16 +20,27 @@
               Somos a maior rede de ONGs do Brasil.
             </p>
             <div className={styles.social}>
-              <a href="https://www.instagram.com/Celorde_/" className={styles.socialBtn} aria-label="Instagram">
-                <FaInstagram />
-              </a>
-              <a href="https://i.postimg.cc/59sp77q9/c6fadd78e554687cda59521c7591a279.jpg" className={styles.socialBtn} aria-label="Compartilhar">
-                <span className="material-symbols-outlined">share</span>
-              </a>
-              <a href="https://wa.me/5516996184985" className={styles.socialBtn} aria-label="WhatsApp">
-                <FaWhatsapp />
-              </a>
-            </div>
+            <a 
+              className={styles.socialBtn} 
+              aria-label="Instagram"
+            >
+              <FaInstagram />
+            </a>
+
+            <a 
+              className={styles.socialBtn} 
+              aria-label="Compartilhar"
+            >
+              <span className="material-symbols-outlined">share</span>
+            </a>
+
+          <a 
+            className={styles.socialBtn} 
+            aria-label="WhatsApp"
+          >
+            <FaWhatsapp />
+         </a>
+        </div>
           </div>
 
           {/* COLUNA 2 — Plataforma */}
