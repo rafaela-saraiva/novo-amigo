@@ -1,7 +1,8 @@
 'use client';
 
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import LoadingState from "@/components/LoadingState";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
@@ -128,7 +129,7 @@ export default function AdminUsers() {
     });
   }, [users, search, statusFilter]);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <LoadingState title="Carregando..." subtitle="Verificando sua sessão" />;
   if (!user || !isAdmin) return null;
 
   return (
@@ -151,7 +152,7 @@ export default function AdminUsers() {
           <button onClick={() => setStatusFilter('INACTIVE')}>Inativos</button>
         </div>
 
-        {loadingUsers && <p>Carregando...</p>}
+        {loadingUsers && <LoadingState title="Carregando usuários..." subtitle="Buscando todos os usuários cadastrados" variant="inline" />}
 
         <div className={styles.table}>
           {filteredUsers.map((u) => {

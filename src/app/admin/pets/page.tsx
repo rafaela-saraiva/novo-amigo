@@ -1,9 +1,10 @@
 'use client';
 
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import api from "@/services/api";
+import Header from "@/components/Header";
+import LoadingState from "@/components/LoadingState";
 import { useAuth } from "@/contexts/AuthContext";
+import api from "@/services/api";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
@@ -136,7 +137,7 @@ export default function AdminPets() {
           <h1 className={styles.title}>Gerenciar Pets </h1>
 
           {loading ? (
-            <p>Carregando...</p>
+            <LoadingState title="Carregando pets..." subtitle="Buscando todos os animais cadastrados" variant="inline" />
           ) : pets.length === 0 ? (
             <p>Nenhum pet encontrado.</p>
           ) : (

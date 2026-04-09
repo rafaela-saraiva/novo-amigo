@@ -1,7 +1,8 @@
 'use client';
 
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import LoadingState from "@/components/LoadingState";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
@@ -133,7 +134,7 @@ export default function AdminShelters() {
           </select>
         </div>
 
-        {loadingShelters && <p>Carregando...</p>}
+        {loadingShelters && <LoadingState title="Carregando ONGs..." subtitle="Buscando todas as organizações cadastradas" variant="inline" />}
 
         {/* 📋 LISTA */}
         <div className={styles.table}>

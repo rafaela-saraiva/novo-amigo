@@ -1,10 +1,11 @@
 'use client';
 
+import AnimalCard from "@/components/AnimalCard";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import AnimalCard from "@/components/AnimalCard";
-import api from "@/services/api";
+import LoadingState from "@/components/LoadingState";
 import { Pet } from "@/Models/Pet";
+import api from "@/services/api";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
@@ -119,7 +120,7 @@ export default function OngProfilePage() {
 
       <main className={styles.main}>
         {loading ? (
-          <p className={styles.muted}>Carregando...</p>
+          <LoadingState title="Carregando ONG..." subtitle="Buscando os dados da organização" />
         ) : !shelter ? (
           <p className={styles.muted}>ONG não encontrada.</p>
         ) : (

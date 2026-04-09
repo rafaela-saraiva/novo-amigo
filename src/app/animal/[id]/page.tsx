@@ -3,6 +3,7 @@
 import FeedbackPopup, { type FeedbackPopupState } from '@/components/FeedbackPopup';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import LoadingState from '@/components/LoadingState';
 import LoginModal from '@/components/LoginModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFavorites } from '@/contexts/FavoritesContext';
@@ -392,8 +393,7 @@ function AnimalProfilePageInner() {
     <>
       <Header />
       <main className={styles.loadingMain}>
-        <div className={styles.spinner} />
-        <p>Carregando perfil...</p>
+        <LoadingState title="Carregando perfil do animal..." subtitle="Buscando as informações do pet no banco de dados" />
       </main>
       <Footer />
     </>

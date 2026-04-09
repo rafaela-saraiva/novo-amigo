@@ -74,8 +74,8 @@ export default function OngPanel() {
   if (loading || !user || !isONG) return null;
 
   const cards = [
-    { title: "Pets", desc: "Gerencie apenas seus pets", route: "/ong/pets" },
-    { title: "Solicitações", desc: "Pedidos de adoção", route: "/ong/messages" },
+    { title: "Meus Pets", icon: "cruelty_free", desc: "Cadastre, edite e gerencie todos os animais da sua ONG", route: "/ong/pets" },
+    { title: "Solicitações", icon: "mail", desc: "Veja e responda os pedidos de adoção recebidos", route: "/ong/messages" },
   ];
 
   return (
@@ -83,16 +83,18 @@ export default function OngPanel() {
       <Header />
 
       <section className={styles.hero}>
-        <div>
-          <span className={styles.badge}>Painel da ONG</span>
+        <div className={styles.heroContent}>
+          <span className={styles.badge}>
+            <span className="material-symbols-outlined">volunteer_activism</span>
+            Painel da ONG
+          </span>
 
           <h1 className={styles.title}>
-            Gerencie seus pets e mensagens.
-            <span> Em um só lugar.</span>
+            Olá, <span>{user.nome || "ONG"}</span>
           </h1>
 
           <p className={styles.subtitle}>
-            Acesso exclusivo para ONGs cadastradas.
+            Gerencie seus pets e acompanhe os pedidos de adoção.
           </p>
 
           <div className={styles.actions}>
@@ -100,14 +102,16 @@ export default function OngPanel() {
               onClick={() => router.push("/ong/pets")}
               className={styles.primaryBtn}
             >
-              Meus Pets →
+              <span className="material-symbols-outlined">cruelty_free</span>
+              Meus Pets
             </button>
 
             <button
               onClick={() => router.push("/ong/messages")}
               className={styles.secondaryBtn}
             >
-              Ver Mensagens
+              <span className="material-symbols-outlined">mail</span>
+              Mensagens
             </button>
           </div>
         </div>
@@ -155,18 +159,29 @@ export default function OngPanel() {
       </section>
 
       <section className={styles.cardsSection}>
-        <h2>Gerenciar</h2>
+        <div className={styles.cardsSectionHeader}>
+          <h2>Gerenciar</h2>
+          <p>Acesse rapidamente as seções do painel</p>
+        </div>
 
-        <div className={`${styles.grid} ${styles.single}`}>
+        <div className={styles.grid}>
           {cards.map((card, i) => (
             <div
               key={i}
               onClick={() => router.push(card.route)}
               className={styles.card}
             >
-              <h3>{card.title}</h3>
-              <p>{card.desc}</p>
-              <span>Acessar →</span>
+              <div className={styles.cardIcon}>
+                <span className="material-symbols-outlined">{card.icon}</span>
+              </div>
+              <div className={styles.cardContent}>
+                <h3>{card.title}</h3>
+                <p>{card.desc}</p>
+              </div>
+              <span className={styles.cardArrow}>
+                Acessar
+                <span className="material-symbols-outlined">arrow_forward</span>
+              </span>
             </div>
           ))}
         </div>

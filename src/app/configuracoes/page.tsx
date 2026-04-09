@@ -271,21 +271,35 @@ function ConfiguracoesInner() {
 
           <div className={styles.userCard}>
             <div className={styles.userLeft}>
+              <div className={styles.userAvatar}>
+                {nome ? nome.charAt(0).toUpperCase() : "U"}
+              </div>
               <div className={styles.userInfo}>
                 <p className={styles.userName}>{nome}</p>
-                <div className={styles.dataGrid}>
-                  <span>E-mail: {email}</span>
+                <div className={styles.userMeta}>
+                  <span className="material-symbols-outlined">mail</span>
+                  <span>{email}</span>
                 </div>
+                {telefoneUser && (
+                  <div className={styles.userMeta}>
+                    <span className="material-symbols-outlined">call</span>
+                    <span>{telefoneUser}</span>
+                  </div>
+                )}
               </div>
             </div>
 
             <button className={styles.editBtn} onClick={() => setModalAberto(true)}>
-              Alterar Dados
+              <span className="material-symbols-outlined">edit</span>
+              Editar perfil
             </button>
           </div>
 
           <div className={styles.themeSection}>
-            <h2>Aparencia</h2>
+            <div className={styles.sectionHead}>
+              <span className="material-symbols-outlined">palette</span>
+              <h2>Aparência</h2>
+            </div>
             <div className={styles.themeToggle}>
               <div className={styles.themeInfo}>
                 <span className="material-symbols-outlined">
@@ -392,29 +406,37 @@ function ConfiguracoesInner() {
           )}
 
           <div className={styles.actionSection}>
-            <h2>Acoes da Conta</h2>
+            <div className={styles.sectionHead}>
+              <span className="material-symbols-outlined">manage_accounts</span>
+              <h2>Ações da Conta</h2>
+            </div>
 
-            <button className={styles.logoutBtn} onClick={encerrarSessao}>
-              Sair da Conta
-            </button>
+            <div className={styles.actionBtns}>
+              <button className={styles.logoutBtn} onClick={encerrarSessao}>
+                <span className="material-symbols-outlined">logout</span>
+                Sair da Conta
+              </button>
 
-            {!isAdmin && (
-              <>
-                <button
-                  className={styles.desativarBtn}
-                  onClick={() => setModalDesativar(true)}
-                >
-                  Desativar Conta
-                </button>
+              {!isAdmin && (
+                <>
+                  <button
+                    className={styles.desativarBtn}
+                    onClick={() => setModalDesativar(true)}
+                  >
+                    <span className="material-symbols-outlined">pause_circle</span>
+                    Desativar Conta
+                  </button>
 
-                <button
-                  className={styles.deletarBtn}
-                  onClick={() => setModalDeletar(true)}
-                >
-                  Deletar Conta
-                </button>
-              </>
-            )}
+                  <button
+                    className={styles.deletarBtn}
+                    onClick={() => setModalDeletar(true)}
+                  >
+                    <span className="material-symbols-outlined">delete_forever</span>
+                    Deletar Conta
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </main>

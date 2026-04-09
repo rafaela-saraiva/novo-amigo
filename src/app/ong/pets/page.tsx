@@ -1,12 +1,13 @@
 'use client';
 
-import Footer from "@/components/Footer";
 import FeedbackPopup, { type FeedbackPopupState } from "@/components/FeedbackPopup";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import LoadingState from "@/components/LoadingState";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
-import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
 
 type Pet = {
@@ -335,7 +336,7 @@ export default function OngPets() {
           <h1 className={styles.title}>Meus Pets</h1>
 
           {busy ? (
-            <p>Carregando...</p>
+            <LoadingState title="Carregando seus pets..." subtitle="Buscando os animais da sua ONG" variant="inline" />
           ) : pets.length === 0 ? (
             <p>Nenhum pet encontrado.</p>
           ) : (

@@ -2,6 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import LoadingState from "@/components/LoadingState";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useAuth } from "@/hooks/useAuth";
 import { Pet } from "@/Models/Pet";
@@ -74,7 +75,7 @@ export default function AnimaisFavoritos() {
           )}
 
           {user && loading && (
-            <p>Carregando favoritos...</p>
+            <LoadingState title="Carregando favoritos..." subtitle="Buscando seus animais favoritos no banco de dados" />
           )}
 
           {user && !loading && favoritos.length === 0 && (

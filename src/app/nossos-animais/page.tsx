@@ -5,6 +5,7 @@ import AnimalCard from '@/components/AnimalCard';
 import CadastrarAnimalModal from '@/components/CadastrarAnimalModal';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import LoadingState from '@/components/LoadingState';
 import { useFavorites } from '@/contexts/FavoritesContext';
 import { useAuth } from '@/hooks/useAuth';
 import { Pet } from '@/Models/Pet';
@@ -227,7 +228,7 @@ function NossosAnimaisInner() {
         <Header />
         <main className={styles.main} style={{ paddingTop: '128px' }}>
           <div className={styles.container}>
-            <p>carregando animais...</p>
+            <LoadingState title="Carregando animais..." subtitle="Buscando os pets disponíveis para adoção" />
           </div>
         </main>
         <Footer />

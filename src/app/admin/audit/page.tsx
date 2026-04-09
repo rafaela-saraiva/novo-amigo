@@ -1,7 +1,8 @@
 'use client';
 
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import LoadingState from "@/components/LoadingState";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
 import { useEffect, useState } from "react";
@@ -89,7 +90,7 @@ export default function AdminAudit() {
           <h1>Gerenciar Auditoria</h1>
         </div>
 
-        {loadingLogs && <p>Carregando...</p>}
+        {loadingLogs && <LoadingState title="Carregando registros..." subtitle="Buscando logs de auditoria" variant="inline" />}
 
         <div className={styles.table}>
           {logs.length === 0 && !loadingLogs && (
