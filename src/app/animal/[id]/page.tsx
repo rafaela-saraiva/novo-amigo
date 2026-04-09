@@ -167,17 +167,19 @@ export default function AnimalProfilePage() {
   useEffect(() => {
     if (!animal) return;
 
-    const shelterId = getShelterIdFromPet(animal);
+    const currentAnimal = animal;
+    const shelterId = getShelterIdFromPet(currentAnimal);
     if (!shelterId) {
       setShelterProfile(null);
       return;
     }
+    const resolvedShelterId = shelterId;
 
     async function loadShelter() {
       try {
         // Preferir dados já embutidos no payload do animal (evita 401 quando /shelters é protegido)
         const embedded = (() => {
-          const src = animal as unknown as Partial<{
+          const src = currentAnimal as unknown as Partial<{
             shelter?: { nome?: string; urlImage?: string[]; fotos?: string[] };
             ong?: { nome?: string; urlImage?: string[]; fotos?: string[] };
           }>;
@@ -186,14 +188,14 @@ export default function AnimalProfilePage() {
           const fotos = src.shelter?.urlImage || src.shelter?.fotos || src.ong?.urlImage || src.ong?.fotos;
 
           if (nome || (Array.isArray(fotos) && fotos.length > 0)) {
-            return { nome: nome || animal.donoNome || 'ONG', fotos: fotos || null };
+            return { nome: nome || currentAnimal.donoNome || 'ONG', fotos: fotos || null };
           }
           return null;
         })();
 
         if (embedded) {
           setShelterProfile({
-            id: shelterId,
+            id: resolvedShelterId,
             nome: embedded.nome,
             fotos: embedded.fotos ?? null,
           });
@@ -202,15 +204,15 @@ export default function AnimalProfilePage() {
 
         let data: unknown = null;
         try {
-          const res = await api.get(`/shelters/${shelterId}`);
+          const res = await api.get(`/shelters/${resolvedShelterId}`);
           data = res.data as unknown;
         } catch (err: unknown) {
           const axiosLike = err as { response?: { status?: number } };
           if (axiosLike?.response?.status === 401) {
             // endpoint protegido: mantém só o nome (sem foto)
             setShelterProfile({
-              id: shelterId,
-              nome: animal.donoNome || 'ONG',
+              id: resolvedShelterId,
+              nome: currentAnimal.donoNome || 'ONG',
               fotos: null,
             });
             return;
@@ -220,7 +222,7 @@ export default function AnimalProfilePage() {
           const list = await api.get("/shelters");
           const found = (Array.isArray(list.data) ? list.data : []).find((s: unknown) => {
             const rec = s as Partial<{ id: unknown }>;
-            return Number(rec?.id) === shelterId;
+            return Number(rec?.id) === resolvedShelterId;
           });
           data = found ?? null;
         }
@@ -331,24 +333,20 @@ export default function AnimalProfilePage() {
       alert('Você precisa ter um número de telefone cadastrado na sua conta para facilitar o contato.');
     }
 
-    const payload = {
-      petId: animal.id,
-      shelterId,
-      userId: user.id,
-      userTelefone: userPhoneRaw.trim(),
-      status: 'PENDING',
-    };
-
     try {
       setEnviandoSolicitacao(true);
 
-      await api.post('/adoption-requests', payload);
+      await api.post(`/shelters/${shelterId}/request-contact`, {
+        animalId: animal.id,
+        animalNome: animal.nome,
+        userTelefone: userPhoneRaw.trim(),
+      });
 
       setSolicitacaoEnviada(true);
       alert('Solicitação enviada! Aguarde a resposta da ONG.');
     } catch (err) {
       console.error(err);
-      alert('Erro ao enviar solicitação. (Verifique se o backend possui /adoption-requests)');
+      alert('Erro ao enviar solicitação para a ONG.');
     } finally {
       setEnviandoSolicitacao(false);
     }

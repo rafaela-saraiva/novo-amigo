@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 
 type AdoptionRequest = {
-  id: number | string;
+  id: string;
   createdAt: string;
   shelterId: number;
   petId: number;
@@ -22,9 +22,75 @@ type AdoptionRequest = {
   status: "PENDING" | "ACCEPTED" | "REJECTED";
 };
 
-function asRecord(value: unknown): Record<string, unknown> | null {
-  if (!value || typeof value !== "object") return null;
-  return value as Record<string, unknown>;
+type ShelterMessagePayload = {
+  id?: string | number;
+  type?: string;
+  status?: "PENDING" | "ACCEPTED" | "REJECTED";
+  createdAt?: string;
+  shelterId?: number | string;
+  animalId?: number | string;
+  animalNome?: string;
+  userId?: number | string;
+  userNome?: string;
+  userEmail?: string;
+  userTelefone?: string;
+};
+
+type ShelterResponse = {
+  id: number | string;
+  mensages?: string[] | null;
+};
+
+function readNumber(...values: unknown[]): number | null {
+  for (const value of values) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed) && parsed > 0) return parsed;
+  }
+  return null;
+}
+
+function readString(...values: unknown[]): string {
+  for (const value of values) {
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return "";
+}
+
+function parseShelterMessage(raw: string, shelterIdFallback: number): AdoptionRequest | null {
+  try {
+    const parsed = JSON.parse(raw) as ShelterMessagePayload;
+    if (!parsed || parsed.type !== "adoption_request") return null;
+
+    const shelterId = readNumber(parsed.shelterId, shelterIdFallback);
+    const petId = readNumber(parsed.animalId);
+    const userId = readString(parsed.userId);
+    if (!shelterId || !petId || !userId) return null;
+
+    return {
+      id: String(parsed.id ?? `${shelterId}-${petId}-${userId}`),
+      createdAt: readString(parsed.createdAt),
+      shelterId,
+      petId,
+      petNome: readString(parsed.animalNome),
+      userId,
+      userNome: readString(parsed.userNome),
+      userEmail: readString(parsed.userEmail),
+      userTelefone: readString(parsed.userTelefone),
+      status: parsed.status ?? "PENDING",
+    };
+  } catch {
+    return null;
+  }
+}
+
+function serializeShelterMessage(existingRaw: string, nextStatus: "PENDING" | "ACCEPTED" | "REJECTED") {
+  try {
+    const parsed = JSON.parse(existingRaw) as ShelterMessagePayload;
+    if (!parsed || parsed.type !== "adoption_request") return existingRaw;
+    return JSON.stringify({ ...parsed, status: nextStatus });
+  } catch {
+    return existingRaw;
+  }
 }
 
 export default function OngMessages() {
@@ -35,7 +101,8 @@ export default function OngMessages() {
   const myShelterId = useMemo(() => Number(user?.id), [user?.id]);
 
   const [requests, setRequests] = useState<AdoptionRequest[]>([]);
-  const [busyId, setBusyId] = useState<number | string | null>(null);
+  const [rawMessages, setRawMessages] = useState<string[]>([]);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   useEffect(() => {
     if (loading) return;
@@ -47,50 +114,16 @@ export default function OngMessages() {
     if (!Number.isFinite(myShelterId) || myShelterId <= 0) return;
 
     try {
-      const res = await api.get(`/adoption-requests?shelterId=${myShelterId}`, {
+      const res = await api.get(`/shelters/${myShelterId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      const data = res.data as unknown;
-      if (!Array.isArray(data)) {
-        setRequests([]);
-        return;
-      }
+      const shelter = res.data as ShelterResponse | null;
+      const mensages = Array.isArray(shelter?.mensages) ? shelter.mensages : [];
+      setRawMessages(mensages);
 
-      const mapped = data
-        .map((item): AdoptionRequest | null => {
-          const rec = asRecord(item);
-          if (!rec) return null;
-
-          const shelterId = Number(rec.shelterId);
-          const petId = Number(rec.petId ?? rec.animalId);
-          const petNome = String(rec.petNome ?? rec.animalNome ?? "");
-          const userId = String(rec.userId ?? "");
-          const userNome = String(rec.userNome ?? "");
-          const userEmail = String(rec.userEmail ?? "");
-          const userTelefone = String(rec.userTelefone ?? "");
-          const status = String(rec.status ?? "PENDING") as AdoptionRequest["status"];
-          const createdAt = String(rec.createdAt ?? "");
-          const id = (rec.id ?? "") as AdoptionRequest["id"];
-
-          if (!id) return null;
-          if (!Number.isFinite(shelterId) || shelterId <= 0) return null;
-          if (!Number.isFinite(petId) || petId <= 0) return null;
-          if (!userId) return null;
-
-          return {
-            id,
-            createdAt,
-            shelterId,
-            petId,
-            petNome,
-            userId,
-            userNome,
-            userEmail,
-            userTelefone,
-            status,
-          };
-        })
+      const mapped = mensages
+        .map((item) => parseShelterMessage(item, myShelterId))
         .filter(Boolean) as AdoptionRequest[];
 
       setRequests(mapped.filter((r) => r.status === "PENDING" && r.shelterId === myShelterId));
@@ -99,7 +132,7 @@ export default function OngMessages() {
       const axiosLike = err as { response?: { status?: number } };
       if (axiosLike?.response?.status === 404) {
         setRequests([]);
-        alert("Seu backend não possui o endpoint /adoption-requests ainda.");
+        setRawMessages([]);
         return;
       }
       console.error(err);
@@ -112,27 +145,33 @@ export default function OngMessages() {
     if (!loading && user && isONG) fetchRequests();
   }, [fetchRequests, loading, user, isONG]);
 
+  async function atualizarStatusMensagem(req: AdoptionRequest, status: "ACCEPTED" | "REJECTED") {
+    const nextMessages = rawMessages.map((item) => {
+      const parsed = parseShelterMessage(item, myShelterId);
+      if (!parsed || parsed.id !== req.id) return item;
+      return serializeShelterMessage(item, status);
+    });
+
+    await api.put(`/shelters/${myShelterId}`, {
+      mensages: nextMessages,
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
   async function aceitarSolicitacao(req: AdoptionRequest) {
     if (!confirm(`Aceitar solicitação para o pet "${req.petNome || req.petId}"?`)) return;
 
     try {
       setBusyId(req.id);
 
-      await api.post(`/adoption-requests/${req.id}/accept`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      // Garante o status do pet mesmo se o backend não atualizar automaticamente
       await api.put(`/animals/${req.petId}`, {
         disponivel: false,
-        adotanteId: req.userId,
-        adotadoPorId: req.userId,
-        adoptedById: req.userId,
-        adopterId: req.userId,
       }, {
         headers: { Authorization: `Bearer ${token}` }
       }).catch(() => null);
 
+      await atualizarStatusMensagem(req, "ACCEPTED");
       await fetchRequests();
     } catch (err) {
       console.error(err);
@@ -147,11 +186,7 @@ export default function OngMessages() {
 
     try {
       setBusyId(req.id);
-
-      await api.post(`/adoption-requests/${req.id}/reject`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
+      await atualizarStatusMensagem(req, "REJECTED");
       await fetchRequests();
     } catch (err) {
       console.error(err);
@@ -179,7 +214,7 @@ export default function OngMessages() {
               const disabled = busyId === r.id;
 
               return (
-                <div key={`${r.source}:${r.id}`} className={styles.card}>
+                <div key={`${r.shelterId}:${r.id}`} className={styles.card}>
                   <div className={styles.rowTop}>
                     <div>
                       <strong className={styles.name}>{r.userNome || "Solicitante"}</strong>
