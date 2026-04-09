@@ -1,6 +1,7 @@
 'use client';
 
 import Footer from '@/components/Footer';
+import FeedbackPopup, { type FeedbackPopupState } from '@/components/FeedbackPopup';
 import Header from '@/components/Header';
 import LoginModal from '@/components/LoginModal';
 import { useAuth } from '@/contexts/AuthContext';
@@ -95,6 +96,7 @@ function AnimalProfilePageInner() {
   const [habilitarSolicitarDepoisDoLogin, setHabilitarSolicitarDepoisDoLogin] = useState(false);
   const [enviandoSolicitacao, setEnviandoSolicitacao] = useState(false);
   const [solicitacaoEnviada, setSolicitacaoEnviada] = useState(false);
+  const [feedbackPopup, setFeedbackPopup] = useState<FeedbackPopupState | null>(null);
 
   const podeVerComoAdotar = useMemo(() => !!user && !authLoading, [user, authLoading]);
   const isUser = user?.tipo !== 'shelter';
@@ -120,6 +122,14 @@ function AnimalProfilePageInner() {
       setHabilitarSolicitar(true);
     }
   };
+
+  function openFeedback(popup: FeedbackPopupState) {
+    setFeedbackPopup(popup);
+  }
+
+  function closeFeedback() {
+    setFeedbackPopup(null);
+  }
 
   useEffect(() => {
     if (loginOpen) return;
@@ -271,7 +281,11 @@ function AnimalProfilePageInner() {
   const toggleFavorito = () => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('Você precisa estar logado para favoritar!');
+      openFeedback({
+        title: 'Login necessario',
+        message: 'Voce precisa estar logado para favoritar este animal.',
+        variant: 'warning',
+      });
       return;
     }
     const favoritos: Pet[] = JSON.parse(localStorage.getItem('favoritos') || '[]');
@@ -308,12 +322,20 @@ function AnimalProfilePageInner() {
     }
 
     if (!isUser) {
-      alert('Somente usuários podem solicitar contato para adoção.');
+      openFeedback({
+        title: 'Acao indisponivel',
+        message: 'Somente usuarios comuns podem solicitar contato para adocao.',
+        variant: 'warning',
+      });
       return;
     }
 
     if (!animal.disponivel) {
-      alert('Este pet já está indisponível.');
+      openFeedback({
+        title: 'Pet indisponivel',
+        message: 'Este pet nao esta mais disponivel para adocao.',
+        variant: 'warning',
+      });
       return;
     }
 
@@ -327,7 +349,11 @@ function AnimalProfilePageInner() {
 
     const shelterId = getShelterIdFromPet(animal);
     if (!shelterId) {
-      alert('Não foi possível identificar a ONG responsável por este pet.');
+      openFeedback({
+        title: 'ONG nao encontrada',
+        message: 'Nao foi possivel identificar a ONG responsavel por este pet.',
+        variant: 'error',
+      });
       return;
     }
 
@@ -338,7 +364,12 @@ function AnimalProfilePageInner() {
 
     if (!userPhoneRaw.trim()) {
       setPhoneRequired(true);
-      alert('Você precisa ter um número de telefone cadastrado na sua conta para facilitar o contato.');
+      openFeedback({
+        title: 'Telefone obrigatorio',
+        message: 'Voce precisa cadastrar um numero de telefone para facilitar o contato com a ONG.',
+        variant: 'warning',
+      });
+      return;
     }
 
     try {
@@ -351,10 +382,18 @@ function AnimalProfilePageInner() {
       });
 
       setSolicitacaoEnviada(true);
-      alert('Solicitação enviada! Aguarde a resposta da ONG.');
+      openFeedback({
+        title: 'Solicitacao enviada',
+        message: 'Seu pedido foi enviado. Agora e so aguardar a resposta da ONG.',
+        variant: 'success',
+      });
     } catch (err) {
       console.error(err);
-      alert('Erro ao enviar solicitação para a ONG.');
+      openFeedback({
+        title: 'Erro ao enviar',
+        message: 'Nao foi possivel enviar sua solicitacao para a ONG agora.',
+        variant: 'error',
+      });
     } finally {
       setEnviandoSolicitacao(false);
     }
@@ -703,6 +742,8 @@ function AnimalProfilePageInner() {
           if (!user) setScrollDepoisDoLogin(false);
         }}
       />
+      <FeedbackPopup popup={feedbackPopup} onClose={closeFeedback} />
     </>
   );
 }
+

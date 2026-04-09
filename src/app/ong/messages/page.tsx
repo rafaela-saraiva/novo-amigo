@@ -1,6 +1,7 @@
 'use client';
 
 import Footer from "@/components/Footer";
+import FeedbackPopup, { type FeedbackPopupState } from "@/components/FeedbackPopup";
 import Header from "@/components/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
@@ -103,6 +104,15 @@ export default function OngMessages() {
   const [requests, setRequests] = useState<AdoptionRequest[]>([]);
   const [rawMessages, setRawMessages] = useState<string[]>([]);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [feedbackPopup, setFeedbackPopup] = useState<FeedbackPopupState | null>(null);
+
+  function openFeedback(popup: FeedbackPopupState) {
+    setFeedbackPopup(popup);
+  }
+
+  function closeFeedback() {
+    setFeedbackPopup(null);
+  }
 
   useEffect(() => {
     if (loading) return;
@@ -115,7 +125,7 @@ export default function OngMessages() {
 
     try {
       const res = await api.get(`/shelters/${myShelterId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const shelter = res.data as ShelterResponse | null;
@@ -135,8 +145,13 @@ export default function OngMessages() {
         setRawMessages([]);
         return;
       }
+
       console.error(err);
-      alert("Erro ao carregar solicitações.");
+      openFeedback({
+        title: "Erro ao carregar solicitacoes",
+        message: "Nao foi possivel buscar as solicitacoes da ONG agora.",
+        variant: "error",
+      });
       return;
     }
   }, [token, myShelterId]);
@@ -152,45 +167,84 @@ export default function OngMessages() {
       return serializeShelterMessage(item, status);
     });
 
-    await api.put(`/shelters/${myShelterId}`, {
-      mensages: nextMessages,
-    }, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    await api.put(
+      `/shelters/${myShelterId}`,
+      {
+        mensages: nextMessages,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   }
 
   async function aceitarSolicitacao(req: AdoptionRequest) {
-    if (!confirm(`Aceitar solicitação para o pet "${req.petNome || req.petId}"?`)) return;
+    openFeedback({
+      mode: "confirm",
+      title: "Confirmar aceite",
+      message: `Tem certeza que deseja aceitar a solicitacao de ${req.userNome || "este usuario"} para o pet "${req.petNome || req.petId}"?`,
+      variant: "success",
+      confirmLabel: "Aceitar",
+      cancelLabel: "Cancelar",
+      onConfirm: () => confirmarAceite(req),
+    });
+  }
 
+  async function confirmarAceite(req: AdoptionRequest) {
     try {
       setBusyId(req.id);
 
-      await api.put(`/animals/${req.petId}`, {
-        disponivel: false,
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).catch(() => null);
+      await api.put(
+        `/animals/${req.petId}`,
+        {
+          disponivel: false,
+          donoId: req.userId,
+          donoNome: req.userNome,
+          donoTipo: "usuario",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       await atualizarStatusMensagem(req, "ACCEPTED");
       await fetchRequests();
     } catch (err) {
       console.error(err);
-      alert("Erro ao aceitar solicitação.");
+      openFeedback({
+        title: "Erro ao aceitar solicitacao",
+        message: "Nao foi possivel aceitar esta solicitacao agora.",
+        variant: "error",
+      });
     } finally {
       setBusyId(null);
     }
   }
 
   async function recusarSolicitacao(req: AdoptionRequest) {
-    if (!confirm("Recusar esta solicitação?")) return;
+    openFeedback({
+      mode: "confirm",
+      title: "Confirmar recusa",
+      message: `Tem certeza que deseja recusar a solicitacao de ${req.userNome || "este usuario"} para o pet "${req.petNome || req.petId}"?`,
+      variant: "error",
+      confirmLabel: "Recusar",
+      cancelLabel: "Cancelar",
+      onConfirm: () => confirmarRecusa(req),
+    });
+  }
 
+  async function confirmarRecusa(req: AdoptionRequest) {
     try {
       setBusyId(req.id);
       await atualizarStatusMensagem(req, "REJECTED");
       await fetchRequests();
     } catch (err) {
       console.error(err);
-      alert("Erro ao recusar solicitação.");
+      openFeedback({
+        title: "Erro ao recusar solicitacao",
+        message: "Nao foi possivel recusar esta solicitacao agora.",
+        variant: "error",
+      });
     } finally {
       setBusyId(null);
     }
@@ -203,10 +257,10 @@ export default function OngMessages() {
       <Header />
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Solicitações de Adoção</h1>
+        <h1 className={styles.title}>Solicitacoes de Adocao</h1>
 
         {requests.length === 0 ? (
-          <p className={styles.empty}>Nenhuma solicitação pendente.</p>
+          <p className={styles.empty}>Nenhuma solicitacao pendente.</p>
         ) : (
           <div className={styles.table}>
             {requests.map((r) => {
@@ -232,7 +286,7 @@ export default function OngMessages() {
                         {r.userTelefone} (WhatsApp)
                       </a>
                     ) : (
-                      <span className={styles.muted}>Não informado</span>
+                      <span className={styles.muted}>Nao informado</span>
                     )}
                   </div>
 
@@ -264,6 +318,7 @@ export default function OngMessages() {
       </main>
 
       <Footer />
+      <FeedbackPopup popup={feedbackPopup} onClose={closeFeedback} />
     </div>
   );
 }

@@ -1,0 +1,160 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1400;
+}
+
+.modal {
+  width: min(92vw, 420px);
+  background: linear-gradient(180deg, var(--card-bg), var(--surface));
+  border-radius: 24px;
+  padding: 28px 24px 22px;
+  box-shadow: 0 28px 80px var(--shadow-strong);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  animation: popupIn 0.2s ease;
+}
+
+.iconWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 1px 0 var(--glass-border);
+}
+
+.icon {
+  font-size: 36px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.message {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-size: 0.96rem;
+}
+
+.button {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.actions .button {
+  width: 100%;
+}
+
+.secondaryButton {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  background: var(--surface-tertiary);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.secondaryButton:hover {
+  transform: translateY(-1px);
+  background: var(--input-bg);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+.success .iconWrap {
+  background: color-mix(in srgb, var(--success) 18%, var(--surface));
+  color: var(--success);
+}
+
+.success .button {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--success) 82%, white), var(--success));
+}
+
+.error .iconWrap {
+  background: color-mix(in srgb, var(--danger) 16%, var(--surface));
+  color: var(--danger);
+}
+
+.error .button {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--danger) 78%, white), var(--danger));
+}
+
+.warning .iconWrap {
+  background: color-mix(in srgb, var(--warning) 18%, var(--surface));
+  color: var(--warning);
+}
+
+.warning .button {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--warning) 82%, white), var(--warning));
+}
+
+.info .iconWrap {
+  background: color-mix(in srgb, var(--brand-primary) 14%, var(--surface));
+  color: var(--brand-primary-dark);
+}
+
+.info .button {
+  background: linear-gradient(135deg, var(--brand-primary-light), var(--brand-primary));
+}
+
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 520px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
